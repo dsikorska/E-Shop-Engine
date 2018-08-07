@@ -40,7 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainModel\Address.cs" />
+    <Compile Include="DomainModel\Cart.cs" />
+    <Compile Include="DomainModel\CartLine.cs" />
+    <Compile Include="DomainModel\Category.cs" />
+    <Compile Include="DomainModel\Customer.cs" />
+    <Compile Include="DomainModel\DbEntity.cs" />
+    <Compile Include="DomainModel\Order.cs" />
+    <Compile Include="DomainModel\OrderLine.cs" />
     <Compile Include="DomainModel\Product.cs" />
+    <Compile Include="DomainModel\Subcategory.cs" />
+    <Compile Include="Enumerables\OrderStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

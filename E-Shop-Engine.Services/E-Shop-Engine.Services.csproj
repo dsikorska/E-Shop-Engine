@@ -30,7 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,7 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AppDbContext.cs" />
+    <Compile Include="Data\EntitiesConfigurations\AddressEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\CategoryConfigEntity.cs" />
+    <Compile Include="Data\EntitiesConfigurations\CustomerEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\OrderEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\OrderLineEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\SubcategoryEntityConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\E-Shop-Engine.Domain\E-Shop-Engine.Domain.csproj">
+      <Project>{6890D687-0482-4C31-A1A4-51409224F01A}</Project>
+      <Name>E-Shop-Engine.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
