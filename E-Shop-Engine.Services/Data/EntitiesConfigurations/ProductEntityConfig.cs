@@ -8,17 +8,16 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public ProductEntityConfig()
         {
             HasKey(p => p.ID);
-            HasRequired(p => p.Name);
-            HasRequired(p => p.Category);
-            HasOptional(p => p.Subcategory);
-            HasOptional(p => p.CatalogNumber);
-            HasOptional(p => p.Description);
-            HasOptional(p => p.ImageData);
-            HasOptional(p => p.ImageMimeType);
             Property(p => p.Name)
+                .IsRequired()
                 .HasMaxLength(150);
             Property(p => p.Description)
+                .IsOptional()
                 .HasMaxLength(1000);
+            Property(p => p.ImageData)
+                .IsOptional();
+            HasRequired(p => p.Category);
+            HasOptional(p => p.Subcategory);
         }
     }
 }

@@ -55,6 +55,11 @@
     <Compile Include="Data\EntitiesConfigurations\OrderLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\SubcategoryEntityConfig.cs" />
+    <Compile Include="Migrations\201808072054560_Init.cs" />
+    <Compile Include="Migrations\201808072054560_Init.Designer.cs">
+      <DependentUpon>201808072054560_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +71,11 @@
       <Project>{6890D687-0482-4C31-A1A4-51409224F01A}</Project>
       <Name>E-Shop-Engine.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201808072054560_Init.resx">
+      <DependentUpon>201808072054560_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

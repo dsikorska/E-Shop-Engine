@@ -12,8 +12,7 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
             HasRequired(o => o.OrderLines);
             HasMany(o => o.OrderLines)
                 .WithRequired(ol => ol.Order)
-                .HasForeignKey(ol => ol.OrderID)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(ol => ol.OrderID);
         }
     }
 }

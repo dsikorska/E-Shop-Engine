@@ -8,29 +8,28 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public CustomerEntityConfig()
         {
             HasKey(c => c.ID);
-            HasRequired(c => c.Email);
-            HasRequired(c => c.Password);
-            HasRequired(c => c.Name);
-            HasRequired(c => c.Surname);
-            HasRequired(c => c.PhoneNumber);
-            HasOptional(c => c.Orders);
-            HasRequired(c => c.Address)
-                .WithRequiredPrincipal(a => a.Customer)
-                .WillCascadeOnDelete(true);
-            HasMany(c => c.Orders)
-                .WithRequired(o => o.Customer)
-                .HasForeignKey(o => o.CustomerID)
-                .WillCascadeOnDelete(true);
             Property(c => c.Name)
+                .IsRequired()
                 .HasMaxLength(100);
             Property(c => c.Surname)
+                .IsRequired()
                 .HasMaxLength(100);
             Property(c => c.Password)
+                .IsRequired()
                 .HasMaxLength(250);
             Property(c => c.Email)
+                .IsRequired()
                 .HasMaxLength(150);
             Property(c => c.PhoneNumber)
+                .IsRequired()
                 .HasMaxLength(50);
+            HasOptional(c => c.Orders);
+            HasRequired(c => c.Address)
+                .WithMany()
+                .HasForeignKey(c => c.AddressID);
+            HasMany(c => c.Orders)
+                .WithRequired(o => o.Customer)
+                .HasForeignKey(o => o.CustomerID);
         }
     }
 }
