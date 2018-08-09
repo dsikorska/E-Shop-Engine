@@ -51,6 +51,9 @@
     <Compile Include="DomainModel\Product.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
