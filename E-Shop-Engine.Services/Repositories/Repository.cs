@@ -6,7 +6,7 @@ using E_Shop_Engine.Services.Data;
 
 namespace E_Shop_Engine.Services.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : DbEntity
+    public class Repository<T> : IRepository<T> where T : DbEntity
     {
         protected AppDbContext _context;
         protected readonly IDbSet<T> _dbSet;
