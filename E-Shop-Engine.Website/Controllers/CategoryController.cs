@@ -20,5 +20,10 @@ namespace E_Shop_Engine.Website.Controllers
         {
             return View(_categoryRepository.GetAll());
         }
+
+        public PartialViewResult NavList()
+        {
+            return PartialView("_Categories", _categoryRepository.GetAll());
+        }
     }
 }
