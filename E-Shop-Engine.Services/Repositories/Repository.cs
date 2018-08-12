@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -20,12 +21,14 @@ namespace E_Shop_Engine.Services.Repositories
         public virtual void Create(T entity)
         {
             _context.Set<T>().Add(entity);
+            Save();
         }
 
         public virtual void Delete(int id)
         {
             T entity = _dbSet.Find(id);
             _dbSet.Remove(entity);
+            Save();
         }
 
         public virtual IQueryable<T> GetAll()
@@ -41,11 +44,30 @@ namespace E_Shop_Engine.Services.Repositories
         public virtual void Update(T entity)
         {
             _context.Entry<T>(entity).State = EntityState.Modified;
+            Save();
         }
 
         public virtual void Save()
         {
             _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                    _context = null;
+                }
+            }
         }
     }
 }

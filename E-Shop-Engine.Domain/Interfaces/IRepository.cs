@@ -10,5 +10,6 @@ namespace E_Shop_Engine.Domain.Interfaces
         void Create(T entity);
         void Update(T entity);
         void Delete(int id);
+        void Save();
     }
 }

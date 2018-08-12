@@ -6,7 +6,6 @@ namespace E_Shop_Engine.Website.App_Start
     using System;
     using System.Web;
     using E_Shop_Engine.Domain.Interfaces;
-    using E_Shop_Engine.Services;
     using E_Shop_Engine.Services.Repositories;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -63,7 +62,6 @@ namespace E_Shop_Engine.Website.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
             kernel.Bind(typeof(IRepository<>)).To((typeof(Repository<>))).InRequestScope();
         }
     }
