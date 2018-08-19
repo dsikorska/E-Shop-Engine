@@ -10,7 +10,7 @@ namespace E_Shop_Engine.Services.Repositories
     public class Repository<T> : IRepository<T> where T : DbEntity
     {
         protected AppDbContext _context;
-        protected readonly IDbSet<T> _dbSet;
+        protected IDbSet<T> _dbSet;
 
         public Repository(AppDbContext context)
         {

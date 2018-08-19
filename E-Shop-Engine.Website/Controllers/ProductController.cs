@@ -6,9 +6,9 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class ProductController : Controller
     {
-        IRepository<Product> _productRepository;
+        IProductRepository _productRepository;
 
-        public ProductController(IRepository<Product> productRepository)
+        public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
@@ -59,6 +59,12 @@ namespace E_Shop_Engine.Website.Controllers
         public ViewResult Details(int id)
         {
             return View(_productRepository.GetById(id));
+        }
+
+        [HttpGet]
+        public PartialViewResult GetSpecialOffers()
+        {
+            return PartialView("SpecialOffers", _productRepository.GetAllSpecialOffers());
         }
     }
 }

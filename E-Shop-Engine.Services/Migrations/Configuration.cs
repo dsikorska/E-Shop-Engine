@@ -20,6 +20,14 @@ namespace E_Shop_Engine.Services.Migrations
                 new Category { Name = "All", Description = "Contains all products" },
                 new Category { Name = "Test", Description = "Test" }
                 );
+
+            context.Subcategories.AddOrUpdate(
+                new Subcategory { Name = "Subcategory", CategoryID = 1 }
+                );
+
+            context.Products.AddOrUpdate(
+                new Product { Name = "Pierwszy produkt", Description = "Info o produkcie pierwszym", CategoryID = 1, IsSpecialOffer = true, NumberInStock = 5, Price = 11.47M, SubcategoryID = 0 }
+                );
         }
     }
 }

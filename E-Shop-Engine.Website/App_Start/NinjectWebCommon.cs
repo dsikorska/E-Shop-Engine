@@ -63,6 +63,7 @@ namespace E_Shop_Engine.Website.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind(typeof(IRepository<>)).To((typeof(Repository<>))).InRequestScope();
+            kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
         }
     }
 }
