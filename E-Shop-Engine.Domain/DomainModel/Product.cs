@@ -9,7 +9,8 @@
         public int NumberInStock { get; set; }
         public byte[] ImageData { get; set; }
         public string ImageMimeType { get; set; }
-        public bool IsSpecialOffer { get; set; } = false;
+        public bool ShowAsSpecialOffer { get; set; } = false;
+        public bool ShowAtMainPage { get; set; } = false;
 
         public int CategoryID { get; set; }
         public virtual Category Category { get; set; }

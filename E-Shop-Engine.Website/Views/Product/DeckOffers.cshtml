@@ -1,0 +1,17 @@
+﻿@using E_Shop_Engine.Domain.DomainModel
+@model IList<Product>
+
+<div class="card-deck">
+    @foreach (Product product in Model)
+    {
+        <div class="card">
+            @Html.Image(product.ImageData, product.ImageMimeType, "card-img-top", new { alt = product.Name + " Price: " + product.Price })
+            <div class="card-body text-center">
+                <h5 class="card-title">@product.Name</h5>
+                <h4 class="card-title">@product.Price</h4>
+                <a href="#" class="btn btn-success">Add to cart</a>
+            </div>
+        </div>
+    }
+</div>
+

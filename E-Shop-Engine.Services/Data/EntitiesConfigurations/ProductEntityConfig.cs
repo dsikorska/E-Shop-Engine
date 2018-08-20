@@ -16,7 +16,7 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
                 .HasMaxLength(1000);
             Property(p => p.ImageData)
                 .IsOptional();
-            Property(p => p.IsSpecialOffer)
+            Property(p => p.ShowAsSpecialOffer)
                 .IsOptional();
             HasRequired(p => p.Category);
             HasOptional(p => p.Subcategory);

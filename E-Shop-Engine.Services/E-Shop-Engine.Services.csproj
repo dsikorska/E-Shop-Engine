@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201808191919027_Add SpecialOffer prop to Product.Designer.cs">
       <DependentUpon>201808191919027_Add SpecialOffer prop to Product.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808201931322_Edit SpecialOffer prop at Product.cs" />
+    <Compile Include="Migrations\201808201931322_Edit SpecialOffer prop at Product.Designer.cs">
+      <DependentUpon>201808201931322_Edit SpecialOffer prop at Product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
@@ -78,6 +82,10 @@
       <Project>{6890D687-0482-4C31-A1A4-51409224F01A}</Project>
       <Name>E-Shop-Engine.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\E-Shop-Engine.Utilities\E-Shop-Engine.Utilities.csproj">
+      <Project>{44BA2192-129A-4D41-B03F-072940900CF5}</Project>
+      <Name>E-Shop-Engine.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201808072054560_Init.resx">
@@ -85,6 +93,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808191919027_Add SpecialOffer prop to Product.resx">
       <DependentUpon>201808191919027_Add SpecialOffer prop to Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808201931322_Edit SpecialOffer prop at Product.resx">
+      <DependentUpon>201808201931322_Edit SpecialOffer prop at Product.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

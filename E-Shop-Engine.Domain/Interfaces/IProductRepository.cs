@@ -5,7 +5,8 @@ namespace E_Shop_Engine.Domain.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {
-        IEnumerable<Product> GetAllSpecialOffers();
+        IList<Product> GetAllSpecialOffers();
+        IList<Product> GetAllShowingInDeck();
         IEnumerable<Product> GetProductsByCategory(int id);
 
     }

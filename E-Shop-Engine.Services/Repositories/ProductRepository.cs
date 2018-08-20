@@ -14,9 +14,14 @@ namespace E_Shop_Engine.Services.Repositories
             _dbSet = context.Products;
         }
 
-        public IEnumerable<Product> GetAllSpecialOffers()
+        public IList<Product> GetAllSpecialOffers()
         {
-            return _dbSet.Where(p => p.IsSpecialOffer == true).Select(p => p);
+            return _dbSet.Where(p => p.ShowAsSpecialOffer == true).Select(p => p).ToList();
+        }
+
+        public IList<Product> GetAllShowingInDeck()
+        {
+            return _dbSet.Where(p => p.ShowAtMainPage == true).Select(p => p).ToList();
         }
 
         public IEnumerable<Product> GetProductsByCategory(int id)

@@ -26,7 +26,10 @@ namespace E_Shop_Engine.Services.Migrations
                 );
 
             context.Products.AddOrUpdate(
-                new Product { Name = "Pierwszy produkt", Description = "Info o produkcie pierwszym", CategoryID = 1, IsSpecialOffer = true, NumberInStock = 5, Price = 11.47M, SubcategoryID = 0 }
+                new Product { Name = "Pierwszy produkt", Description = "Info o produkcie pierwszym", CategoryID = 1, ShowAsSpecialOffer = true, NumberInStock = 5, Price = 11.47M, SubcategoryID = 0 },
+                new Product { Name = "Drugi produkt", Description = "Info o produkcie drugim", CategoryID = 1, ShowAsSpecialOffer = true, NumberInStock = 7, Price = 15.99M, SubcategoryID = 0 },
+                new Product { Name = "Drugi produkt", Description = "Info o produkcie drugim", CategoryID = 1, ShowAtMainPage = true, NumberInStock = 7, Price = 15.99M, SubcategoryID = 0 },
+                new Product { Name = "Drugi produkt", Description = "Info o produkcie drugim", CategoryID = 1, ShowAtMainPage = true, NumberInStock = 7, Price = 15.99M, SubcategoryID = 0 }
                 );
         }
     }
