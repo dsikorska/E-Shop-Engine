@@ -172,6 +172,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Models\CreateProductViewModel.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -213,7 +214,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Subcategory\" />
   </ItemGroup>
@@ -225,6 +225,10 @@
     <ProjectReference Include="..\E-Shop-Engine.Services\E-Shop-Engine.Services.csproj">
       <Project>{0c465d03-447e-4fe6-8781-7f8ba8def154}</Project>
       <Name>E-Shop-Engine.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\E-Shop-Engine.Utilities\E-Shop-Engine.Utilities.csproj">
+      <Project>{44BA2192-129A-4D41-B03F-072940900CF5}</Project>
+      <Name>E-Shop-Engine.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
