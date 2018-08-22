@@ -7,6 +7,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 {
     public class CreateProductViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
@@ -26,6 +27,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         {
             return new CreateProductViewModel
             {
+                Id = product.ID,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -44,6 +46,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         {
             return new Product
             {
+                ID = viewModel.Id,
                 Name = viewModel.Name,
                 Description = viewModel.Description,
                 CatalogNumber = viewModel.CatalogNumber,

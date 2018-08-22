@@ -9,6 +9,10 @@ namespace E_Shop_Engine.Utilities
 
         public MemoryPostedFile(byte[] fileBytes, string fileName = null)
         {
+            if (fileBytes == null)
+            {
+                return;
+            }
             _fileBytes = fileBytes;
             FileName = fileName;
             InputStream = new MemoryStream(fileBytes);

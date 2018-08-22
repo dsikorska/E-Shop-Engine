@@ -27,19 +27,28 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            return View(_productRepository.GetById(id));
-        }
+            CreateProductViewModel model = _productRepository.GetById(id);
+            model.Categories = _categoryRepository.GetAll();
+            model.Subcategories = _subcategoryRepository.GetAll();
 
+            return View(model);
+        }
+        //TODO refresh img on change
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product model)
+        public ActionResult Edit(CreateProductViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Edit", model);
+            }
+
+            model.ImageMimeType = model.ImageData.ContentType;
             _productRepository.Update(model);
 
             return RedirectToAction("Index");
         }
 
-        //TODO: delete from view mimetypes
         [HttpGet]
         public ViewResult Create()
         {
@@ -59,7 +68,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return RedirectToAction("Create");
             }
 
-            model.ImageMimeType = model.ImageData.ContentType;
+            model.ImageMimeType = model.ImageData?.ContentType;
 
             _productRepository.Create(model);
 
@@ -71,6 +80,19 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _productRepository.Delete(id);
 
             return RedirectToAction("Index");
+        }
+
+        public FileContentResult GetImage(int id)
+        {
+            Product product = _productRepository.GetById(id);
+            if (product?.ImageData != null)
+            {
+                return new FileContentResult(product.ImageData, product.ImageMimeType);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
