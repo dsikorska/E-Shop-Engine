@@ -9,10 +9,15 @@
     padding-right: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.list-unstyled ul{
+    list-style: none;
 }
 
+.input-validation-error {
+    border: 1px solid #dc3545 !important;
+}
+
+    .input-validation-error:focus {
+        border: 1px solid #dc3545 !important;
+        box-shadow: 0 0 0 .2rem rgba(220,53,69,.25) !important;
+    }

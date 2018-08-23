@@ -27,23 +27,23 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            CreateProductViewModel model = _productRepository.GetById(id);
+            ProductViewModel model = _productRepository.GetById(id);
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
 
             return View(model);
         }
-        //TODO refresh img on change
+        //TODO add default img
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CreateProductViewModel model)
+        public ActionResult Edit(ProductViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Edit", model);
             }
 
-            model.ImageMimeType = model.ImageData.ContentType;
+            model.ImageMimeType = model.ImageData?.ContentType;
             _productRepository.Update(model);
 
             return RedirectToAction("Index");
@@ -52,16 +52,16 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            CreateProductViewModel model = new CreateProductViewModel();
+            ProductViewModel model = new ProductViewModel();
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
 
-            return View(model);
+            return View("Edit", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude = "ImageMimeType")] CreateProductViewModel model)
+        public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductViewModel model)
         {
             if (!ModelState.IsValid)
             {

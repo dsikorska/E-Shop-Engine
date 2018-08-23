@@ -1,115 +1,100 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.CreateProductViewModel
-
-@{
-    ViewBag.Title = "Edit";
-}
-
-<h2>Edit</h2>
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductViewModel
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
-<div class="form-horizontal">
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
         </div>
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Description, new { @class = "input-group-text" })
+        </div>
             @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
         </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Price, new { @class = "input-group-text" })
+        </div>
+        @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.NumberInStock, new { @class = "input-group-text" })
         </div>
+        @Html.TextBoxFor(model => model.NumberInStock, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.NumberInStock, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.NumberInStock, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.NumberInStock, "", new { @class = "text-danger" })
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.CatalogNumber, new { @class = "input-group-text" })
         </div>
+        @Html.TextBoxFor(model => model.CatalogNumber, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.CatalogNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.CatalogNumber, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.CatalogNumber, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageData, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <input type="file" class="form-control-file" id="ImageData" name="ImageData">
-
-            @if (Model.ImageData != null )
-            {
-            <img class="img-thumbnail" width="150" height="150"
-                 src="@Url.Action("GetImage", "Product", new { Model.Id })" />
-            }
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.Categories, "Id", "Name"), new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.SubcategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.SubcategoryId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ShowAsSpecialOffer, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.CheckBoxFor(model => model.ShowAsSpecialOffer)
-                @Html.ValidationMessageFor(model => model.ShowAsSpecialOffer, "", new { @class = "text-danger" })
+    <div class="input-group mb-3">
+        <div class="custom-file">
+            <div class="input-group-prepend">
+                @Html.LabelFor(model => model.ImageData, new { @class = "custom-file-label" })
             </div>
+            <input type="file" class="custom-file-input" id="ImageData" name="ImageData">
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ShowAtMainPage, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.CheckBoxFor(model => model.ShowAtMainPage)
-                @Html.ValidationMessageFor(model => model.ShowAtMainPage, "", new { @class = "text-danger" })
-            </div>
+    <img id="ImgPreview" class="img-thumbnail d-block mx-auto mb-3" width="150" height="150"
+            src="@Url.Action("GetImage", "Product", new { Model.Id })" />        
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.CategoryId, new { @class = "input-group-text" })
         </div>
+        @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.Categories, "Id", "Name"), new { @class = "custom-select" })
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.SubcategoryId, new { @class = "input-group-text" })
         </div>
+        @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), new { @class = "custom-select" })
     </div>
-</div>
+
+    <div class="custom-control custom-checkbox form-control-lg">
+        @Html.CheckBoxFor(model => model.ShowAsSpecialOffer, new { @class = "custom-control-input" })
+        @Html.LabelFor(model => model.ShowAsSpecialOffer, htmlAttributes: new { @class = "custom-control-label" })
+    </div>
+
+    <div class="custom-control custom-checkbox form-control-lg">
+        @Html.CheckBoxFor(model => model.ShowAtMainPage, new { @class = "custom-control-input" })
+        @Html.LabelFor(model => model.ShowAtMainPage, htmlAttributes: new { @class = "custom-control-label" })
+    </div>
+
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-lg" })
+        <input type="submit" value="Save" class="btn btn-success btn-lg" />
+    </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#ImgPreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#ImageData").change(function () {
+        readURL(this);
+    });
+</script>
