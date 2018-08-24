@@ -64,7 +64,7 @@
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.SubcategoryId, "Select subcategory...", new { @class = "input-group-text" })
         </div>
-        @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), new { @class = "custom-select" })
+        @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), "", new { @class = "custom-select" })
     </div>
 
     <div class="custom-control custom-checkbox form-control-lg">

@@ -15,7 +15,7 @@
         public int CategoryID { get; set; }
         public virtual Category Category { get; set; }
 
-        public int SubcategoryID { get; set; }
+        public int? SubcategoryID { get; set; }
         public virtual Subcategory Subcategory { get; set; }
     }
 }

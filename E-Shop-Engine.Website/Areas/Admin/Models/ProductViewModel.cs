@@ -48,7 +48,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public int CategoryId { get; set; }
 
         [Display(Name = "Subcategory")]
-        public int SubcategoryId { get; set; }
+        public int? SubcategoryId { get; set; }
 
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Subcategory> Subcategories { get; set; }

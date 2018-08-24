@@ -21,16 +21,22 @@
         <dl>
             <dt>@Html.DisplayNameFor(model => model.Price)</dt>
             <dd class="border-bottom">@Html.DisplayFor(model => model.Price)</dd>
-            
+
             <dt>@Html.DisplayNameFor(model => model.NumberInStock)</dt>
             <dd class="border-bottom">@Html.DisplayFor(model => model.NumberInStock)</dd>
-            
+
+            <dt>Category</dt>
+            <dd class="border-bottom">@ViewBag.Category</dd>
+
+            <dt>Subcategory</dt>
+            <dd class="border-bottom">@ViewBag.Subcategory</dd>
+
             <dt>@Html.DisplayNameFor(model => model.ShowAsSpecialOffer)</dt>
             <dd class="border-bottom">@Model.ShowAsSpecialOffer</dd>
-            
+
             <dt>@Html.DisplayNameFor(model => model.ShowAtMainPage)</dt>
             <dd class="border-bottom">@Model.ShowAtMainPage</dd>
-            
+
             <dt>@Html.DisplayNameFor(model => model.Description)</dt>
             <dd>@Html.DisplayFor(model => model.Description)</dd>
         </dl>

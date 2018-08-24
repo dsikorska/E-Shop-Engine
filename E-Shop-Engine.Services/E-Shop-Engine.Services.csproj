@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201808201931322_Edit SpecialOffer prop at Product.Designer.cs">
       <DependentUpon>201808201931322_Edit SpecialOffer prop at Product.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808242047499_Product - switch Subcategory to nullable.cs" />
+    <Compile Include="Migrations\201808242047499_Product - switch Subcategory to nullable.Designer.cs">
+      <DependentUpon>201808242047499_Product - switch Subcategory to nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
@@ -96,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808201931322_Edit SpecialOffer prop at Product.resx">
       <DependentUpon>201808201931322_Edit SpecialOffer prop at Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808242047499_Product - switch Subcategory to nullable.resx">
+      <DependentUpon>201808242047499_Product - switch Subcategory to nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

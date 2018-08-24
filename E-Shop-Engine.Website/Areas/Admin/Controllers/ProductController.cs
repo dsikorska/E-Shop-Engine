@@ -79,6 +79,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             ProductViewModel model = _productRepository.GetById(id);
+            ViewBag.Category = _categoryRepository.GetById(model.CategoryId)?.Name;
+            if (model.SubcategoryId != null)
+            {
+                ViewBag.Subcategory = _subcategoryRepository.GetById((int)model.SubcategoryId).Name;
+            }
+            else
+            {
+                ViewBag.Subcategory = "Not selected";
+            }
             return View(model);
         }
 
