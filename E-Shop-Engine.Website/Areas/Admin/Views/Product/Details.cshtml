@@ -1,0 +1,38 @@
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductViewModel
+
+<p>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+</p>
+
+<div class="d-flex flex-wrap">
+    <div class="w-auto mr-2">
+        <img id="ImgPreview" class="img-fluid d-block"
+             src="@Url.Action("GetImage", "Product", new { Model.Id })" />
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.CatalogNumber)</dt>
+            <dd>@Html.DisplayFor(model => model.CatalogNumber)</dd>
+        </dl>
+    </div>
+    <div class="w-74">
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Price)</dt>
+            <dd class="border-bottom">@Html.DisplayFor(model => model.Price)</dd>
+            
+            <dt>@Html.DisplayNameFor(model => model.NumberInStock)</dt>
+            <dd class="border-bottom">@Html.DisplayFor(model => model.NumberInStock)</dd>
+            
+            <dt>@Html.DisplayNameFor(model => model.ShowAsSpecialOffer)</dt>
+            <dd class="border-bottom">@Model.ShowAsSpecialOffer</dd>
+            
+            <dt>@Html.DisplayNameFor(model => model.ShowAtMainPage)</dt>
+            <dd class="border-bottom">@Model.ShowAtMainPage</dd>
+            
+            <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd>@Html.DisplayFor(model => model.Description)</dd>
+        </dl>
+    </div>
+</div>

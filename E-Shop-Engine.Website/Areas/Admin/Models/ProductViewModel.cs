@@ -32,7 +32,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [StringLength(100)]
         public string CatalogNumber { get; set; }
 
-        [Display(Name = "Select image...")]
+        [Display(Name = "Image")]
         public HttpPostedFileBase ImageData { get; set; }
 
         public string ImageMimeType { get; set; }
@@ -44,10 +44,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public bool ShowAtMainPage { get; set; } = false;
 
         [Required]
-        [Display(Name = "Select category...")]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
-        [Display(Name = "Select subcategory...")]
+        [Display(Name = "Subcategory")]
         public int SubcategoryId { get; set; }
 
         public IEnumerable<Category> Categories { get; set; }

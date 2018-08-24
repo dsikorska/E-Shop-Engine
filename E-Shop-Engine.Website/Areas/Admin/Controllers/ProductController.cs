@@ -34,6 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
         //TODO add default img
+        //TODO price separator
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductViewModel model)
@@ -73,6 +74,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _productRepository.Create(model);
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(int id)
+        {
+            ProductViewModel model = _productRepository.GetById(id);
+            return View(model);
         }
 
         public ActionResult Delete(int id)

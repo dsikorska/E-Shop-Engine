@@ -44,25 +44,25 @@
     <div class="input-group mb-3">
         <div class="custom-file">
             <div class="input-group-prepend">
-                @Html.LabelFor(model => model.ImageData, new { @class = "custom-file-label" })
+                @Html.LabelFor(model => model.ImageData,"Select image...", new { @class = "custom-file-label" })
             </div>
             <input type="file" class="custom-file-input" id="ImageData" name="ImageData">
         </div>
     </div>
 
-    <img id="ImgPreview" class="img-thumbnail d-block mx-auto mb-3" width="150" height="150"
+    <img id="ImgPreview" class="img-fluid d-block mx-auto mb-3" width="150" height="150"
             src="@Url.Action("GetImage", "Product", new { Model.Id })" />        
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            @Html.LabelFor(model => model.CategoryId, new { @class = "input-group-text" })
+            @Html.LabelFor(model => model.CategoryId, "Select category...", new { @class = "input-group-text" })
         </div>
         @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.Categories, "Id", "Name"), new { @class = "custom-select" })
     </div>
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            @Html.LabelFor(model => model.SubcategoryId, new { @class = "input-group-text" })
+            @Html.LabelFor(model => model.SubcategoryId, "Select subcategory...", new { @class = "input-group-text" })
         </div>
         @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), new { @class = "custom-select" })
     </div>
