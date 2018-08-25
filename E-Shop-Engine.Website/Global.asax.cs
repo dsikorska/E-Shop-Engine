@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using E_Shop_Engine.Website.CustomModelBinders;
 
 namespace E_Shop_Engine.Website
 {
@@ -9,6 +10,7 @@ namespace E_Shop_Engine.Website
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
         }
     }
 }

@@ -1,5 +1,11 @@
 ﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductViewModel
 
+@{ 
+    ViewBag.Title = "Details " + Model.Name;
+}
+
+<h3>Details @Model.Name</h3>
+
 <p>
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })

@@ -19,6 +19,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product
+        [HttpGet]
         public ActionResult Index()
         {
             return View(_productRepository.GetAll());
@@ -34,7 +35,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
         //TODO add default img
-        //TODO price separator
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductViewModel model)
@@ -76,6 +76,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public ActionResult Details(int id)
         {
             ProductViewModel model = _productRepository.GetById(id);
@@ -98,6 +99,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public FileContentResult GetImage(int id)
         {
             Product product = _productRepository.GetById(id);

@@ -28,42 +28,6 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
-        public ViewResult Edit(int id)
-        {
-            return View(_categoryRepository.GetById(id));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Category model)
-        {
-            _categoryRepository.Update(model);
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public ViewResult Create()
-        {
-            return View(new Category());
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Category model)
-        {
-            _categoryRepository.Create(model);
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Delete(int id)
-        {
-            _categoryRepository.Delete(id);
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
         public ViewResult Details(int id)
         {
             return View(_categoryRepository.GetById(id));

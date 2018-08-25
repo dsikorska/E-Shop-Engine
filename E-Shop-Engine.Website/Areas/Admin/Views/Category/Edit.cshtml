@@ -1,0 +1,35 @@
+﻿@model E_Shop_Engine.Domain.DomainModel.Category
+
+@{
+    ViewBag.Title = "Edit " + Model.Name;
+}
+
+<h3>Edit @Model.Name</h3>
+
+@using (Html.BeginForm(null, null, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    @Html.HiddenFor(model => model.ID)
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
+        </div>
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Description, new { @class = "input-group-text" })
+        </div>
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+    </div>
+
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-lg" })
+        <input type="submit" value="Save" class="btn btn-success btn-lg" />
+    </div>
+}
