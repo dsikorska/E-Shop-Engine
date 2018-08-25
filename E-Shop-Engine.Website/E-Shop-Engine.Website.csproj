@@ -148,6 +148,7 @@
     <Content Include="Areas\Admin\Views\Subcategory\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Subcategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Subcategory\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -176,6 +177,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubcategoryController.cs" />
     <Compile Include="Areas\Admin\Models\ProductViewModel.cs" />
