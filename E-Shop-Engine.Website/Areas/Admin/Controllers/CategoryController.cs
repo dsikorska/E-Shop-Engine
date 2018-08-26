@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Website.Areas.Admin.Models;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
@@ -24,7 +25,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            return View(_categoryRepository.GetById(id));
+            CategoryViewModel model = _categoryRepository.GetById(id);
+            return View(model);
         }
 
         [HttpPost]
@@ -43,7 +45,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            return View("Edit", new Category());
+            CategoryViewModel model = new CategoryViewModel();
+            return View("Edit", model);
         }
 
         [HttpPost]

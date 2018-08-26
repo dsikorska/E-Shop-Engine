@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
@@ -50,6 +51,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Display(Name = "Subcategory")]
         public int? SubcategoryId { get; set; }
 
+        public DateTime Created { get; set; }
+
+        public DateTime? Edited { get; set; }
+
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Subcategory> Subcategories { get; set; }
 
@@ -68,7 +73,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 ShowAsSpecialOffer = product.ShowAsSpecialOffer,
                 ShowAtMainPage = product.ShowAtMainPage,
                 CategoryId = product.CategoryID,
-                SubcategoryId = product.SubcategoryID
+                SubcategoryId = product.SubcategoryID,
+                Created = product.Created,
+                Edited = product.Edited
             };
         }
 
@@ -87,7 +94,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 NumberInStock = viewModel.NumberInStock,
                 Price = viewModel.Price,
                 ShowAsSpecialOffer = viewModel.ShowAsSpecialOffer,
-                ShowAtMainPage = viewModel.ShowAtMainPage
+                ShowAtMainPage = viewModel.ShowAtMainPage,
+                Created = viewModel.Created,
+                Edited = viewModel.Edited
             };
         }
     }

@@ -1,10 +1,25 @@
-﻿@model E_Shop_Engine.Domain.DomainModel.Category
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.CategoryViewModel
 
 @{
-    ViewBag.Title = "Edit " + Model.Name;
+    if (Model.Name != null)
+    {
+        ViewBag.Title = "Edit " + Model.Name;
+    }
+    else
+    {
+        ViewBag.Title = "New category";
+    }
+
 }
 
-<h3>Edit @Model.Name</h3>
+@if (Model.Name != null)
+{
+    <h3>Edit @Model.Name</h3>
+}
+@if (Model.Name == null)
+{
+    <h3>New category</h3>
+}
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
@@ -12,7 +27,7 @@
     <hr />
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
-    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.Id)
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">

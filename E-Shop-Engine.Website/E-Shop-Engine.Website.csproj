@@ -180,6 +180,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubcategoryController.cs" />
+    <Compile Include="Areas\Admin\Models\CategoryViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubcategoryViewModel.cs" />
     <Compile Include="Controllers\CategoryController.cs" />

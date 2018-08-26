@@ -1,10 +1,26 @@
 ﻿@model E_Shop_Engine.Website.Areas.Admin.Models.SubcategoryViewModel
 
 @{
-    ViewBag.Title = "Edit " + Model.Name;
+    if (Model.Name != null)
+    {
+        ViewBag.Title = "Edit " + Model.Name;
+    }
+    else
+    {
+        ViewBag.Title = "New subcategory";
+    }
+
 }
 
-<h3>Edit @Model.Name</h3>
+@if (Model.Name != null)
+{
+    <h3>Edit @Model.Name</h3>
+}
+@if(Model.Name == null)
+{ 
+    <h3>New subcategory</h3>
+}
+
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {

@@ -1,14 +1,29 @@
 ﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductViewModel
 
-@{ 
-    ViewBag.Title = "Edit " + Model.Name;
+@{
+    if (Model.Name != null)
+    {
+        ViewBag.Title = "Edit " + Model.Name;
+    }
+    else
+    {
+        ViewBag.Title = "New product";
+    }
+
 }
 
-<h3>Edit @Model.Name</h3>
+@if (Model.Name != null)
+{
+    <h3>Edit @Model.Name</h3>
+}
+@if (Model.Name == null)
+{
+    <h3>New product</h3>
+}
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.AntiForgeryToken()    
+    @Html.AntiForgeryToken()
     <hr />
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
@@ -23,7 +38,7 @@
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Description, new { @class = "input-group-text" })
         </div>
-            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
     </div>
 
     <div class="input-group mb-3">
@@ -50,14 +65,14 @@
     <div class="input-group mb-3">
         <div class="custom-file">
             <div class="input-group-prepend">
-                @Html.LabelFor(model => model.ImageData,"Select image...", new { @class = "custom-file-label" })
+                @Html.LabelFor(model => model.ImageData, "Select image...", new { @class = "custom-file-label" })
             </div>
             <input type="file" class="custom-file-input" id="ImageData" name="ImageData">
         </div>
     </div>
 
     <img id="ImgPreview" class="img-fluid d-block mx-auto mb-3" width="150" height="150"
-            src="@Url.Action("GetImage", "Product", new { Model.Id })" />        
+         src="@Url.Action("GetImage", "Product", new { Model.Id })" />
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">

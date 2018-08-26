@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Models
 {
-    public class SubcategoryViewModel
+    public class CategoryViewModel
     {
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
@@ -15,28 +16,22 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [StringLength(100)]
         public string Description { get; set; }
 
-        public int CategoryID { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
-
-        public static implicit operator SubcategoryViewModel(Subcategory model)
+        public static implicit operator CategoryViewModel(Category model)
         {
-            return new SubcategoryViewModel
+            return new CategoryViewModel
             {
                 Name = model.Name,
                 Description = model.Description,
-                CategoryID = model.CategoryID,
                 Id = model.ID
-
             };
         }
 
-        public static implicit operator Subcategory(SubcategoryViewModel model)
+        public static implicit operator Category(CategoryViewModel model)
         {
-            return new Subcategory
+            return new Category
             {
                 Name = model.Name,
                 Description = model.Description,
-                CategoryID = model.CategoryID,
                 ID = model.Id
             };
         }
