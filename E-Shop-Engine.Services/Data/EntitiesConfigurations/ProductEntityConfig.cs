@@ -10,16 +10,21 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
             HasKey(p => p.ID);
             Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(150);
+                .HasMaxLength(200);
             Property(p => p.Description)
                 .IsOptional()
-                .HasMaxLength(1000);
+                .HasMaxLength(3990);
             Property(p => p.ImageData)
                 .IsOptional();
-            Property(p => p.ShowAsSpecialOffer)
-                .IsOptional();
+
             HasRequired(p => p.Category);
             HasOptional(p => p.Subcategory);
+
+            Property(p => p.Created)
+                .HasColumnType("datetime2");
+
+            Property(p => p.Edited)
+                .HasColumnType("datetime2");
         }
     }
 }

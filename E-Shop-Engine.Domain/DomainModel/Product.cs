@@ -1,4 +1,6 @@
-﻿namespace E_Shop_Engine.Domain.DomainModel
+﻿using System;
+
+namespace E_Shop_Engine.Domain.DomainModel
 {
     public class Product : DbEntity
     {
@@ -11,6 +13,8 @@
         public string ImageMimeType { get; set; }
         public bool ShowAsSpecialOffer { get; set; } = false;
         public bool ShowAtMainPage { get; set; } = false;
+        public DateTime Created { get; set; }
+        public DateTime? Edited { get; set; }
 
         public int CategoryID { get; set; }
         public virtual Category Category { get; set; }
