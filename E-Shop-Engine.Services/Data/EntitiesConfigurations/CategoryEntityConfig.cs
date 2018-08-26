@@ -3,9 +3,9 @@ using E_Shop_Engine.Domain.DomainModel;
 
 namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 {
-    public class CategoryConfigEntity : EntityTypeConfiguration<Category>
+    public class CategoryEntityConfig : EntityTypeConfiguration<Category>
     {
-        public CategoryConfigEntity()
+        public CategoryEntityConfig()
         {
             HasKey(cat => cat.ID);
             Property(cat => cat.Name)

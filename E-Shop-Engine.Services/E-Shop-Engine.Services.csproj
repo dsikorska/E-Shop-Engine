@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Data\EntitiesConfigurations\AddressEntityConfig.cs" />
-    <Compile Include="Data\EntitiesConfigurations\CategoryConfigEntity.cs" />
+    <Compile Include="Data\EntitiesConfigurations\CategoryEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CustomerEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\OrderEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\OrderLineEntityConfig.cs" />
@@ -71,6 +71,14 @@
     <Compile Include="Migrations\201808242047499_Product - switch Subcategory to nullable.cs" />
     <Compile Include="Migrations\201808242047499_Product - switch Subcategory to nullable.Designer.cs">
       <DependentUpon>201808242047499_Product - switch Subcategory to nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808261606559_Add Dates To Product.cs" />
+    <Compile Include="Migrations\201808261606559_Add Dates To Product.Designer.cs">
+      <DependentUpon>201808261606559_Add Dates To Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808262017113_Fixed Fluent API.cs" />
+    <Compile Include="Migrations\201808262017113_Fixed Fluent API.Designer.cs">
+      <DependentUpon>201808262017113_Fixed Fluent API.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +111,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808242047499_Product - switch Subcategory to nullable.resx">
       <DependentUpon>201808242047499_Product - switch Subcategory to nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808261606559_Add Dates To Product.resx">
+      <DependentUpon>201808261606559_Add Dates To Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808262017113_Fixed Fluent API.resx">
+      <DependentUpon>201808262017113_Fixed Fluent API.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
