@@ -36,6 +36,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Display(Name = "Image")]
         public HttpPostedFileBase ImageData { get; set; }
 
+        [HiddenInput(DisplayValue = false)]
+        public byte[] ImageBytes { get; set; }
+
         public string ImageMimeType { get; set; }
 
         [Display(Name = "Display product at main page as special offer?")]
@@ -75,12 +78,29 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 CategoryId = product.CategoryID,
                 SubcategoryId = product.SubcategoryID,
                 Created = product.Created,
-                Edited = product.Edited
+                Edited = product.Edited,
+                ImageBytes = product.ImageData
             };
         }
 
         public static implicit operator Product(ProductViewModel viewModel)
         {
+            byte[] imageData = null;
+
+            if (viewModel.ImageBytes == null || viewModel.ImageData != null)
+            {
+                imageData = ConvertPostedFile.ToByteArray(viewModel.ImageData);
+            }
+            else
+            {
+                imageData = viewModel.ImageBytes;
+            }
+
+            if (viewModel.ImageMimeType == null || (viewModel.ImageMimeType != null && viewModel.ImageData != null && viewModel.ImageData?.ContentType != viewModel.ImageMimeType))
+            {
+                viewModel.ImageMimeType = viewModel.ImageData?.ContentType;
+            }
+
             return new Product
             {
                 ID = viewModel.Id,
@@ -89,7 +109,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 CatalogNumber = viewModel.CatalogNumber,
                 CategoryID = viewModel.CategoryId,
                 SubcategoryID = viewModel.SubcategoryId,
-                ImageData = ConvertPostedFile.ToByteArray(viewModel.ImageData),
+                ImageData = imageData,
                 ImageMimeType = viewModel.ImageMimeType,
                 NumberInStock = viewModel.NumberInStock,
                 Price = viewModel.Price,

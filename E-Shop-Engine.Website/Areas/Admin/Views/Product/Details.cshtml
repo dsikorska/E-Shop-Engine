@@ -1,4 +1,4 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductViewModel
+﻿@model E_Shop_Engine.Domain.DomainModel.Product
 
 @{ 
     ViewBag.Title = "Details " + Model.Name;
@@ -8,13 +8,24 @@
 
 <p>
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-secondary" })
 </p>
 
 <div class="d-flex flex-wrap">
     <div class="w-auto mr-2">
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
+            <dd>@Html.DisplayFor(model => model.Created)</dd>
+
+            @if (Model.Edited != null)
+            {
+                <dt>@Html.DisplayNameFor(model => model.Edited)</dt>
+                <dd>@Html.DisplayFor(model => model.Edited.Value)</dd>
+            }
+        </dl>
+
         <img id="ImgPreview" class="img-fluid d-block"
-             src="@Url.Action("GetImage", "Product", new { Model.Id })" />
+             src="@Url.Action("GetImage", "Product", new { Model.ID })" />
         <dl>
             <dt>@Html.DisplayNameFor(model => model.Name)</dt>
             <dd>@Html.DisplayFor(model => model.Name)</dd>
@@ -31,11 +42,11 @@
             <dt>@Html.DisplayNameFor(model => model.NumberInStock)</dt>
             <dd class="border-bottom">@Html.DisplayFor(model => model.NumberInStock)</dd>
 
-            <dt>Category</dt>
-            <dd class="border-bottom">@ViewBag.Category</dd>
+            <dt>@Html.DisplayNameFor(model => model.Category)</dt>
+            <dd class="border-bottom">@Html.DisplayFor(model => model.Category.Name)</dd>
 
-            <dt>Subcategory</dt>
-            <dd class="border-bottom">@ViewBag.Subcategory</dd>
+            <dt>@Html.DisplayNameFor(model => model.Subcategory)</dt>
+            <dd class="border-bottom">@Html.DisplayFor(model => model.Subcategory.Name)</dd>
 
             <dt>@Html.DisplayNameFor(model => model.ShowAsSpecialOffer)</dt>
             <dd class="border-bottom">@Model.ShowAsSpecialOffer</dd>

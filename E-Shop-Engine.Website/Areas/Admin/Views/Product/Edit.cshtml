@@ -68,6 +68,8 @@
                 @Html.LabelFor(model => model.ImageData, "Select image...", new { @class = "custom-file-label" })
             </div>
             <input type="file" class="custom-file-input" id="ImageData" name="ImageData">
+            @Html.HiddenFor(model => model.ImageBytes)
+            @Html.HiddenFor(model => model.ImageMimeType)
         </div>
     </div>
 
@@ -97,6 +99,8 @@
         @Html.CheckBoxFor(model => model.ShowAtMainPage, new { @class = "custom-control-input" })
         @Html.LabelFor(model => model.ShowAtMainPage, htmlAttributes: new { @class = "custom-control-label" })
     </div>
+
+    @Html.HiddenFor(model => model.Created)
 
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
         @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-lg" })

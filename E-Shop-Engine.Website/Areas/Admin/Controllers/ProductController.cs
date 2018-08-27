@@ -35,6 +35,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
         //TODO add default img
+        //TODO get byte array from db instead of storing in view
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductViewModel model)
@@ -44,7 +45,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return RedirectToAction("Edit", model);
             }
 
-            model.ImageMimeType = model.ImageData?.ContentType;
             _productRepository.Update(model);
 
             return RedirectToAction("Index");
@@ -76,20 +76,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        //TODO time to local
         [HttpGet]
         public ActionResult Details(int id)
         {
-            ProductViewModel model = _productRepository.GetById(id);
-            ViewBag.Category = _categoryRepository.GetById(model.CategoryId)?.Name;
-            if (model.SubcategoryId != null)
-            {
-                ViewBag.Subcategory = _subcategoryRepository.GetById((int)model.SubcategoryId).Name;
-            }
-            else
-            {
-                ViewBag.Subcategory = "Not selected";
-            }
-            return View(model);
+            return View(_productRepository.GetById(id));
         }
 
         public ActionResult Delete(int id)
