@@ -1,18 +1,13 @@
 ﻿@using E_Shop_Engine.Domain.DomainModel;
 @model IEnumerable<Category>
 
-@{ 
+@{
     Layout = null;
 }
 
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Categories
-    </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        @foreach (var item in Model)
-        {
-        <a class="dropdown-item" href="/Category/@item.ID">@item.Name</a>
-        }
-    </div>
-</li>
+<nav class="nav flex-column bg-primary w-auto mr-2 mw-min">
+    @foreach (var item in Model)
+    {
+        <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.ID">@item.Name</a>
+    }
+</nav>

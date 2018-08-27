@@ -16,21 +16,33 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                @Html.Action("NavList", "Category")
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Nanana</a>
-                </li>
-            </ul>
-            <form class="form-inline">
+            <form class="form-inline w-auto m-auto">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
             </form>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Account</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Cart</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Favourites</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Admin">Admin</a>
+                </li>
+            </ul>
         </div>
     </nav>
-
-    <div class="container body-content">
-        @RenderBody()
+    <div class="container-fluid">
+        <div class="d-flex">
+            @Html.Action("NavList", "Category")
+            <div class="w-auto">
+                @RenderBody()
+            </div>
+        </div>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year</p>
