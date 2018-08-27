@@ -1,0 +1,26 @@
+﻿@using E_Shop_Engine.Domain.DomainModel
+@model E_Shop_Engine.Domain.DomainModel.Subcategory
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+    @Html.ActionLink("Go to " + Model.Category.Name, "Details", "Category", new { id = Model.CategoryID }, new { @class = "btn btn-primary m-2" })
+    
+    <h2>@Model.Category.Name - @Model.Name</h2>
+
+<div class="card-columns">
+    @foreach (Product product in Model.Products)
+    {
+        <div class="card">
+            @Html.Image(product.ImageData, product.ImageMimeType, "card-img-top", new { alt = product.Name + " Price: " + product.Price })
+            <div class="card-body text-center">
+                <h5 class="card-title">@product.Name</h5>
+                <h4 class="card-title">@product.Price</h4>
+                <a href="#" class="btn btn-success">Add to cart</a>
+            </div>
+        </div>
+    }
+</div>
+

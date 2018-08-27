@@ -15,7 +15,7 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            return View(_productRepository.GetAll());
+            return View("_ProductsDeck", _productRepository.GetAll());
         }
 
         //TODO
@@ -34,7 +34,7 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpGet]
         public PartialViewResult GetSpecialOffersInDeck()
         {
-            return PartialView("DeckOffers", _productRepository.GetAllShowingInDeck());
+            return PartialView("_ProductsDeck", _productRepository.GetAllShowingInDeck());
         }
     }
 }

@@ -6,6 +6,7 @@
 }
 
 <nav class="nav flex-column bg-primary w-auto mr-2 mw-min">
+    <a class="nav-link text-white btn btn-primary" href="/Product/Index">All products</a>
     @foreach (var item in Model)
     {
         <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.ID">@item.Name</a>

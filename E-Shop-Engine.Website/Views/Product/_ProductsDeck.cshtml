@@ -1,7 +1,7 @@
 ﻿@using E_Shop_Engine.Domain.DomainModel
-@model IList<Product>
+@model IEnumerable<Product>
 
-<div class="card-deck">
+<div class="card-columns">
     @foreach (Product product in Model)
     {
         <div class="card">
