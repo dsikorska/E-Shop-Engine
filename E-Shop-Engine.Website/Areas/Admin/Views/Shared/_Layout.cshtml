@@ -13,35 +13,35 @@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        @Html.ActionLink("Quit", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
+    <div class="container body-content">
+        <div class="d-flex flex-wrap">
+            <ul class="nav flex-column bg-primary w-auto">
+                <li class="nav-item">
+                    @Html.ActionLink("Quit", "Index", "Home", new { area = "" }, new { @class = "nav-link text-white btn btn-primary" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("Products", "Index", "Product", null, new { @class = "nav-link" })
+                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link text-white btn btn-primary" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("Categories", "Index", "Category", null, new { @class = "nav-link" })
+                    @Html.ActionLink("Products", "Index", "Product", null, new { @class = "nav-link text-white btn btn-primary" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("Subcategories", "Index", "Subcategory", null, new { @class = "nav-link" })
+                    @Html.ActionLink("Categories", "Index", "Category", null, new { @class = "nav-link text-white btn btn-primary" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Subcategories", "Index", "Subcategory", null, new { @class = "nav-link text-white btn btn-primary" })
                 </li>
             </ul>
-        </div>
-    </nav>
 
-    <div class="container body-content">
-        @RenderBody()
+            <div class="w-auto">
+                @RenderBody()
+            </div>
+        </div>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year</p>
         </footer>
     </div>
+
 </body>
 </html>
