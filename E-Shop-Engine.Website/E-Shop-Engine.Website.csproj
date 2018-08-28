@@ -183,6 +183,7 @@
     <Compile Include="Areas\Admin\Models\CategoryViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubcategoryViewModel.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -217,6 +218,7 @@
     <Content Include="Views\Product\_ProductsDeck.cshtml" />
     <Content Include="Views\Category\Details.cshtml" />
     <Content Include="Views\Subcategory\Details.cshtml" />
+    <Content Include="Views\Cart\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

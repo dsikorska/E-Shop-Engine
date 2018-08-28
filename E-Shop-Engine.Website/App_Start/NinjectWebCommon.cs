@@ -64,6 +64,7 @@ namespace E_Shop_Engine.Website.App_Start
         {
             kernel.Bind(typeof(IRepository<>)).To((typeof(Repository<>))).InRequestScope();
             kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
+            kernel.Bind<ICartRepository>().To<CartRepository>().InRequestScope();
         }
     }
 }

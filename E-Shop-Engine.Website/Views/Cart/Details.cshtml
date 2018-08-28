@@ -1,0 +1,47 @@
+﻿@using E_Shop_Engine.Domain.DomainModel
+@model E_Shop_Engine.Domain.DomainModel.Cart
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Cart</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerID)
+        </dd>
+        @if (Model.CartLines != null)
+        {
+        foreach (CartLine line in Model.CartLines)
+        {
+            <dt>
+                @line.Product.Name
+            </dt>
+
+            <dd>
+                @line.Quantity
+            </dd>
+        }
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

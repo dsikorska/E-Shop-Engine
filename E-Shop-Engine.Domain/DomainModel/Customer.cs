@@ -14,5 +14,8 @@ namespace E_Shop_Engine.Domain.DomainModel
         public virtual Address Address { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
+        //TODO optional or required?
+        public int CartID { get; set; }
+        public virtual Cart Cart { get; set; }
     }
 }

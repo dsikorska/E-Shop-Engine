@@ -25,7 +25,7 @@
                     <a class="nav-link" href="#">Account</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Cart</a>
+                    @Html.ActionLink("Cart", "Details", "Cart", new { id = 0}, new { @class="nav-link"})
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Favourites</a>

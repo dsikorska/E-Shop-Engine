@@ -51,6 +51,7 @@
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
     <Compile Include="Enumerables\PaymentMethod.cs" />
+    <Compile Include="Interfaces\ICartRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
