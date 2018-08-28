@@ -2,8 +2,10 @@
 
 namespace E_Shop_Engine.Domain.DomainModel
 {
-    public class Cart
+    public class Cart : DbEntity
     {
-        public ICollection<CartLine> Products { get; set; }
+        public ICollection<CartLine> CartLines { get; set; }
+        public int? OrderID { get; set; }
+        public Order Order { get; set; }
     }
 }

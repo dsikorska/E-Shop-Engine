@@ -2,6 +2,7 @@
 
 namespace E_Shop_Engine.Domain.DomainModel
 {
+    //TODO add discount and types
     public class Product : DbEntity
     {
         public string CatalogNumber { get; set; }

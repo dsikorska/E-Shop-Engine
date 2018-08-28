@@ -50,10 +50,11 @@
   <ItemGroup>
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Data\EntitiesConfigurations\AddressEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\CartEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\CartLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CategoryEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CustomerEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\OrderEntityConfig.cs" />
-    <Compile Include="Data\EntitiesConfigurations\OrderLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\SubcategoryEntityConfig.cs" />
     <Compile Include="Migrations\201808072054560_Init.cs" />
@@ -79,6 +80,10 @@
     <Compile Include="Migrations\201808262017113_Fixed Fluent API.cs" />
     <Compile Include="Migrations\201808262017113_Fixed Fluent API.Designer.cs">
       <DependentUpon>201808262017113_Fixed Fluent API.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808280821498_Setup Cart and Orders.cs" />
+    <Compile Include="Migrations\201808280821498_Setup Cart and Orders.Designer.cs">
+      <DependentUpon>201808280821498_Setup Cart and Orders.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808262017113_Fixed Fluent API.resx">
       <DependentUpon>201808262017113_Fixed Fluent API.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808280821498_Setup Cart and Orders.resx">
+      <DependentUpon>201808280821498_Setup Cart and Orders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

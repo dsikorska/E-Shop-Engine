@@ -8,11 +8,27 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public OrderEntityConfig()
         {
             HasKey(o => o.ID);
-            HasRequired(o => o.Customer);
-            HasRequired(o => o.OrderLines);
-            HasMany(o => o.OrderLines)
-                .WithRequired(ol => ol.Order)
-                .HasForeignKey(ol => ol.OrderID);
+
+            Property(o => o.Created)
+                .IsRequired()
+                .HasColumnType("datetime");
+
+            Property(o => o.Finished)
+                .IsOptional()
+                .HasColumnType("datetime");
+
+            HasRequired(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CustomerID);
+
+            HasRequired(o => o.Cart)
+                .WithOptional(c => c.Order);
+
+            Property(o => o.PaymentMethod)
+                .IsRequired();
+
+            Property(o => o.OrderStatus)
+                .IsRequired();
         }
     }
 }

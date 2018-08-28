@@ -11,7 +11,8 @@ namespace E_Shop_Engine.Services.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderLine> OrderLines { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartLine> CartLines { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }
 
@@ -29,7 +30,8 @@ namespace E_Shop_Engine.Services.Data
             modelBuilder.Configurations.Add(new CategoryEntityConfig());
             modelBuilder.Configurations.Add(new CustomerEntityConfig());
             modelBuilder.Configurations.Add(new OrderEntityConfig());
-            modelBuilder.Configurations.Add(new OrderLineEntityConfig());
+            modelBuilder.Configurations.Add(new CartEntityConfig());
+            modelBuilder.Configurations.Add(new CartLineEntityConfig());
             modelBuilder.Configurations.Add(new ProductEntityConfig());
             modelBuilder.Configurations.Add(new SubcategoryEntityConfig());
         }
