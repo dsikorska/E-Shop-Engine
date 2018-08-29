@@ -51,12 +51,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
+        public string CategoryName { get; set; }
+
         [Display(Name = "Subcategory")]
         public int? SubcategoryId { get; set; }
+
+        public string SubcategoryName { get; set; }
 
         public DateTime Created { get; set; }
 
         public DateTime? Edited { get; set; }
+
+        public string ReturnUrl { get; set; }
 
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Subcategory> Subcategories { get; set; }
@@ -79,7 +85,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 SubcategoryId = product.SubcategoryID,
                 Created = product.Created,
                 Edited = product.Edited,
-                ImageBytes = product.ImageData
+                ImageBytes = product.ImageData,
+                CategoryName = product.Category.Name,
+                SubcategoryName = product.Subcategory?.Name
             };
         }
 

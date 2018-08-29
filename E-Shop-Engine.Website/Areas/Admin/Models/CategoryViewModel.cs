@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
 
@@ -16,13 +17,21 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [StringLength(100)]
         public string Description { get; set; }
 
+        public string ReturnUrl { get; set; }
+
+        public IEnumerable<Product> Products { get; set; }
+
+        public IEnumerable<Subcategory> Subcategories { get; set; }
+
         public static implicit operator CategoryViewModel(Category model)
         {
             return new CategoryViewModel
             {
                 Name = model.Name,
                 Description = model.Description,
-                Id = model.ID
+                Id = model.ID,
+                Products = model.Products,
+                Subcategories = model.Subcategories
             };
         }
 

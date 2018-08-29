@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -22,15 +24,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(_productRepository.GetAll());
+            IEnumerable<Product> model = _productRepository.GetAll();
+            IEnumerable<ProductViewModel> viewModel = model.Select(p => (ProductViewModel)p).ToList();
+            return View(viewModel);
         }
 
         [HttpGet]
-        public ViewResult Edit(int id)
+        public ViewResult Edit(int id, string returnUrl)
         {
             ProductViewModel model = _productRepository.GetById(id);
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
+            model.ReturnUrl = returnUrl;
 
             return View(model);
         }
@@ -47,7 +52,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             _productRepository.Update(model);
 
-            return RedirectToAction("Index");
+            return Redirect(model.ReturnUrl);
         }
 
         [HttpGet]
@@ -78,9 +83,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         //TODO time to local
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl)
         {
-            return View(_productRepository.GetById(id));
+            ProductViewModel model = _productRepository.GetById(id);
+            model.ReturnUrl = returnUrl;
+            return View(model);
         }
 
         public ActionResult Delete(int id)

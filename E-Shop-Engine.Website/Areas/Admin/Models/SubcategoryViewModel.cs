@@ -18,6 +18,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public int CategoryID { get; set; }
         public IEnumerable<Category> Categories { get; set; }
 
+        public string ReturnUrl { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public IEnumerable<Product> Products { get; set; }
+
         public static implicit operator SubcategoryViewModel(Subcategory model)
         {
             return new SubcategoryViewModel
@@ -25,7 +31,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 Name = model.Name,
                 Description = model.Description,
                 CategoryID = model.CategoryID,
-                Id = model.ID
+                Id = model.ID,
+                CategoryName = model.Category.Name,
+                Products = model.Products
 
             };
         }

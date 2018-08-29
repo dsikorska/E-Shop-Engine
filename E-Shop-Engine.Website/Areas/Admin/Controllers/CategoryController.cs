@@ -1,4 +1,6 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -14,24 +16,27 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        //TODO: add validation and routing
+        // TODO: live refresh validation summary
         // GET: Admin/Category
         [HttpGet]
         public ActionResult Index()
         {
-            return View(_categoryRepository.GetAll());
+            IEnumerable<Category> model = _categoryRepository.GetAll();
+            IEnumerable<CategoryViewModel> viewModel = model.Select(p => (CategoryViewModel)p).ToList();
+            return View(viewModel);
         }
 
         [HttpGet]
-        public ViewResult Edit(int id)
+        public ViewResult Edit(int id, string returnUrl)
         {
             CategoryViewModel model = _categoryRepository.GetById(id);
+            model.ReturnUrl = returnUrl;
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Category model)
+        public ActionResult Edit(CategoryViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -39,7 +44,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             _categoryRepository.Update(model);
 
-            return RedirectToAction("Index");
+            return Redirect(model.ReturnUrl);
         }
 
         [HttpGet]
@@ -51,7 +56,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category model)
+        public ActionResult Create(CategoryViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -62,9 +67,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl)
         {
-            return View(_categoryRepository.GetById(id));
+            CategoryViewModel model = _categoryRepository.GetById(id);
+            model.ReturnUrl = returnUrl;
+            return View(model);
         }
 
         public ActionResult Delete(int id)

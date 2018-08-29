@@ -1,5 +1,5 @@
-﻿@using E_Shop_Engine.Domain.DomainModel
-@model IEnumerable<Product>
+﻿@using E_Shop_Engine.Website.Areas.Admin.Models
+@model List<ProductViewModel>
 
 @{
     ViewBag.Title = "Products";
@@ -48,9 +48,9 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }, new { @class = "btn btn-info btn-sm mb-1" })
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mb-1" })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-sm mb-1" })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-info btn-sm mb-1" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-primary btn-sm mb-1" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
                 </td>
             </tr>
         }

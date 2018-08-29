@@ -1,5 +1,5 @@
 ﻿@using E_Shop_Engine.Domain.DomainModel
-@model E_Shop_Engine.Domain.DomainModel.Category
+@model E_Shop_Engine.Website.Areas.Admin.Models.CategoryViewModel
 
 @{
     ViewBag.Title = "Details " + Model.Name;
@@ -8,8 +8,8 @@
 <h3>Details @Model.Name</h3>
 
 <p>
-    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-secondary" })
+    <a class="btn btn-primary text-white" href="@Model.ReturnUrl">Go back</a>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
 </p>
 
 <div class="row text-center">
@@ -46,8 +46,8 @@
                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                     <td>@Html.DisplayFor(modelItem => item.Price)</td>
                     <td>
-                        @Html.ActionLink("Details", "Details", "Product", new { id = item.ID }, new { @class = "btn btn-info btn-sm mb-1" })
-                        @Html.ActionLink("Edit", "Edit", "Product", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mb-1" })                        
+                        @Html.ActionLink("Details", "Details", "Product", new { id = item.ID, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-info btn-sm mb-1" })
+                        @Html.ActionLink("Edit", "Edit", "Product", new { id = item.ID, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-primary btn-sm mb-1" })                        
                     </td>
                 </tr>
                 }
@@ -67,8 +67,8 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.Name)</td>
                         <td>
-                            @Html.ActionLink("Details", "Details", "Subcategory", new { id = item.ID }, new { @class = "btn btn-info btn-sm mb-1" })
-                            @Html.ActionLink("Edit", "Edit", "Subcategory", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mb-1" })
+                            @Html.ActionLink("Details", "Details", "Subcategory", new { id = item.ID, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-info btn-sm mb-1" })
+                            @Html.ActionLink("Edit", "Edit", "Subcategory", new { id = item.ID, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-primary btn-sm mb-1" })
                         </td>
                     </tr>
                 }

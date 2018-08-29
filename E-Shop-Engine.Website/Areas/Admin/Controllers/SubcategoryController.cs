@@ -1,4 +1,6 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -21,21 +23,24 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(_subcategoryRepository.GetAll());
+            IEnumerable<Subcategory> model = _subcategoryRepository.GetAll();
+            IEnumerable<SubcategoryViewModel> viewModel = model.Select(p => (SubcategoryViewModel)p).ToList();
+            return View(viewModel);
         }
 
         [HttpGet]
-        public ViewResult Edit(int id)
+        public ViewResult Edit(int id, string returnUrl)
         {
             SubcategoryViewModel model = _subcategoryRepository.GetById(id);
             model.Categories = _categoryRepository.GetAll();
+            model.ReturnUrl = returnUrl;
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Subcategory model)
+        public ActionResult Edit(SubcategoryViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -43,7 +48,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             _subcategoryRepository.Update(model);
 
-            return RedirectToAction("Index");
+            return Redirect(model.ReturnUrl);
         }
 
         [HttpGet]
@@ -57,7 +62,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Subcategory model)
+        public ActionResult Create(SubcategoryViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -68,9 +73,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl)
         {
-            return View(_subcategoryRepository.GetById(id));
+            SubcategoryViewModel model = _subcategoryRepository.GetById(id);
+            model.ReturnUrl = returnUrl;
+            return View(model);
         }
 
         public ActionResult Delete(int id)
