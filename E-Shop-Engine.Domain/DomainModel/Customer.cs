@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace E_Shop_Engine.Domain.DomainModel
 {
     public class Customer : DbEntity
     {
+        public DateTime Created { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
@@ -14,7 +16,7 @@ namespace E_Shop_Engine.Domain.DomainModel
         public virtual Address Address { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
-        //TODO optional or required?
+        //TODO set required
         public int CartID { get; set; }
         public virtual Cart Cart { get; set; }
     }

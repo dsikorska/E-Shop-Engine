@@ -30,6 +30,9 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
             HasMany(c => c.Orders)
                 .WithRequired(o => o.Customer)
                 .HasForeignKey(o => o.CustomerID);
+            Property(c => c.Created)
+                .IsRequired()
+                .HasColumnType("datetime2");
         }
     }
 }
