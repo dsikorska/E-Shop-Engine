@@ -89,6 +89,10 @@
     <Compile Include="Migrations\201808280833076_Connect Cart with Customer.Designer.cs">
       <DependentUpon>201808280833076_Connect Cart with Customer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808290731483_Customer add Created datetime.cs" />
+    <Compile Include="Migrations\201808290731483_Customer add Created datetime.Designer.cs">
+      <DependentUpon>201808290731483_Customer add Created datetime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
@@ -133,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808280833076_Connect Cart with Customer.resx">
       <DependentUpon>201808280833076_Connect Cart with Customer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808290731483_Customer add Created datetime.resx">
+      <DependentUpon>201808290731483_Customer add Created datetime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
