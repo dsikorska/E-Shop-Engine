@@ -26,7 +26,7 @@
     @Html.AntiForgeryToken()
     <hr />
 
-    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled", id = "validation-summary" })
     @Html.HiddenFor(model => model.Id)
 
     <div class="input-group mb-3">
@@ -48,3 +48,5 @@
         <input type="submit" value="Save" class="btn btn-success btn-lg" />
     </div>
 }
+
+    <script type="text/javascript" src="~/Scripts/RealTimeValidation.js"></script>

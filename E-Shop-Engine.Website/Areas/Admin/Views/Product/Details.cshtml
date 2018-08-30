@@ -20,7 +20,14 @@
             @if (Model.Edited != null)
             {
                 <dt>@Html.DisplayNameFor(model => model.Edited)</dt>
-                <dd>@Html.DisplayFor(model => model.Edited.Value)</dd>
+                if (Model.Edited.ToString() == "1/1/0001 1:00:00 AM")
+                {
+                    <dd>- None -</dd>
+                }
+                else
+                {
+                    <dd>@Html.DisplayFor(model => model.Edited.Value)</dd>
+                }
             }
         </dl>
 
@@ -31,7 +38,14 @@
             <dd>@Html.DisplayFor(model => model.Name)</dd>
 
             <dt>@Html.DisplayNameFor(model => model.CatalogNumber)</dt>
-            <dd>@Html.DisplayFor(model => model.CatalogNumber)</dd>
+            @if (Model.CatalogNumber == null)
+            {
+                <dd>- None -</dd>
+            }
+            else
+            {
+                <dd>@Html.DisplayFor(model => model.CatalogNumber)</dd>
+            }
         </dl>
     </div>
     <div class="w-74">
@@ -46,7 +60,14 @@
             <dd class="border-bottom">@Html.DisplayFor(model => model.CategoryName)</dd>
 
             <dt>@Html.DisplayNameFor(model => model.SubcategoryId)</dt>
-            <dd class="border-bottom">@Html.DisplayFor(model => model.SubcategoryName)</dd>
+            @if (Model.SubcategoryName == null)
+            {
+                <dd class="border-bottom">- None -</dd>
+            }
+            else
+            {
+                <dd class="border-bottom">@Html.DisplayFor(model => model.SubcategoryName)</dd>
+            }
 
             <dt>@Html.DisplayNameFor(model => model.ShowAsSpecialOffer)</dt>
             <dd class="border-bottom">@Model.ShowAsSpecialOffer</dd>
@@ -55,7 +76,14 @@
             <dd class="border-bottom">@Model.ShowAtMainPage</dd>
 
             <dt>@Html.DisplayNameFor(model => model.Description)</dt>
-            <dd>@Html.DisplayFor(model => model.Description)</dd>
+            @if (Model.Description == null)
+            {
+                <dd>- None -</dd>
+            }
+            else
+            {
+                <dd>@Html.DisplayFor(model => model.Description)</dd>
+            }
         </dl>
     </div>
 </div>

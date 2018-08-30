@@ -50,6 +50,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return RedirectToAction("Edit", model);
             }
 
+            //model.ImageBytes = _productRepository.GetById(model.Id).ImageData ?? null;
+
             _productRepository.Update(model);
 
             return Redirect(model.ReturnUrl);
@@ -81,12 +83,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //TODO time to local
         [HttpGet]
         public ActionResult Details(int id, string returnUrl)
         {
-            ProductViewModel model = _productRepository.GetById(id);
+            Product product = _productRepository.GetById(id);
+            ProductViewModel model = product;
             model.ReturnUrl = returnUrl;
+            model.Created = product.Created.ToLocalTime();
+            model.Edited = product.Edited.GetValueOrDefault().ToLocalTime();
+
             return View(model);
         }
 

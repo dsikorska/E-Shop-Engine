@@ -16,7 +16,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        // TODO: live refresh validation summary
+
         // GET: Admin/Category
         [HttpGet]
         public ActionResult Index()
