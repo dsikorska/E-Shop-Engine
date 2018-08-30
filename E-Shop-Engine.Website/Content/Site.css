@@ -31,3 +31,7 @@
     word-wrap: break-word; 
     word-break: normal;
 }
+
+.dropright:hover > .dropdown-menu {
+    display: block;
+}

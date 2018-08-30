@@ -20,7 +20,6 @@ namespace E_Shop_Engine.Website.Controllers
             return View(_categoryRepository.GetAll());
         }
 
-        //TODO dropdowns for subcategories
         // GET: Category - for navbar
         [HttpGet]
         public PartialViewResult NavList()

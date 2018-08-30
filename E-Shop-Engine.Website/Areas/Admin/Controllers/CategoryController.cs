@@ -73,7 +73,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             model.ReturnUrl = returnUrl;
             return View(model);
         }
-
+        //TODO inform user about error
         public ActionResult Delete(int id)
         {
             try

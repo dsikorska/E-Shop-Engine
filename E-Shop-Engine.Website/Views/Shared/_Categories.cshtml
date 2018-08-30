@@ -9,6 +9,22 @@
     <a class="nav-link text-white btn btn-primary" href="/Product/Index">All products</a>
     @foreach (var item in Model)
     {
-        <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.ID">@item.Name</a>
+        if (item.Subcategories.Count != 0)
+        {
+            <div class="dropright">
+                <a class="nav-link text-white btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="/Category/Details/@item.ID">@item.Name</a>
+
+                <div class="dropdown-menu bg-primary">
+                    @foreach (var subcategory in item.Subcategories)
+                    {
+                        <a class="text-white btn btn-primary w-100" href="/Subcategory/Details/@subcategory.ID">@subcategory.Name</a>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.ID">@item.Name</a>
+        }
     }
-</nav>
+    </nav>
