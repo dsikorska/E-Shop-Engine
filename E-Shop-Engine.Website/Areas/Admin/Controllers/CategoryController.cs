@@ -22,21 +22,21 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryViewModel> viewModel = model.Select(p => (CategoryViewModel)p).ToList();
+            IEnumerable<CategoryAdminViewModel> viewModel = model.Select(p => (CategoryAdminViewModel)p).ToList();
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id, string returnUrl)
         {
-            CategoryViewModel model = _categoryRepository.GetById(id);
+            CategoryAdminViewModel model = _categoryRepository.GetById(id);
             model.ReturnUrl = returnUrl;
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CategoryViewModel model)
+        public ActionResult Edit(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -50,13 +50,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            CategoryViewModel model = new CategoryViewModel();
+            CategoryAdminViewModel model = new CategoryAdminViewModel();
             return View("Edit", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CategoryViewModel model)
+        public ActionResult Create(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Details(int id, string returnUrl)
         {
-            CategoryViewModel model = _categoryRepository.GetById(id);
+            CategoryAdminViewModel model = _categoryRepository.GetById(id);
             model.ReturnUrl = returnUrl;
             return View(model);
         }

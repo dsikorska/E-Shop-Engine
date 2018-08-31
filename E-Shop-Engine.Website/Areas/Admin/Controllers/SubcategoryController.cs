@@ -24,14 +24,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Subcategory> model = _subcategoryRepository.GetAll();
-            IEnumerable<SubcategoryViewModel> viewModel = model.Select(p => (SubcategoryViewModel)p).ToList();
+            IEnumerable<SubcategoryAdminViewModel> viewModel = model.Select(p => (SubcategoryAdminViewModel)p).ToList();
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id, string returnUrl)
         {
-            SubcategoryViewModel model = _subcategoryRepository.GetById(id);
+            SubcategoryAdminViewModel model = _subcategoryRepository.GetById(id);
             model.Categories = _categoryRepository.GetAll();
             model.ReturnUrl = returnUrl;
 
@@ -40,7 +40,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(SubcategoryViewModel model)
+        public ActionResult Edit(SubcategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            SubcategoryViewModel model = new SubcategoryViewModel();
+            SubcategoryAdminViewModel model = new SubcategoryAdminViewModel();
             model.Categories = _categoryRepository.GetAll();
 
             return View("Edit", model);
@@ -62,7 +62,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SubcategoryViewModel model)
+        public ActionResult Create(SubcategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Details(int id, string returnUrl)
         {
-            SubcategoryViewModel model = _subcategoryRepository.GetById(id);
+            SubcategoryAdminViewModel model = _subcategoryRepository.GetById(id);
             model.ReturnUrl = returnUrl;
             return View(model);
         }

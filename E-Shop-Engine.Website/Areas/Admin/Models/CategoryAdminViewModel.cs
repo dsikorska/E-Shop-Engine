@@ -5,7 +5,7 @@ using E_Shop_Engine.Domain.DomainModel;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Models
 {
-    public class CategoryViewModel
+    public class CategoryAdminViewModel
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
@@ -23,9 +23,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         public IEnumerable<Subcategory> Subcategories { get; set; }
 
-        public static implicit operator CategoryViewModel(Category model)
+        public static implicit operator CategoryAdminViewModel(Category model)
         {
-            return new CategoryViewModel
+            return new CategoryAdminViewModel
             {
                 Name = model.Name,
                 Description = model.Description,
@@ -35,7 +35,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
             };
         }
 
-        public static implicit operator Category(CategoryViewModel model)
+        public static implicit operator Category(CategoryAdminViewModel model)
         {
             return new Category
             {

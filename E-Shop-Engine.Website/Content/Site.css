@@ -35,3 +35,17 @@
 .dropright:hover > .dropdown-menu {
     display: block;
 }
+
+.card-img-top {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.card .w-100 {
+    text-align: center;
+}
+
+.card-columns a {
+    text-decoration: none;
+    color: black;
+}

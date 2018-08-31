@@ -4,14 +4,20 @@
 <div class="card-columns">
     @foreach (Product product in Model)
     {
-        <div class="card">
-            @Html.Image(product.ImageData, product.ImageMimeType, "card-img-top", new { alt = product.Name + " Price: " + product.Price })
+    <div class="card">
+        <a href="@Url.Action("Details", "Product", new { id = product.ID, returnUrl = Request.Url.PathAndQuery })">
+            <div class="w-100">
+                @Html.Image(product.ImageData, product.ImageMimeType, "card-img-top", new { alt = product.Name + " Price: " + product.Price })
+            </div>
             <div class="card-body text-center">
                 <h5 class="card-title">@product.Name</h5>
                 <h4 class="card-title">@product.Price</h4>
-                <a href="#" class="btn btn-success">Add to cart</a>
             </div>
+        </a>
+        <div class="card-body text-center p-0 pb-4">
+            <a href="#" class="btn btn-success text-white">Add to cart</a>
         </div>
+    </div>
     }
 </div>
 

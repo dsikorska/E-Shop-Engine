@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
@@ -25,14 +27,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductViewModel> viewModel = model.Select(p => (ProductViewModel)p).ToList();
+            IEnumerable<ProductAdminViewModel> viewModel = model.Select(p => (ProductAdminViewModel)p).ToList();
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id, string returnUrl)
         {
-            ProductViewModel model = _productRepository.GetById(id);
+            ProductAdminViewModel model = _productRepository.GetById(id);
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
             model.ReturnUrl = returnUrl;
@@ -43,7 +45,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         //TODO get byte array from db instead of storing in view
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductViewModel model)
+        public ActionResult Edit(ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -60,7 +62,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            ProductViewModel model = new ProductViewModel();
+            ProductAdminViewModel model = new ProductAdminViewModel();
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
 
@@ -69,7 +71,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductViewModel model)
+        public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -87,7 +89,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id, string returnUrl)
         {
             Product product = _productRepository.GetById(id);
-            ProductViewModel model = product;
+            ProductAdminViewModel model = product;
             model.ReturnUrl = returnUrl;
             model.Created = product.Created.ToLocalTime();
             model.Edited = product.Edited.GetValueOrDefault().ToLocalTime();
@@ -112,7 +114,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             else
             {
-                return null;
+                byte[] img = System.IO.File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content/default-img.jpg"));
+
+                return new FileContentResult(img, "image/jpg");
             }
         }
     }

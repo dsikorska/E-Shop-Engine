@@ -8,7 +8,7 @@ using E_Shop_Engine.Utilities;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Models
 {
-    public class ProductViewModel
+    public class ProductAdminViewModel
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
@@ -67,9 +67,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Subcategory> Subcategories { get; set; }
 
-        public static implicit operator ProductViewModel(Product product)
+        public static implicit operator ProductAdminViewModel(Product product)
         {
-            return new ProductViewModel
+            return new ProductAdminViewModel
             {
                 Id = product.ID,
                 Name = product.Name,
@@ -77,7 +77,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 Price = product.Price,
                 NumberInStock = product.NumberInStock,
                 CatalogNumber = product.CatalogNumber,
-                ImageData = ConvertPostedFile.ToHttpPostedFileBase(product.ImageData),
+                ImageBytes = product.ImageData,
                 ImageMimeType = product.ImageMimeType,
                 ShowAsSpecialOffer = product.ShowAsSpecialOffer,
                 ShowAtMainPage = product.ShowAtMainPage,
@@ -85,13 +85,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
                 SubcategoryId = product.SubcategoryID,
                 Created = product.Created,
                 Edited = product.Edited,
-                ImageBytes = product.ImageData,
                 CategoryName = product.Category.Name,
                 SubcategoryName = product.Subcategory?.Name
             };
         }
 
-        public static implicit operator Product(ProductViewModel viewModel)
+        public static implicit operator Product(ProductAdminViewModel viewModel)
         {
             byte[] imageData = null;
 
