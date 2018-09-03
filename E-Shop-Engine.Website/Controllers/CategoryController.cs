@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Website.Models;
 
 namespace E_Shop_Engine.Website.Controllers
 {
@@ -27,10 +29,13 @@ namespace E_Shop_Engine.Website.Controllers
             return PartialView("_Categories", _categoryRepository.GetAll());
         }
 
+        //TODO put product to partialview
         [HttpGet]
         public ViewResult Details(int id)
         {
-            return View(_categoryRepository.GetById(id));
+            Category category = _categoryRepository.GetById(id);
+            CategoryViewModel model = Mapper.Map<CategoryViewModel>(category);
+            return View(model);
         }
     }
 }

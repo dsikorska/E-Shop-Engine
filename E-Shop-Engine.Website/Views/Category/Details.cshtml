@@ -1,5 +1,4 @@
-﻿@using E_Shop_Engine.Domain.DomainModel
-@model E_Shop_Engine.Domain.DomainModel.Category
+﻿@model E_Shop_Engine.Website.Models.CategoryViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -8,23 +7,28 @@
 <h2>@Model.Name</h2>
 
 <div class="w-100 text-center my-4">
-    @foreach(Subcategory subcategory in Model.Subcategories)
+    @foreach (var subcategory in Model.Subcategories)
     {
         @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.ID }, new { @class = "btn btn-primary mr-2 mb-2" })
     }
 </div>
 
 <div class="card-columns">
-    @foreach (Product product in Model.Products)
+    @foreach (var product in Model.Products)
     {
-        <div class="card">
-            @Html.Image(product.ImageData, product.ImageMimeType, "card-img-top", new { alt = product.Name + " Price: " + product.Price })
+    <div class="card">
+        <a href="@Url.Action("Details", "Product", new { id = product.ID, returnUrl = Request.Url.PathAndQuery })">
+            <img id="ImgPreview" class="card-img-top" alt="@product.Name Price: @product.Price.ToString()"
+                 src="@Url.Action("GetImage", "Product", new { product.ID })" />
             <div class="card-body text-center">
                 <h5 class="card-title">@product.Name</h5>
                 <h4 class="card-title">@product.Price</h4>
-                <a href="#" class="btn btn-success">Add to cart</a>
             </div>
+        </a>
+        <div class="card-body text-center p-0 pb-4">
+            <a href="#" class="btn btn-success text-white">Add to cart</a>
         </div>
+    </div>
     }
 </div>
 

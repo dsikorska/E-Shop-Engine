@@ -1,5 +1,5 @@
-﻿@using E_Shop_Engine.Domain.DomainModel
-@model IList<Product>
+﻿@using E_Shop_Engine.Website.Models
+@model IList<ProductViewModel>
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -19,18 +19,21 @@
     <div class="carousel-inner">
         @if (Model.Any())
         {
-            <div class="carousel-item active">
-                @Html.Image(Model.First().ImageData, Model.First().ImageMimeType, "d-block w-100", new { alt = Model.First().Name + " Price: " + Model.First().Price.ToString() })
-            </div>
+        <div class="carousel-item active">
+            <img id="ImgPreview" class="d-block w-100" alt="@Model.First().Name Price: @Model.First().Price.ToString()"
+                 src="@Url.Action("GetImage", "Product", new { Model.First().Id })" />
+        </div>
+
         }
 
         @if (Model.Count() > 1)
         {
             for (int i = 1; i < Model.Count(); i++)
             {
-            <div class="carousel-item">
-                @Html.Image(Model[i].ImageData, Model[i].ImageMimeType, "d-block w-100", new { alt = Model[i].Name + " Price: " + Model[i].Price.ToString() })
-            </div>
+        <div class="carousel-item">
+            <img id="ImgPreview" class="d-block w-100" alt="@Model[i].Name Price: @Model[i].Price.ToString()"
+                 src="@Url.Action("GetImage", "Product", new { Model[i].Id })" />
+        </div>
             }
         }
     </div>

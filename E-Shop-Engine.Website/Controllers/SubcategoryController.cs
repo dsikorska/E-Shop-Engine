@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Website.Models;
 
 namespace E_Shop_Engine.Website.Controllers
 {
@@ -16,7 +18,10 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpGet]
         public ViewResult Details(int id)
         {
-            return View(_subcategoryRepository.GetById(id));
+            Subcategory subcategory = _subcategoryRepository.GetById(id);
+            SubcategoryViewModel model = Mapper.Map<SubcategoryViewModel>(subcategory);
+
+            return View(model);
         }
     }
 }

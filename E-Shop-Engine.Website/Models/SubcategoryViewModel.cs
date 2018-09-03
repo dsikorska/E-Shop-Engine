@@ -10,6 +10,7 @@ namespace E_Shop_Engine.Website.Models
         public string Description { get; set; }
 
         public string CategoryName { get; set; }
+        public int CategoryId { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

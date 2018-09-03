@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -20,10 +22,11 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            return View("_ProductsDeck", _productRepository.GetAll());
+            IEnumerable<Product> product = _productRepository.GetAll();
+            IEnumerable<ProductViewModel> model = product.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
+            return View("_ProductsDeck", model);
         }
 
-        //TODO
         [HttpGet]
         public ViewResult Details(int id, string returnUrl)
         {
@@ -34,17 +37,22 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
-        //TODO switch domain model to viewmodel
+
+        //TODO to Home
         [HttpGet]
         public PartialViewResult GetSpecialOffers()
         {
-            return PartialView("SpecialOffers", _productRepository.GetAllSpecialOffers());
+            IEnumerable<Product> product = _productRepository.GetAllSpecialOffers();
+            IList<ProductViewModel> model = product.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
+            return PartialView("SpecialOffers", model);
         }
 
         [HttpGet]
         public PartialViewResult GetSpecialOffersInDeck()
         {
-            return PartialView("_ProductsDeck", _productRepository.GetAllShowingInDeck());
+            IEnumerable<Product> product = _productRepository.GetAllShowingInDeck();
+            IEnumerable<ProductViewModel> model = product.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
+            return PartialView("_ProductsDeck", model);
         }
 
         [HttpGet]
