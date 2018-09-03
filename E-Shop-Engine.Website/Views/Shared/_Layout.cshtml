@@ -4,9 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Shop Demo</title>
-    @Scripts.Render("~/Bundles/scripts")
+    @Scripts.Render("~/Bundles/universal")
     @Styles.Render("~/Content/css")
-    @RenderSection("Scripts", false)
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top">
@@ -25,7 +24,7 @@
                     <a class="nav-link" href="#">Account</a>
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Cart", "Details", "Cart", new { id = 0}, new { @class="nav-link"})
+                    @Html.ActionLink("Cart", "Details", "Cart", new { id = 0 }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Favourites</a>
@@ -48,5 +47,6 @@
             <p>&copy; @DateTime.Now.Year</p>
         </footer>
     </div>
+    @RenderSection("Scripts", false)
 </body>
 </html>

@@ -1,5 +1,4 @@
-﻿@using E_Shop_Engine.Domain.DomainModel;
-@model IEnumerable<Category>
+﻿@model IEnumerable<E_Shop_Engine.Website.Models.CategoryViewModel>
 
 @{
     Layout = null;
@@ -12,19 +11,19 @@
         if (item.Subcategories.Count != 0)
         {
             <div class="dropright">
-                <a class="nav-link text-white btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="/Category/Details/@item.ID">@item.Name</a>
+                <a class="nav-link text-white btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="/Category/Details/@item.Id">@item.Name</a>
 
                 <div class="dropdown-menu bg-primary">
                     @foreach (var subcategory in item.Subcategories)
                     {
-                        <a class="text-white btn btn-primary w-100" href="/Subcategory/Details/@subcategory.ID">@subcategory.Name</a>
+                        <a class="text-white btn btn-primary w-100" href="/Subcategory/Details/@subcategory.Id">@subcategory.Name</a>
                     }
                 </div>
             </div>
         }
         else
         {
-            <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.ID">@item.Name</a>
+            <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.Id">@item.Name</a>
         }
     }
     </nav>

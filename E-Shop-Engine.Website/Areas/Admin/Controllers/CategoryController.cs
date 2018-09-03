@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -22,14 +23,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryAdminViewModel> viewModel = model.Select(p => (CategoryAdminViewModel)p).ToList();
+            IEnumerable<CategoryAdminViewModel> viewModel = model.Select(p => Mapper.Map<CategoryAdminViewModel>(p)).ToList();
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id, string returnUrl)
         {
-            CategoryAdminViewModel model = _categoryRepository.GetById(id);
+            Category category = _categoryRepository.GetById(id);
+            CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
             model.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -42,7 +44,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            _categoryRepository.Update(model);
+            _categoryRepository.Update(Mapper.Map<Category>(model));
 
             return Redirect(model.ReturnUrl);
         }
@@ -62,14 +64,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View("Edit", model);
             }
-            _categoryRepository.Create(model);
+            _categoryRepository.Create(Mapper.Map<Category>(model));
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult Details(int id, string returnUrl)
         {
-            CategoryAdminViewModel model = _categoryRepository.GetById(id);
+            Category category = _categoryRepository.GetById(id);
+            CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
             model.ReturnUrl = returnUrl;
             return View(model);
         }

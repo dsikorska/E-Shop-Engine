@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -24,14 +25,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Subcategory> model = _subcategoryRepository.GetAll();
-            IEnumerable<SubcategoryAdminViewModel> viewModel = model.Select(p => (SubcategoryAdminViewModel)p).ToList();
+            IEnumerable<SubcategoryAdminViewModel> viewModel = model.Select(p => Mapper.Map<SubcategoryAdminViewModel>(p)).ToList();
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id, string returnUrl)
         {
-            SubcategoryAdminViewModel model = _subcategoryRepository.GetById(id);
+            Subcategory subcategory = _subcategoryRepository.GetById(id);
+            SubcategoryAdminViewModel model = Mapper.Map<SubcategoryAdminViewModel>(subcategory);
             model.Categories = _categoryRepository.GetAll();
             model.ReturnUrl = returnUrl;
 
@@ -46,7 +48,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            _subcategoryRepository.Update(model);
+            _subcategoryRepository.Update(Mapper.Map<Subcategory>(model));
 
             return Redirect(model.ReturnUrl);
         }
@@ -68,14 +70,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View("Edit", model);
             }
-            _subcategoryRepository.Create(model);
+            _subcategoryRepository.Create(Mapper.Map<Subcategory>(model));
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult Details(int id, string returnUrl)
         {
-            SubcategoryAdminViewModel model = _subcategoryRepository.GetById(id);
+            Subcategory subcategory = _subcategoryRepository.GetById(id);
+            SubcategoryAdminViewModel model = Mapper.Map<SubcategoryAdminViewModel>(subcategory);
             model.ReturnUrl = returnUrl;
             return View(model);
         }

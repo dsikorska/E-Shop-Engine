@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Utilities;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Models
 {
@@ -66,65 +65,5 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Subcategory> Subcategories { get; set; }
-
-        public static implicit operator ProductAdminViewModel(Product product)
-        {
-            return new ProductAdminViewModel
-            {
-                Id = product.ID,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                NumberInStock = product.NumberInStock,
-                CatalogNumber = product.CatalogNumber,
-                ImageBytes = product.ImageData,
-                ImageMimeType = product.ImageMimeType,
-                ShowAsSpecialOffer = product.ShowAsSpecialOffer,
-                ShowAtMainPage = product.ShowAtMainPage,
-                CategoryId = product.CategoryID,
-                SubcategoryId = product.SubcategoryID,
-                Created = product.Created,
-                Edited = product.Edited,
-                CategoryName = product.Category.Name,
-                SubcategoryName = product.Subcategory?.Name
-            };
-        }
-
-        public static implicit operator Product(ProductAdminViewModel viewModel)
-        {
-            byte[] imageData = null;
-
-            if (viewModel.ImageBytes == null || viewModel.ImageData != null)
-            {
-                imageData = ConvertPostedFile.ToByteArray(viewModel.ImageData);
-            }
-            else
-            {
-                imageData = viewModel.ImageBytes;
-            }
-
-            if (viewModel.ImageMimeType == null || (viewModel.ImageMimeType != null && viewModel.ImageData != null && viewModel.ImageData?.ContentType != viewModel.ImageMimeType))
-            {
-                viewModel.ImageMimeType = viewModel.ImageData?.ContentType;
-            }
-
-            return new Product
-            {
-                ID = viewModel.Id,
-                Name = viewModel.Name,
-                Description = viewModel.Description,
-                CatalogNumber = viewModel.CatalogNumber,
-                CategoryID = viewModel.CategoryId,
-                SubcategoryID = viewModel.SubcategoryId,
-                ImageData = imageData,
-                ImageMimeType = viewModel.ImageMimeType,
-                NumberInStock = viewModel.NumberInStock,
-                Price = viewModel.Price,
-                ShowAsSpecialOffer = viewModel.ShowAsSpecialOffer,
-                ShowAtMainPage = viewModel.ShowAtMainPage,
-                Created = viewModel.Created,
-                Edited = viewModel.Edited
-            };
-        }
     }
 }

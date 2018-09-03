@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using E_Shop_Engine.Domain.DomainModel;
+using System.Web.Mvc;
 
 namespace E_Shop_Engine.Website.Models
 {
     public class CategoryViewModel
     {
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<Subcategory> Subcategories { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<SubcategoryViewModel> Subcategories { get; set; }
+        public virtual ICollection<ProductViewModel> Products { get; set; }
     }
 }

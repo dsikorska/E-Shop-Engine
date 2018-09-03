@@ -1,5 +1,4 @@
-﻿@using E_Shop_Engine.Domain.DomainModel
-@model E_Shop_Engine.Website.Areas.Admin.Models.SubcategoryAdminViewModel
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.SubcategoryAdminViewModel
 
 @{
     ViewBag.Title = "Details " + Model.Name;
@@ -41,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (Product item in Model.Products)
+                @foreach (var item in Model.Products)
                 {
                 <tr>
                     <th scope="row">@item.CatalogNumber</th>

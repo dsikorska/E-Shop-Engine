@@ -9,24 +9,5 @@
 
 <h2>@Model.CategoryName - @Model.Name</h2>
 
-<div class="card-columns">
-    @foreach (var product in Model.Products)
-    {
-    <div class="card">
-        <a href="@Url.Action("Details", "Product", new { id = product.ID, returnUrl = Request.Url.PathAndQuery })">
-            <div class="w-100">
-                <img id="ImgPreview" class="card-img-top" alt="@product.Name Price: @product.Price.ToString()"
-                     src="@Url.Action("GetImage", "Product", new { product.ID })" />
-            </div>
-            <div class="card-body text-center">
-                <h5 class="card-title">@product.Name</h5>
-                <h4 class="card-title">@product.Price</h4>
-            </div>
-        </a>
-        <div class="card-body text-center p-0 pb-4">
-            <a href="#" class="btn btn-success text-white">Add to cart</a>
-        </div>
-    </div>
-    }
-</div>
+@Html.Partial("_ProductsDeck", Model.Products)
 

@@ -22,8 +22,8 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            IEnumerable<Product> product = _productRepository.GetAll();
-            IEnumerable<ProductViewModel> model = product.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
+            IEnumerable<Product> products = _productRepository.GetAll();
+            IEnumerable<ProductViewModel> model = products.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
             return View("_ProductsDeck", model);
         }
 
@@ -59,7 +59,7 @@ namespace E_Shop_Engine.Website.Controllers
         public FileContentResult GetImage(int id)
         {
             Product product = _productRepository.GetById(id);
-            if (product?.ImageData != null)
+            if (product?.ImageData != null && product.ImageData.Length != 0)
             {
                 return new FileContentResult(product.ImageData, product.ImageMimeType);
             }

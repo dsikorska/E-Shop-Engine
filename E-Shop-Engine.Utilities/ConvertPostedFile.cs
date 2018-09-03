@@ -14,14 +14,5 @@ namespace E_Shop_Engine.Utilities
             image.InputStream.Read(img, 0, image.ContentLength);
             return img;
         }
-
-        public static HttpPostedFileBase ToHttpPostedFileBase(byte[] array)
-        {
-            if (array == null)
-            {
-                return null;
-            }
-            return new MemoryPostedFile(array);
-        }
     }
 }

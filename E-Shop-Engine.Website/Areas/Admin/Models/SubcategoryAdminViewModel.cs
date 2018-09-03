@@ -20,33 +20,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         public string ReturnUrl { get; set; }
 
+        [Display(Name = "Category")]
         public string CategoryName { get; set; }
 
         public IEnumerable<Product> Products { get; set; }
-
-        public static implicit operator SubcategoryAdminViewModel(Subcategory model)
-        {
-            return new SubcategoryAdminViewModel
-            {
-                Name = model.Name,
-                Description = model.Description,
-                CategoryID = model.CategoryID,
-                Id = model.ID,
-                CategoryName = model.Category.Name,
-                Products = model.Products
-
-            };
-        }
-
-        public static implicit operator Subcategory(SubcategoryAdminViewModel model)
-        {
-            return new Subcategory
-            {
-                Name = model.Name,
-                Description = model.Description,
-                CategoryID = model.CategoryID,
-                ID = model.Id
-            };
-        }
     }
 }

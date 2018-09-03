@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -27,14 +28,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Index()
         {
             IEnumerable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductAdminViewModel> viewModel = model.Select(p => (ProductAdminViewModel)p).ToList();
+            IEnumerable<ProductAdminViewModel> viewModel = model.Select(p => Mapper.Map<ProductAdminViewModel>(p)).ToList();
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id, string returnUrl)
         {
-            ProductAdminViewModel model = _productRepository.GetById(id);
+            Product product = _productRepository.GetById(id);
+            ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
             model.ReturnUrl = returnUrl;
@@ -52,9 +54,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return RedirectToAction("Edit", model);
             }
 
-            //model.ImageBytes = _productRepository.GetById(model.Id).ImageData ?? null;
-
-            _productRepository.Update(model);
+            _productRepository.Update(Mapper.Map<Product>(model));
 
             return Redirect(model.ReturnUrl);
         }
@@ -80,7 +80,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             model.ImageMimeType = model.ImageData?.ContentType;
 
-            _productRepository.Create(model);
+            Product product = Mapper.Map<Product>(model);
+            _productRepository.Create(product);
 
             return RedirectToAction("Index");
         }
@@ -89,7 +90,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id, string returnUrl)
         {
             Product product = _productRepository.GetById(id);
-            ProductAdminViewModel model = product;
+            ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
             model.ReturnUrl = returnUrl;
             model.Created = product.Created.ToLocalTime();
             model.Edited = product.Edited.GetValueOrDefault().ToLocalTime();
@@ -104,18 +105,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        //TODO share between ctrls
         [HttpGet]
         public FileContentResult GetImage(int id)
         {
             Product product = _productRepository.GetById(id);
-            if (product?.ImageData != null)
+            if (product?.ImageData != null && product.ImageData.Length != 0)
             {
                 return new FileContentResult(product.ImageData, product.ImageMimeType);
             }
             else
             {
                 byte[] img = System.IO.File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content/default-img.jpg"));
-
                 return new FileContentResult(img, "image/jpg");
             }
         }
