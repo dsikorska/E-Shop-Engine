@@ -43,7 +43,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             return View(model);
         }
-        //TODO add default img
+
         //TODO get byte array from db instead of storing in view
         [HttpPost]
         [ValidateAntiForgeryToken]

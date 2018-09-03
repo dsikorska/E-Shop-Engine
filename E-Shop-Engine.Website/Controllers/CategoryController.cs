@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -17,23 +15,6 @@ namespace E_Shop_Engine.Website.Controllers
             _categoryRepository = categoryRepository;
         }
 
-        // GET: Category
-        [HttpGet]
-        public ViewResult Index()
-        {
-            return View(_categoryRepository.GetAll());
-        }
-
-        // GET: Category - for navbar
-        [HttpGet]
-        public PartialViewResult NavList()
-        {
-            IEnumerable<Category> categories = _categoryRepository.GetAll();
-            IEnumerable<CategoryViewModel> model = categories.Select(p => Mapper.Map<CategoryViewModel>(p)).ToList();
-            return PartialView("_Categories", model);
-        }
-
-        //TODO put product to partialview
         [HttpGet]
         public ViewResult Details(int id)
         {

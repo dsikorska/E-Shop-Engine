@@ -243,7 +243,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Category\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Category\Details.cshtml" />
-    <Content Include="Views\Product\SpecialOffers.cshtml" />
+    <Content Include="Views\Home\SpecialOffers.cshtml" />
     <Content Include="Views\Shared\_ProductsDeck.cshtml" />
     <Content Include="Views\Category\Details.cshtml" />
     <Content Include="Views\Subcategory\Details.cshtml" />
