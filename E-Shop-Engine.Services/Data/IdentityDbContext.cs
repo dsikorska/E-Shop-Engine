@@ -4,7 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace E_Shop_Engine.Services.Data
 {
-    public class IdentityDbContext : IdentityDbContext<User>
+    public class IdentityDbContext : IdentityDbContext<AppUser>
     {
         public IdentityDbContext() : base("ShopEngineDb")
         {

@@ -6,17 +6,17 @@ using Microsoft.Owin;
 
 namespace E_Shop_Engine.Services.Data.Identity
 {
-    public class AppUserManager : UserManager<User>
+    public class AppUserManager : UserManager<AppUser>
     {
-        public AppUserManager(IUserStore<User> store) : base(store)
+        public AppUserManager(IUserStore<AppUser> store) : base(store)
         {
 
         }
-
+        //TODO validate password
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
             IdentityDbContext db = context.Get<IdentityDbContext>();
-            AppUserManager manager = new AppUserManager(new UserStore<User>(db));
+            AppUserManager manager = new AppUserManager(new UserStore<AppUser>(db));
 
             return manager;
         }

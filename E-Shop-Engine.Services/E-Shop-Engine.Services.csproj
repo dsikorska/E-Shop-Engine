@@ -132,6 +132,14 @@
     <Compile Include="Migrations\201809060743075_Setup Customer, Order, Address, Cart, CartLine.Designer.cs">
       <DependentUpon>201809060743075_Setup Customer, Order, Address, Cart, CartLine.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809060801517_Rename User to AppUser.cs" />
+    <Compile Include="Migrations\201809060801517_Rename User to AppUser.Designer.cs">
+      <DependentUpon>201809060801517_Rename User to AppUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809060812084_Switch datetime2 to datetime at AppUser.cs" />
+    <Compile Include="Migrations\201809060812084_Switch datetime2 to datetime at AppUser.Designer.cs">
+      <DependentUpon>201809060812084_Switch datetime2 to datetime at AppUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
@@ -185,6 +193,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809060743075_Setup Customer, Order, Address, Cart, CartLine.resx">
       <DependentUpon>201809060743075_Setup Customer, Order, Address, Cart, CartLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809060801517_Rename User to AppUser.resx">
+      <DependentUpon>201809060801517_Rename User to AppUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809060812084_Switch datetime2 to datetime at AppUser.resx">
+      <DependentUpon>201809060812084_Switch datetime2 to datetime at AppUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

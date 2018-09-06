@@ -3,7 +3,7 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 
 namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 {
-    internal class UserEntityConfig : EntityTypeConfiguration<User>
+    internal class UserEntityConfig : EntityTypeConfiguration<AppUser>
     {
         public UserEntityConfig()
         {
@@ -11,7 +11,7 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 
             Property(c => c.Created)
                 .IsRequired()
-                .HasColumnType("datetime2");
+                .HasColumnType("datetime");
         }
     }
 }

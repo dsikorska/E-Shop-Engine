@@ -26,7 +26,6 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: Categories - for navbar
-        [HttpGet]
         public PartialViewResult NavList()
         {
             IEnumerable<Category> categories = _categoryRepository.GetAll();

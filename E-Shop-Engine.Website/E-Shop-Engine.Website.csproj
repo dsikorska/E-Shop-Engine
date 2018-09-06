@@ -196,6 +196,8 @@
     <Content Include="Areas\Admin\Views\Subcategory\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Account\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Error.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Edit.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -236,6 +238,7 @@
     <Compile Include="Areas\Admin\Models\CategoryAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubcategoryAdminViewModel.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -249,6 +252,7 @@
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +280,7 @@
     <Content Include="Views\Subcategory\Details.cshtml" />
     <Content Include="Views\Cart\Details.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
