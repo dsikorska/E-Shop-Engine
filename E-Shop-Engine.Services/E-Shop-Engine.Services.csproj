@@ -86,6 +86,7 @@
     <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\SubcategoryEntityConfig.cs" />
     <Compile Include="Data\IdentityDbContext.cs" />
+    <Compile Include="Data\Identity\AppRoleManager.cs" />
     <Compile Include="Data\Identity\AppUserManager.cs" />
     <Compile Include="Data\Identity\IdentityConfig.cs" />
     <Compile Include="Migrations\201808072054560_Init.cs" />
@@ -139,6 +140,10 @@
     <Compile Include="Migrations\201809060812084_Switch datetime2 to datetime at AppUser.cs" />
     <Compile Include="Migrations\201809060812084_Switch datetime2 to datetime at AppUser.Designer.cs">
       <DependentUpon>201809060812084_Switch datetime2 to datetime at AppUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809061809424_Add to IdentityRoles discriminator.cs" />
+    <Compile Include="Migrations\201809061809424_Add to IdentityRoles discriminator.Designer.cs">
+      <DependentUpon>201809061809424_Add to IdentityRoles discriminator.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -199,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809060812084_Switch datetime2 to datetime at AppUser.resx">
       <DependentUpon>201809060812084_Switch datetime2 to datetime at AppUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809061809424_Add to IdentityRoles discriminator.resx">
+      <DependentUpon>201809061809424_Add to IdentityRoles discriminator.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

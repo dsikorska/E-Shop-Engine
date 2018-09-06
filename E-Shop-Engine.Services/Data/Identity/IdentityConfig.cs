@@ -13,6 +13,7 @@ namespace E_Shop_Engine.Services.Data.Identity
         {
             app.CreatePerOwinContext<IdentityDbContext>(IdentityDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
+            app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {

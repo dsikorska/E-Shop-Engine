@@ -11,6 +11,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     public class AccountController : Controller
     {
         // GET: Admin/Identity
+        [Authorize]
         public ActionResult Index()
         {
             System.Linq.IQueryable<AppUser> model = UserManager.Users;
