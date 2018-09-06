@@ -1,4 +1,6 @@
-﻿namespace E_Shop_Engine.Domain.DomainModel
+﻿using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+
+namespace E_Shop_Engine.Domain.DomainModel
 {
     public class Address : DbEntity
     {
@@ -9,5 +11,6 @@
         public string State { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
+        public Customer Customer { get; set; }
     }
 }

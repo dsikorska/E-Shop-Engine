@@ -1,9 +1,9 @@
 ﻿using System.Data.Entity.ModelConfiguration;
-using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 
 namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 {
-    class CustomerEntityConfig : EntityTypeConfiguration<Customer>
+    public class CustomerEntityConfig : EntityTypeConfiguration<Customer>
     {
         public CustomerEntityConfig()
         {
@@ -17,31 +17,14 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            Property(c => c.Password)
-                .IsRequired()
-                .HasMaxLength(250);
-
-            Property(c => c.Email)
-                .IsRequired()
-                .HasMaxLength(150);
-
-            Property(c => c.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            HasOptional(c => c.Orders);
-
             HasRequired(c => c.Address)
-                .WithMany()
-                .HasForeignKey(c => c.AddressID);
+                .WithRequiredPrincipal(a => a.Customer);
 
             HasMany(c => c.Orders)
-                .WithRequired(o => o.Customer)
-                .HasForeignKey(o => o.CustomerID);
+                .WithRequired(o => o.Customer);
 
-            Property(c => c.Created)
-                .IsRequired()
-                .HasColumnType("datetime2");
+            HasRequired(c => c.Cart)
+                .WithRequiredPrincipal(o => o.Customer);
         }
     }
 }

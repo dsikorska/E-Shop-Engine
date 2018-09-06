@@ -8,8 +8,9 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public CartEntityConfig()
         {
             HasKey(c => c.ID);
-            HasRequired(c => c.Customer)
-                .WithRequiredDependent(c => c.Cart);
+
+            HasOptional(c => c.Order)
+                .WithRequired(o => o.Cart);
         }
     }
 }

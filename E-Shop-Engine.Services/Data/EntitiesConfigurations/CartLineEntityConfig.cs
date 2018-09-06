@@ -11,8 +11,7 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
             HasRequired(c => c.Product);
 
             HasRequired(c => c.Cart)
-                .WithMany(c => c.CartLines)
-                .HasForeignKey(c => c.CartID);
+                .WithMany(c => c.CartLines);
 
             Property(c => c.Quantity)
                 .IsRequired();

@@ -17,13 +17,6 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
                 .IsOptional()
                 .HasColumnType("datetime");
 
-            HasRequired(o => o.Customer)
-                .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.CustomerID);
-
-            HasRequired(o => o.Cart)
-                .WithOptional(c => c.Order);
-
             Property(o => o.PaymentMethod)
                 .IsRequired();
 

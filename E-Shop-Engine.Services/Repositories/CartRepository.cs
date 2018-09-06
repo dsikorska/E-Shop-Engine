@@ -29,7 +29,6 @@ namespace E_Shop_Engine.Services.Repositories
                 {
                     Product = product,
                     Quantity = quantity,
-                    CartID = cart.ID
                 };
                 _cartLines.Add(line);
             }
