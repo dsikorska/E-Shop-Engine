@@ -146,6 +146,7 @@
       <DependentUpon>201809061809424_Add to IdentityRoles discriminator.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\Identity\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
