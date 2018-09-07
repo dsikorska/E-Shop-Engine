@@ -9,7 +9,10 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-
+//TODO custom controller implementation???
+//TODO nested routing
+//TODO admin area controllers nameing
+//TODO async methods ?
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     public class AdminRoleController : Controller
@@ -86,7 +89,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                     result = await UserManager.AddToRoleAsync(userId, model.RoleName);
                     if (!result.Succeeded)
                     {
-                        return View("_Erros", result.Errors);
+                        return View("_Error", result.Errors);
                     }
                 }
                 foreach (string userId in model.IdsToDelete ?? new string[] { })

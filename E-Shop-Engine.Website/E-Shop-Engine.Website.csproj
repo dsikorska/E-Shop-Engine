@@ -251,7 +251,6 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SubcategoryController.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
-    <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

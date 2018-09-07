@@ -9,6 +9,6 @@ namespace E_Shop_Engine.Domain.DomainModel
 
         public virtual Order Order { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual AppUser AppUser { get; set; }
     }
 }

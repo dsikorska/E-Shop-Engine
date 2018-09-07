@@ -9,7 +9,7 @@ namespace E_Shop_Engine.Domain.DomainModel
         public DateTime Created { get; set; }
         public DateTime Finished { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual AppUser AppUser { get; set; }
 
         public virtual Cart Cart { get; set; }
         public bool IsPaid { get; set; } = false;

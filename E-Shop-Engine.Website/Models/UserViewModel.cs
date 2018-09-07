@@ -5,6 +5,7 @@ namespace E_Shop_Engine.Website.Models
     //TODO use viewmodel instead of appuser
     public class UserViewModel
     {
+        //TODO dont use name
         [Required]
         public string Name { get; set; }
 

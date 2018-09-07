@@ -11,6 +11,6 @@ namespace E_Shop_Engine.Domain.DomainModel
         public string State { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
-        public Customer Customer { get; set; }
+        public virtual AppUser AppUser { get; set; }
     }
 }

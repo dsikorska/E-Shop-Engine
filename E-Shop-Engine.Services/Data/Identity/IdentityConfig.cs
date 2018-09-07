@@ -11,7 +11,7 @@ namespace E_Shop_Engine.Services.Data.Identity
     {
         public void Configuration(IAppBuilder app)
         {
-            app.CreatePerOwinContext<IdentityDbContext>(IdentityDbContext.Create);
+            app.CreatePerOwinContext<AppDbContext>(AppDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
 

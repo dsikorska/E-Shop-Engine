@@ -16,7 +16,7 @@ namespace E_Shop_Engine.Services.Data.Identity
 
         public static AppRoleManager Create(IdentityFactoryOptions<AppRoleManager> options, IOwinContext context)
         {
-            IdentityDbContext db = context.Get<IdentityDbContext>();
+            AppDbContext db = context.Get<AppDbContext>();
             AppRoleManager manager = new AppRoleManager(new RoleStore<AppRole>(db));
 
             return manager;

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
@@ -10,20 +11,20 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Admin/Identity
-        [Authorize]
-        public ActionResult Index()
-        {
-            System.Linq.IQueryable<AppUser> model = UserManager.Users;
-            return View(model);
-        }
-
         private AppUserManager UserManager
         {
             get
             {
                 return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
             }
+        }
+
+        // GET: Admin/Identity
+        [Authorize]
+        public ActionResult Index()
+        {
+            IQueryable<AppUser> model = UserManager.Users;
+            return View(model);
         }
 
         public async Task<ActionResult> Delete(string id)

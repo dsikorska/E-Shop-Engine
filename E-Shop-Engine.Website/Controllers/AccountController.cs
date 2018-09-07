@@ -68,7 +68,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> Logout()
+        public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
@@ -87,11 +87,12 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 AppUser user = new AppUser
                 {
+                    Name = model.Name,
+                    Surname = model.Name,
                     UserName = model.Name,
                     Email = model.Email,
                     Created = DateTime.UtcNow
                 };
-
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -7,12 +7,15 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace E_Shop_Engine.Services.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContextInit : NullDatabaseInitializer<AppDbContext>
+    {
+
+    }
+
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<AppUser> Users { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartLine> CartLines { get; set; }
@@ -21,7 +24,12 @@ namespace E_Shop_Engine.Services.Data
 
         public AppDbContext() : base("ShopEngineDb")
         {
+            Database.SetInitializer(new AppDbContextInit());
+        }
 
+        public static AppDbContext Create()
+        {
+            return new AppDbContext();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -35,7 +43,6 @@ namespace E_Shop_Engine.Services.Data
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
 
-            modelBuilder.Configurations.Add(new CustomerEntityConfig());
             modelBuilder.Configurations.Add(new AddressEntityConfig());
             modelBuilder.Configurations.Add(new CategoryEntityConfig());
             modelBuilder.Configurations.Add(new UserEntityConfig());

@@ -15,7 +15,7 @@ namespace E_Shop_Engine.Services.Data.Identity
         //TODO validate password
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            IdentityDbContext db = context.Get<IdentityDbContext>();
+            AppDbContext db = context.Get<AppDbContext>();
             AppUserManager manager = new AppUserManager(new UserStore<AppUser>(db));
 
             return manager;

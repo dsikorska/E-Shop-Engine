@@ -7,13 +7,13 @@ namespace E_Shop_Engine.Services.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class RenameUsertoAppUser : IMigrationMetadata
+    public sealed partial class Identitysetup : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RenameUsertoAppUser));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Identitysetup));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809060801517_Rename User to AppUser"; }
+            get { return "201809071912295_Identity setup"; }
         }
         
         string IMigrationMetadata.Source

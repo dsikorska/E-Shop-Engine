@@ -12,6 +12,23 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
             Property(c => c.Created)
                 .IsRequired()
                 .HasColumnType("datetime");
+
+            Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            Property(c => c.Surname)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            HasOptional(c => c.Address)
+                .WithRequired(a => a.AppUser);
+
+            HasMany(c => c.Orders)
+                .WithRequired(o => o.AppUser);
+
+            HasOptional(c => c.Cart)
+                .WithRequired(o => o.AppUser);
         }
     }
 }
