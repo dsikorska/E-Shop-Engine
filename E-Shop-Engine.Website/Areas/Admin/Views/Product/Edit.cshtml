@@ -101,10 +101,10 @@
     </div>
 
     @Html.HiddenFor(model => model.Created)
-    @Html.HiddenFor(model => model.ReturnUrl)
+    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
 
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        <a class="btn btn-secondary btn-lg text-white" href="@Model.ReturnUrl">Go back</a>
+        <a class="btn btn-secondary btn-lg text-white" href="@ViewBag.returnUrl">Go back</a>
         <input type="submit" value="Save" class="btn btn-success btn-lg" />
     </div>
 }

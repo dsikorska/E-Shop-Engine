@@ -52,15 +52,16 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangePassword(UserChangePasswordViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             if (model.NewPassword != model.NewPasswordCopy)
             {
                 ModelState.AddModelError("", "The new password and confirmation password does not match.");
                 return View(model);
             }
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
 
@@ -110,12 +111,16 @@ namespace E_Shop_Engine.Website.Controllers
                 return RedirectToAction("Index");
             }
         }
-        //TODO validation returnurl
+
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<ActionResult> Edit(UserEditViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
             if (user != null)

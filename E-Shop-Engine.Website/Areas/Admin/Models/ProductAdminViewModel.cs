@@ -61,8 +61,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         public DateTime? Edited { get; set; }
 
-        public string ReturnUrl { get; set; }
-
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Subcategory> Subcategories { get; set; }
     }

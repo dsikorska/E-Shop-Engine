@@ -1,15 +1,14 @@
 ﻿@model E_Shop_Engine.Website.Models.UserCreateViewModel
 
 @{
-    ViewBag.Title = "New User";
+    ViewBag.Title = "New Profile";
 }
-
-@Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
-<hr />
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
@@ -40,10 +39,11 @@
         </div>
         @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
     </div>
-    <input type="submit" value="Save" class="btn btn-success btn-lg" />
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        @Html.ActionLink("Go Back", "Index", "Home", null, new { @class = "btn btn-secondary btn-lg" })
+        <input type="submit" value="Save" class="btn btn-success btn-lg" />
+    </div>
 }
-@Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-secondary" })
-
 
 @section Scripts {
     @Scripts.Render("~/Bundles/validate")

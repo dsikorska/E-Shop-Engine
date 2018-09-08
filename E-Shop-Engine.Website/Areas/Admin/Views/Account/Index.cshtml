@@ -1,14 +1,29 @@
 ﻿@model IEnumerable<E_Shop_Engine.Website.Areas.Admin.Models.UserAdminViewModel>
-@{ ViewBag.Title = "Index"; }
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        User Accounts
-    </div>
-    <table class="table table-striped">
-        <tr><th>ID</th><th>Name</th><th>Email</th><th></th></tr>
+@{
+    ViewBag.Title = "Users Accounts";
+}
+
+<h2>Users Accounts</h2>
+
+<p class="text-right">
+    @Html.ActionLink("Create new user", "Create", "Account", new { area = "" }, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-striped table-responsive-sm table-hover table-light text-center">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
         @if (Model.Count() == 0)
         {
-            <tr><td colspan="4" class="text-center">No User Accounts</td></tr>
+            <tr>
+                <td colspan="4" class="text-center">No User Accounts</td>
+            </tr>
         }
         else
         {
@@ -25,6 +40,5 @@
                 </tr>
             }
         }
-    </table>
-</div>
-@Html.ActionLink("Create", "Create", "Account", new { area = "" }, new { @class = "btn btn-primary" })
+    </tbody>
+</table>

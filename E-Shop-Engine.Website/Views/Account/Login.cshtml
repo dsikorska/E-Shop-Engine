@@ -6,11 +6,11 @@
 
 <h2>Log In</h2>
 
-@Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
-
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken();
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
     <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
     <div class="input-group mb-3">
         <div class="input-group-prepend">

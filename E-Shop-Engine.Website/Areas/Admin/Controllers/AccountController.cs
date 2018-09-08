@@ -25,7 +25,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Identity
         public ActionResult Index()
         {
-            //TODO 
             IQueryable<AppUser> model = UserManager.Users;
             IEnumerable<UserAdminViewModel> viewModel = Mapper.Map<IQueryable<AppUser>, IEnumerable<UserAdminViewModel>>(model);
             return View(viewModel);

@@ -7,7 +7,7 @@
 <h3>Details @Model.Name</h3>
 
 <p>
-    <a class="btn btn-primary text-white" href="@Model.ReturnUrl">Go back</a>
+    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-secondary" })
 </p>
 

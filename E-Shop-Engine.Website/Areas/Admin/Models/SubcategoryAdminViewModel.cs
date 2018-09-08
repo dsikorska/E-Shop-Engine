@@ -18,8 +18,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public int CategoryID { get; set; }
         public IEnumerable<Category> Categories { get; set; }
 
-        public string ReturnUrl { get; set; }
-
         [Display(Name = "Category")]
         public string CategoryName { get; set; }
 

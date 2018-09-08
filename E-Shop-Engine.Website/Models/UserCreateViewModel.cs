@@ -3,7 +3,6 @@
 namespace E_Shop_Engine.Website.Models
 {
     //TODO add address
-    //TODO use viewmodel instead of appuser
     public class UserCreateViewModel
     {
         [Required(AllowEmptyStrings = false)]
