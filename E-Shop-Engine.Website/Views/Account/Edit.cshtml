@@ -1,7 +1,7 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.UserAdminViewModel
+﻿@model E_Shop_Engine.Website.Models.UserViewModel
 
 @{
-    ViewBag.Title = "Edit user";
+                ViewBag.Title = "New User";
 }
 
 @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
@@ -10,7 +10,6 @@
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })

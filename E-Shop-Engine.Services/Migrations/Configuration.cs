@@ -35,20 +35,20 @@ namespace E_Shop_Engine.Services.Migrations
                 roleManager.Create(new AppRole(roleName));
             }
 
-            AppUser user = userManager.FindByName(userName);
+            AppUser user = userManager.FindByEmail(email);
             if (user == null)
             {
                 AppUser newUser = new AppUser
                 {
                     Name = userName,
                     Surname = userName,
-                    UserName = userName,
+                    UserName = email,
                     Email = email,
                     Created = DateTime.UtcNow
                 };
 
                 IdentityResult result = userManager.Create(newUser, password);
-                user = userManager.FindByName(userName);
+                user = userManager.Find(email, password);
             }
 
             if (!userManager.IsInRole(user.Id, roleName))

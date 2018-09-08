@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Utilities;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Models;
@@ -12,6 +13,13 @@ namespace E_Shop_Engine.Website.App_Start
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<AppUser, UserAdminViewModel>();
+
+                cfg.CreateMap<AppUser, UserViewModel>();
+
+                cfg.CreateMap<UserViewModel, AppUser>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
                 cfg.CreateMap<Product, ProductAdminViewModel>()
                     .ForMember(dest => dest.ImageBytes, opt => opt.AllowNull())
                     .ForMember(dest => dest.ImageBytes, opt => opt.MapFrom(src => src.ImageData))

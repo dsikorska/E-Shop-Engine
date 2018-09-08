@@ -244,6 +244,7 @@
     <Compile Include="Areas\Admin\Models\RoleEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleModificationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubcategoryAdminViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\UserAdminViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -287,8 +288,10 @@
     <Content Include="Views\Subcategory\Details.cshtml" />
     <Content Include="Views\Cart\Details.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
-    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

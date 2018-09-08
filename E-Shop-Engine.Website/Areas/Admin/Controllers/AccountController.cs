@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Website.Areas.Admin.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -20,11 +23,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Identity
-        [Authorize]
         public ActionResult Index()
         {
             IQueryable<AppUser> model = UserManager.Users;
-            return View(model);
+            IEnumerable<UserAdminViewModel> viewModel = Mapper.Map<IQueryable<AppUser>, IEnumerable<UserAdminViewModel>>(model);
+            return View(viewModel);
         }
 
         public async Task<ActionResult> Delete(string id)
@@ -51,9 +54,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             AppUser user = await UserManager.FindByIdAsync(id);
+            UserAdminViewModel model = Mapper.Map<UserAdminViewModel>(user);
             if (user != null)
             {
-                return View(user);
+                return View(model);
             }
             else
             {
@@ -62,32 +66,36 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(string id, string email, string password)
+        public async Task<ActionResult> Edit(UserAdminViewModel model)
         {
-            AppUser user = await UserManager.FindByIdAsync(id);
+            AppUser user = await UserManager.FindByIdAsync(model.Id);
             if (user != null)
             {
-                user.Email = email;
+                user.Email = model.Email;
                 IdentityResult validEmail = await UserManager.UserValidator.ValidateAsync(user);
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
                 }
                 IdentityResult validPass = null;
-                if (password != string.Empty)
+                if (model.Password != string.Empty)
                 {
-                    validPass = await UserManager.PasswordValidator.ValidateAsync(password);
+                    validPass = await UserManager.PasswordValidator.ValidateAsync(model.Password);
                     if (validPass.Succeeded)
                     {
-                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(password);
+                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
                     }
                     else
                     {
                         AddErrorsFromResult(validPass);
                     }
                 }
-                if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded && password != string.Empty && validPass.Succeeded))
+                if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded && model.Password != string.Empty && validPass.Succeeded))
                 {
+                    user.Name = model.Name;
+                    user.Surname = model.Surname;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.UserName = model.Email;
                     IdentityResult result = await UserManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
@@ -103,7 +111,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", "User Not Found");
             }
-            return View(user);
+            return View(model);
         }
 
         private void AddErrorsFromResult(IdentityResult result)

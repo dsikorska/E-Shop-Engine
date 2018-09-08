@@ -1,5 +1,4 @@
-﻿@using E_Shop_Engine.Domain.DomainModel.IdentityModel
-@model IEnumerable<AppUser>
+﻿@model IEnumerable<E_Shop_Engine.Website.Areas.Admin.Models.UserAdminViewModel>
 @{ ViewBag.Title = "Index"; }
 <div class="panel panel-primary">
     <div class="panel-heading">
@@ -13,11 +12,11 @@
         }
         else
         {
-            foreach (AppUser user in Model)
+            foreach (var user in Model)
             {
                 <tr>
                     <td>@user.Id</td>
-                    <td>@user.UserName</td>
+                    <td>@user.Name @user.Surname</td>
                     <td>@user.Email</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = user.Id }, new { @class = "btn btn-primary btn-sm mb-1" })

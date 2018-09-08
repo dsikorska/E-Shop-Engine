@@ -21,19 +21,41 @@
             </form>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Account</a>
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Favourites", "Index", "Account", null, new { @class = "nav-link" })
+                    }
                 </li>
                 <li class="nav-item active">
                     @Html.ActionLink("Cart", "Details", "Cart", new { id = 0 }, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Favourites</a>
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Your Account", "Index", "Account", null, new { @class = "nav-link" })
+                    }
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/Admin">Admin</a>
+                    @if (HttpContext.Current.User.IsInRole("Administrators"))
+                    {
+                        @Html.ActionLink("Admin Panel", "Index", "Home", new { area = "Admin" }, new { @class = "nav-link" })
+                    }
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("New user", "Create", "Account", null, new { @class = "nav-link" })
+                    @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Sign In", "Create", "Account", null, new { @class = "nav-link" })
+                    }
+                </li>
+                <li class="nav-item active">
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Log Out", "Logout", "Account", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "nav-link" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Log In", "Login", "Account", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "nav-link" })
+                    }
                 </li>
             </ul>
         </div>

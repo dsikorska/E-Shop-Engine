@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Models;
@@ -30,6 +31,85 @@ namespace E_Shop_Engine.Website.Controllers
             }
         }
 
+        [Authorize]
+        public async Task<ActionResult> Index()
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = await UserManager.FindByIdAsync(userId);
+            UserViewModel model = Mapper.Map<UserViewModel>(user);
+
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Edit()
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = await UserManager.FindByIdAsync(userId);
+            UserViewModel model = Mapper.Map<UserViewModel>(user);
+
+            if (user != null)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        //TODO validation returnurl
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> Edit(UserViewModel model)
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = await UserManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.Email = model.Email;
+                IdentityResult validEmail = await UserManager.UserValidator.ValidateAsync(user);
+                if (!validEmail.Succeeded)
+                {
+                    AddErrorsFromResult(validEmail);
+                }
+                IdentityResult validPass = null;
+                if (model.Password != string.Empty)
+                {
+                    validPass = await UserManager.PasswordValidator.ValidateAsync(model.Password);
+                    if (validPass.Succeeded)
+                    {
+                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(validPass);
+                    }
+                }
+                if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded && model.Password != string.Empty && validPass.Succeeded))
+                {
+                    user.Name = model.Name;
+                    user.Surname = model.Surname;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.UserName = model.Email;
+                    IdentityResult result = await UserManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(result);
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "User Not Found");
+            }
+            return View(model);
+        }
+
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -48,7 +128,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser user = await UserManager.FindAsync(model.Name, model.Password);
+                AppUser user = await UserManager.FindAsync(model.Email, model.Password);
                 if (user == null)
                 {
                     ModelState.AddModelError("", "Invalid name or password");
@@ -68,31 +148,29 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
-        //TODO add index
+        [AllowAnonymous]
         public ActionResult Create()
         {
-            return View();
+            return View("Edit");
         }
 
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<ActionResult> Create(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                AppUser user = new AppUser
-                {
-                    Name = model.Name,
-                    Surname = model.Name,
-                    UserName = model.Name,
-                    Email = model.Email,
-                    Created = DateTime.UtcNow
-                };
+                AppUser user = Mapper.Map<AppUser>(model);
+                user.Created = DateTime.UtcNow;
+
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -104,7 +182,7 @@ namespace E_Shop_Engine.Website.Controllers
                 }
             }
 
-            return View(model);
+            return View("Edit", model);
         }
 
         private void AddErrorsFromResult(IdentityResult result)

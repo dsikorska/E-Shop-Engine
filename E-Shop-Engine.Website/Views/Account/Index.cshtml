@@ -1,0 +1,24 @@
+﻿@model E_Shop_Engine.Website.Models.UserViewModel
+
+@{
+    ViewBag.Title = "My Account";
+}
+
+<p class="my-2">
+    @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
+</p>
+
+<dl>
+    <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+    <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Surname)</dt>
+    <dd>@Html.DisplayFor(model => model.Surname)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+    <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+</dl>
+
