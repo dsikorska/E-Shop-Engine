@@ -2,9 +2,7 @@
 
 namespace E_Shop_Engine.Website.Models
 {
-    //TODO add address
-    //TODO use viewmodel instead of appuser
-    public class UserViewModel
+    public class UserEditViewModel
     {
         [Required(AllowEmptyStrings = false)]
         public string Name { get; set; }
@@ -20,9 +18,5 @@ namespace E_Shop_Engine.Website.Models
         [Required(AllowEmptyStrings = false)]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required(AllowEmptyStrings = false)]
-        [StringLength(200, MinimumLength = 6)]
-        public string Password { get; set; }
     }
 }

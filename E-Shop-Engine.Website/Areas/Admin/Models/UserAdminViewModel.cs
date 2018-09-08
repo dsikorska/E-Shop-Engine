@@ -3,7 +3,6 @@ using System.Web.Mvc;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Models
 {
-    //TODO password
     public class UserAdminViewModel
     {
         [HiddenInput(DisplayValue = false)]
@@ -22,9 +21,5 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Display(Name = "Phone Number")]
         [Phone]
         public string PhoneNumber { get; set; }
-
-        [Required(AllowEmptyStrings = false)]
-        [StringLength(200, MinimumLength = 6)]
-        public string Password { get; set; }
     }
 }

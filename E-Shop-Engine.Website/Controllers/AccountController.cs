@@ -36,8 +36,61 @@ namespace E_Shop_Engine.Website.Controllers
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
-            UserViewModel model = Mapper.Map<UserViewModel>(user);
+            UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
 
+            return View(model);
+        }
+
+        [Authorize]
+        public ActionResult ChangePassword()
+        {
+            return View(new UserChangePasswordViewModel());
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> ChangePassword(UserChangePasswordViewModel model)
+        {
+            if (model.NewPassword != model.NewPasswordCopy)
+            {
+                ModelState.AddModelError("", "The new password and confirmation password does not match.");
+                return View(model);
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = await UserManager.FindByIdAsync(userId);
+
+            IdentityResult validPass = null;
+            validPass = await UserManager.PasswordValidator.ValidateAsync(model.NewPassword);
+            if (validPass.Succeeded)
+            {
+                user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.NewPassword);
+            }
+            else
+            {
+                AddErrorsFromResult(validPass);
+            }
+
+            if (validPass == null || (model.NewPassword != string.Empty && validPass.Succeeded))
+            {
+                IdentityResult result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "User Not Found");
+            }
             return View(model);
         }
 
@@ -46,7 +99,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
-            UserViewModel model = Mapper.Map<UserViewModel>(user);
+            UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
 
             if (user != null)
             {
@@ -61,7 +114,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<ActionResult> Edit(UserViewModel model)
+        public async Task<ActionResult> Edit(UserEditViewModel model)
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
@@ -73,20 +126,8 @@ namespace E_Shop_Engine.Website.Controllers
                 {
                     AddErrorsFromResult(validEmail);
                 }
-                IdentityResult validPass = null;
-                if (model.Password != string.Empty)
-                {
-                    validPass = await UserManager.PasswordValidator.ValidateAsync(model.Password);
-                    if (validPass.Succeeded)
-                    {
-                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
-                    }
-                    else
-                    {
-                        AddErrorsFromResult(validPass);
-                    }
-                }
-                if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded && model.Password != string.Empty && validPass.Succeeded))
+
+                if (validEmail.Succeeded)
                 {
                     user.Name = model.Name;
                     user.Surname = model.Surname;
@@ -158,13 +199,13 @@ namespace E_Shop_Engine.Website.Controllers
         [AllowAnonymous]
         public ActionResult Create()
         {
-            return View("Edit");
+            return View();
         }
 
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<ActionResult> Create(UserViewModel model)
+        public async Task<ActionResult> Create(UserCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -182,7 +223,7 @@ namespace E_Shop_Engine.Website.Controllers
                 }
             }
 
-            return View("Edit", model);
+            return View(model);
         }
 
         private void AddErrorsFromResult(IdentityResult result)

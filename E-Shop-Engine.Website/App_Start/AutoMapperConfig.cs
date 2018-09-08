@@ -13,12 +13,17 @@ namespace E_Shop_Engine.Website.App_Start
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<AppUser, UserEditViewModel>();
+
+                cfg.CreateMap<UserEditViewModel, AppUser>()
+                    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
                 cfg.CreateMap<AppUser, UserAdminViewModel>();
 
-                cfg.CreateMap<AppUser, UserViewModel>();
+                cfg.CreateMap<AppUser, UserCreateViewModel>();
 
-                cfg.CreateMap<UserViewModel, AppUser>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+                cfg.CreateMap<UserCreateViewModel, AppUser>()
+                    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
                 cfg.CreateMap<Product, ProductAdminViewModel>()
                     .ForMember(dest => dest.ImageBytes, opt => opt.AllowNull())

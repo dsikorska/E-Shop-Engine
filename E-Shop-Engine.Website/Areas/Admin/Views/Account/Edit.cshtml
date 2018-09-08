@@ -35,12 +35,6 @@
         </div>
         @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
     </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Password, new { @class = "input-group-text" })
-        </div>
-        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-    </div>
     <input type="submit" value="Save" class="btn btn-success btn-lg" />
 }
 @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-secondary" })

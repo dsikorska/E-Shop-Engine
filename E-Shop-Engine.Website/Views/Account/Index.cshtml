@@ -1,4 +1,4 @@
-﻿@model E_Shop_Engine.Website.Models.UserViewModel
+﻿@model E_Shop_Engine.Website.Models.UserEditViewModel
 
 @{
     ViewBag.Title = "My Account";
@@ -6,6 +6,7 @@
 
 <p class="my-2">
     @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
 </p>
 
 <dl>

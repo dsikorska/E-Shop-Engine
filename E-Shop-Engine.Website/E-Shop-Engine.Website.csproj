@@ -259,8 +259,10 @@
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />
+    <Compile Include="Models\UserChangePasswordViewModel.cs" />
+    <Compile Include="Models\UserEditViewModel.cs" />
     <Compile Include="Models\UserLoginViewModel.cs" />
-    <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Models\UserCreateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +294,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -301,7 +305,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\RoleAdmin\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\E-Shop-Engine.Domain\E-Shop-Engine.Domain.csproj">

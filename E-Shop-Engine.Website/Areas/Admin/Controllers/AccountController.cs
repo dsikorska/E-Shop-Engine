@@ -25,6 +25,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Identity
         public ActionResult Index()
         {
+            //TODO 
             IQueryable<AppUser> model = UserManager.Users;
             IEnumerable<UserAdminViewModel> viewModel = Mapper.Map<IQueryable<AppUser>, IEnumerable<UserAdminViewModel>>(model);
             return View(viewModel);
@@ -77,20 +78,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 {
                     AddErrorsFromResult(validEmail);
                 }
-                IdentityResult validPass = null;
-                if (model.Password != string.Empty)
-                {
-                    validPass = await UserManager.PasswordValidator.ValidateAsync(model.Password);
-                    if (validPass.Succeeded)
-                    {
-                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
-                    }
-                    else
-                    {
-                        AddErrorsFromResult(validPass);
-                    }
-                }
-                if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded && model.Password != string.Empty && validPass.Succeeded))
+
+                if (validEmail.Succeeded)
                 {
                     user.Name = model.Name;
                     user.Surname = model.Surname;
