@@ -4,10 +4,12 @@
     ViewBag.Title = "My Account";
 }
 
-<p class="my-2">
+<input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+<div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
+    <a class="btn btn-secondary text-white" href="@ViewBag.returnUrl">Go back</a>
     @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
     @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
-</p>
+</div>
 
 <dl>
     <dt>@Html.DisplayNameFor(model => model.Name)</dt>
