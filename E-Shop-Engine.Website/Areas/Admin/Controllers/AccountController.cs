@@ -1,25 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     public class AccountController : Controller
     {
-        private AppUserManager UserManager
+        //private AppUserManager UserManager
+        //{
+        //    get
+        //    {
+        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+        //    }
+        //}
+
+        private readonly AppUserManager UserManager;
+
+        public AccountController(AppUserManager userManager)
         {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-            }
+            UserManager = userManager;
         }
 
         // GET: Admin/Identity

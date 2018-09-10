@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
-using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
 
 namespace E_Shop_Engine.Services.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : DbEntity
+    public class Repository<T> : IRepository<T> where T : class
     {
         protected AppDbContext _context;
         protected IDbSet<T> _dbSet;
 
-        public Repository(AppDbContext context)
+        public Repository(IAppDbContext context)
         {
-            _context = context;
-            _dbSet = context.Set<T>();
+            _context = context as AppDbContext;
+            _dbSet = _context.Set<T>();
         }
 
         public virtual void Create(T entity)

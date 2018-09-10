@@ -2,7 +2,6 @@
 using System.Linq;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data;
 
 namespace E_Shop_Engine.Services.Repositories
 {
@@ -10,17 +9,17 @@ namespace E_Shop_Engine.Services.Repositories
     {
         private DbSet<CartLine> _cartLines;
 
-        public CartRepository(AppDbContext context) : base(context)
+        public CartRepository(IAppDbContext context) : base(context)
         {
-            _context = context;
-            _dbSet = context.Carts;
-            _cartLines = context.CartLines;
+            _dbSet = _context.Carts;
+            _cartLines = _context.CartLines;
         }
 
         public void AddItem(Cart cart, Product product, int quantity = 1)
         {
             CartLine line = cart.CartLines
-                .Where(p => p.Product.ID == product.ID)
+                ?.Where(p => p.Product.ID == product.ID)
+                .DefaultIfEmpty()
                 .FirstOrDefault();
 
             if (line == null)
@@ -30,13 +29,13 @@ namespace E_Shop_Engine.Services.Repositories
                     Product = product,
                     Quantity = quantity,
                 };
-                _cartLines.Add(line);
+                cart.CartLines.Add(line);
             }
             else
             {
                 line.Quantity += quantity;
             }
-            Save();
+            Update(cart);
         }
 
         public void RemoveLine(Cart cart, Product product)

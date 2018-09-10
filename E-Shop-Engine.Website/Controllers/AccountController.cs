@@ -1,34 +1,41 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
 namespace E_Shop_Engine.Website.Controllers
 {
     public class AccountController : Controller
     {
-        private IAuthenticationManager AuthManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        //private IAuthenticationManager AuthManager
+        //{
+        //    get
+        //    {
+        //        return HttpContext.GetOwinContext().Authentication;
+        //    }
+        //}
 
-        private AppUserManager UserManager
+        //private AppUserManager UserManager
+        //{
+        //    get
+        //    {
+        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+        //    }
+        //}
+
+        private readonly AppUserManager UserManager;
+        private readonly IAuthenticationManager AuthManager;
+
+        public AccountController(AppUserManager userManager, IAuthenticationManager authManager)
         {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-            }
+            UserManager = userManager;
+            AuthManager = authManager;
         }
 
         [Authorize]

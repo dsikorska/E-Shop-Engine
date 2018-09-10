@@ -22,7 +22,7 @@ namespace E_Shop_Engine.Services.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.       
 
-            AppUserManager userManager = new AppUserManager(new UserStore<AppUser>(context));
+            AppUserManager userManager = new AppUserManager(new UserStore<AppUser>(), context);
             AppRoleManager roleManager = new AppRoleManager(new RoleStore<AppRole>(context));
             //TODO sensitive data
             string roleName = "Administrators";

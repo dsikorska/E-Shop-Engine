@@ -16,7 +16,7 @@
                 </div>
             </a>
             <div class="card-body text-center p-0 pb-4">
-                <a href="#" class="btn btn-success text-white">Add to cart</a>
+                @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = product.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-success text-white" })
             </div>
         </div>
     }

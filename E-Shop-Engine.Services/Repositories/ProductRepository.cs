@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data;
 
 namespace E_Shop_Engine.Services.Repositories
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        public ProductRepository(AppDbContext context) : base(context)
+        public ProductRepository(IAppDbContext context) : base(context)
         {
-            _context = context;
-            _dbSet = context.Products;
+            _dbSet = _context.Products;
         }
 
         public IList<Product> GetAllSpecialOffers()

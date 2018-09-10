@@ -5,12 +5,19 @@ namespace E_Shop_Engine.Website.App_Start
 {
     using System;
     using System.Web;
+    using E_Shop_Engine.Domain.DomainModel.IdentityModel;
     using E_Shop_Engine.Domain.Interfaces;
+    using E_Shop_Engine.Services.Data;
+    using E_Shop_Engine.Services.Data.Identity;
     using E_Shop_Engine.Services.Repositories;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.Owin.Security;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
     using Ninject;
     using Ninject.Web.Common;
+    using Ninject.Web.Common.WebHost;
 
     public static class NinjectWebCommon
     {
@@ -40,7 +47,7 @@ namespace E_Shop_Engine.Website.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
+            StandardKernel kernel = new StandardKernel();
             try
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
@@ -62,6 +69,12 @@ namespace E_Shop_Engine.Website.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IAppDbContext>().To<AppDbContext>().InRequestScope();
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
+            kernel.Bind<IUserStore<AppUser>>().To<UserStore<AppUser>>().InRequestScope();
+            kernel.Bind<AppUserManager>().ToSelf().InRequestScope();
+            kernel.Bind<AppRoleManager>().ToSelf().InRequestScope();
+            kernel.Bind<IAuthenticationManager>().ToMethod(x => HttpContext.Current.GetOwinContext().Authentication);
             kernel.Bind(typeof(IRepository<>)).To((typeof(Repository<>))).InRequestScope();
             kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
             kernel.Bind<ICartRepository>().To<CartRepository>().InRequestScope();

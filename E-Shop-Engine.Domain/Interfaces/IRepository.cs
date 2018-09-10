@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using E_Shop_Engine.Domain.DomainModel;
 
 namespace E_Shop_Engine.Domain.Interfaces
 {
-    public interface IRepository<T> where T : DbEntity
+    public interface IRepository<T> where T : class
     {
         IQueryable<T> GetAll();
         T GetById(int id);
