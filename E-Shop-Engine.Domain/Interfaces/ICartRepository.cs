@@ -7,6 +7,7 @@ namespace E_Shop_Engine.Domain.Interfaces
         void AddItem(Cart cart, Product product, int quantity);
         void RemoveLine(Cart cart, Product product);
         decimal ComputeTotalValue(Cart cart);
+        int CountItems(Cart cart);
         void Clear(Cart cart);
     }
 }

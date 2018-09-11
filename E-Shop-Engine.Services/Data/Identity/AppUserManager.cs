@@ -9,6 +9,7 @@ namespace E_Shop_Engine.Services.Data.Identity
 {
     public class AppUserManager : UserManager<AppUser>
     {
+        //TODO make it more elegant
         public AppUserManager(IUserStore<AppUser> store, IAppDbContext dbContext) : base(store)
         {
             AppDbContext db = dbContext as AppDbContext;

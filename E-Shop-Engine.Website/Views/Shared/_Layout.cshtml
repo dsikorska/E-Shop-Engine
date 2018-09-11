@@ -27,7 +27,7 @@
                     }
                 </li>
                 <li class="nav-item active">
-                    @Html.ActionLink("Cart", "Details", "Cart", new { id = 0 }, new { @class = "nav-link" })
+                    @Html.Action("CountItems", "Cart")
                 </li>
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
@@ -63,14 +63,14 @@
     <div class="container-fluid pl-0">
         <div class="d-flex h-90-vh">
             @Html.Action("NavList", "Home")
-            <div class="w-auto">
+            <div class="w-auto mx-auto">
                 @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year</p>
+                </footer>
             </div>
         </div>
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year</p>
-        </footer>
     </div>
     @RenderSection("Scripts", false)
 </body>

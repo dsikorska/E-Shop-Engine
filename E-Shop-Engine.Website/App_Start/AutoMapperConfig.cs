@@ -64,6 +64,14 @@ namespace E_Shop_Engine.Website.App_Start
                     .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
                     .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.ID))
                     .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
+
+                cfg.CreateMap<Cart, CartViewModel>();
+
+                cfg.CreateMap<CartViewModel, Cart>();
+
+                cfg.CreateMap<CartLine, CartLineViewModel>();
+
+                cfg.CreateMap<CartLineViewModel, CartLine>();
             });
         }
     }

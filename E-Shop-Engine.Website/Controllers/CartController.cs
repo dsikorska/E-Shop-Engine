@@ -1,15 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    //[IsCartInitialized]
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -33,17 +34,32 @@ namespace E_Shop_Engine.Website.Controllers
         //    }
         //}
 
+        public ActionResult CountItems()
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+            if (user == null)
+            {
+                return PartialView("_Cart", 0);
+            }
+            int model = _cartRepository.CountItems(user.Cart);
+
+            return PartialView("_Cart", model);
+        }
+
         #region Logged users
 
-        public async Task<ActionResult> Details()
+        public async Task<ActionResult> Details(string returnUrl = "/Home/Index")
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await _userManager.FindByIdAsync(userId);
-            Cart cart = user.Cart;
+            CartViewModel model = Mapper.Map<Cart, CartViewModel>(user.Cart);
+            model.TotalValue = _cartRepository.ComputeTotalValue(user.Cart);
+            ViewBag.returnUrl = returnUrl;
 
-            return View(cart);
+            return View(model);
         }
-
+        //TODO
         public ActionResult AddItem(int id, int quantity = 1, string returnUrl = "/Home/Index")
         {
             using (_unitOfWork.NewUnitOfWork())
@@ -51,7 +67,6 @@ namespace E_Shop_Engine.Website.Controllers
                 Product product = _productRepository.GetById(id);
                 string userId = HttpContext.User.Identity.GetUserId();
                 AppUser user = _userManager.FindById(userId);
-
 
                 if (user.Cart == null)
                 {
@@ -64,6 +79,20 @@ namespace E_Shop_Engine.Website.Controllers
                 };
 
                 _cartRepository.AddItem(user.Cart, product, quantity);
+            }
+
+            return Redirect(returnUrl);
+        }
+        //TODO
+        public ActionResult RemoveItem(int id, string returnUrl = "/Home/Index")
+        {
+            using (_unitOfWork.NewUnitOfWork())
+            {
+                Product product = _productRepository.GetById(id);
+                string userId = HttpContext.User.Identity.GetUserId();
+                AppUser user = _userManager.FindById(userId);
+
+                _cartRepository.RemoveLine(user.Cart, product);
             }
 
             return Redirect(returnUrl);

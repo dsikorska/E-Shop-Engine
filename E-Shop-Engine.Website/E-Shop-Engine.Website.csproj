@@ -254,17 +254,20 @@
     <Compile Include="Areas\Admin\Models\SubcategoryAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\IdentityBaseController.cs" />
+    <Compile Include="Controllers\UtilityBaseController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SubcategoryController.cs" />
-    <Compile Include="CustomFilters\IsCartInitializedAttribute.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartLineViewModel.cs" />
+    <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />
@@ -307,6 +310,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Shared\_Cart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -316,6 +320,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CustomFilters\" />
+    <Folder Include="Views\Basic\" />
+    <Folder Include="Views\IdentityBase\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\E-Shop-Engine.Domain\E-Shop-Engine.Domain.csproj">

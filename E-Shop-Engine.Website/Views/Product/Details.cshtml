@@ -12,6 +12,7 @@
 
 <div class="d-flex flex-wrap">
     <div class="w-auto mr-2">
+        @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = Model.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-success text-white" })
         <img id="ImgPreview" class="img-fluid d-block"
              src="@Url.Action("GetImage", "Product", new { Model.Id })" />
     </div>

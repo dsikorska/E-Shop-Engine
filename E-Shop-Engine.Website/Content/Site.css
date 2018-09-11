@@ -53,3 +53,7 @@
 .h-90-vh {
     height: 80vh;
 }
+
+.pointer {
+    cursor: pointer;
+}
