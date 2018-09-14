@@ -1,0 +1,25 @@
+﻿@model E_Shop_Engine.Website.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h3>Details</h3>
+
+<div class="d-flex flex-wrap">
+    <div class="w-auto mr-2">
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
+            <dd>@Html.DisplayFor(model => model.Created)</dd>
+        </dl>
+    </div>
+    <div class="w-74">
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
+            <dd class="border-bottom">@Html.DisplayFor(model => model.Created)</dd>
+        </dl>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

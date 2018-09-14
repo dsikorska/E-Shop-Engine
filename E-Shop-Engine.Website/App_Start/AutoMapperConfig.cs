@@ -72,6 +72,22 @@ namespace E_Shop_Engine.Website.App_Start
                 cfg.CreateMap<CartLine, CartLineViewModel>();
 
                 cfg.CreateMap<CartLineViewModel, CartLine>();
+
+                cfg.CreateMap<Order, OrderViewModel>();
+
+                cfg.CreateMap<OrderViewModel, Order>();
+
+                cfg.CreateMap<Cart, OrderedCart>();
+
+                cfg.CreateMap<OrderedCart, Cart>();
+
+                cfg.CreateMap<CartLine, OrderedCartLine>();
+
+                cfg.CreateMap<OrderedCartLine, CartLine>();
+
+                cfg.CreateMap<AddressViewModel, Address>();
+
+                cfg.CreateMap<Address, AddressViewModel>();
             });
         }
     }

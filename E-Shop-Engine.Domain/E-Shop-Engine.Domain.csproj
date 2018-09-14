@@ -61,7 +61,9 @@
     <Compile Include="DomainModel\IdentityModel\AppUser.cs" />
     <Compile Include="DomainModel\DbEntity.cs" />
     <Compile Include="DomainModel\Order.cs" />
+    <Compile Include="DomainModel\OrderedCart.cs" />
     <Compile Include="DomainModel\Product.cs" />
+    <Compile Include="DomainModel\OrderedCartLine.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
     <Compile Include="Enumerables\PaymentMethod.cs" />

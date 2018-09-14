@@ -77,6 +77,8 @@
     <Compile Include="Data\EntitiesConfigurations\CartEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CartLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CategoryEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\OrderedCartEntityConfig.cs" />
+    <Compile Include="Data\EntitiesConfigurations\OrderedCartLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\UserEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\OrderEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
@@ -123,6 +125,30 @@
     <Compile Include="Migrations\201809071912295_Identity setup.cs" />
     <Compile Include="Migrations\201809071912295_Identity setup.Designer.cs">
       <DependentUpon>201809071912295_Identity setup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809121231148_Migrate Address from AppUser to Order.cs" />
+    <Compile Include="Migrations\201809121231148_Migrate Address from AppUser to Order.Designer.cs">
+      <DependentUpon>201809121231148_Migrate Address from AppUser to Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809121935096_Update navigation properties.cs" />
+    <Compile Include="Migrations\201809121935096_Update navigation properties.Designer.cs">
+      <DependentUpon>201809121935096_Update navigation properties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809141234343_Re-configuration Orders and Carts relationship.cs" />
+    <Compile Include="Migrations\201809141234343_Re-configuration Orders and Carts relationship.Designer.cs">
+      <DependentUpon>201809141234343_Re-configuration Orders and Carts relationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809141244172_Update Cart and CartLine config.cs" />
+    <Compile Include="Migrations\201809141244172_Update Cart and CartLine config.Designer.cs">
+      <DependentUpon>201809141244172_Update Cart and CartLine config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809141340538_Setup Composite Key for CartLines.cs" />
+    <Compile Include="Migrations\201809141340538_Setup Composite Key for CartLines.Designer.cs">
+      <DependentUpon>201809141340538_Setup Composite Key for CartLines.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809141801033_Move Address to AppUser.cs" />
+    <Compile Include="Migrations\201809141801033_Move Address to AppUser.Designer.cs">
+      <DependentUpon>201809141801033_Move Address to AppUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,6 +201,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809071912295_Identity setup.resx">
       <DependentUpon>201809071912295_Identity setup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809121231148_Migrate Address from AppUser to Order.resx">
+      <DependentUpon>201809121231148_Migrate Address from AppUser to Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809121935096_Update navigation properties.resx">
+      <DependentUpon>201809121935096_Update navigation properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809141234343_Re-configuration Orders and Carts relationship.resx">
+      <DependentUpon>201809141234343_Re-configuration Orders and Carts relationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809141244172_Update Cart and CartLine config.resx">
+      <DependentUpon>201809141244172_Update Cart and CartLine config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809141340538_Setup Composite Key for CartLines.resx">
+      <DependentUpon>201809141340538_Setup Composite Key for CartLines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809141801033_Move Address to AppUser.resx">
+      <DependentUpon>201809141801033_Move Address to AppUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

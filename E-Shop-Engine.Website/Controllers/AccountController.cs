@@ -3,7 +3,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
@@ -31,11 +33,15 @@ namespace E_Shop_Engine.Website.Controllers
 
         private readonly AppUserManager UserManager;
         private readonly IAuthenticationManager AuthManager;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IRepository<Address> _addressRepository;
 
-        public AccountController(AppUserManager userManager, IAuthenticationManager authManager)
+        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IUnitOfWork unitOfWork, IRepository<Address> addressRepository)
         {
             UserManager = userManager;
             AuthManager = authManager;
+            _unitOfWork = unitOfWork;
+            _addressRepository = addressRepository;
         }
 
         [Authorize]
@@ -256,6 +262,52 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult Address()
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = UserManager.FindById(userId);
+
+            AddressViewModel model;
+
+            if (user.Address != null)
+            {
+                model = Mapper.Map<AddressViewModel>(user.Address);
+            }
+            else
+            {
+                model = new AddressViewModel();
+            }
+
+            return View(model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Address(AddressViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (_unitOfWork.NewUnitOfWork())
+            {
+                string userId = HttpContext.User.Identity.GetUserId();
+                AppUser user = UserManager.FindById(userId);
+                Address address = _addressRepository.GetById(model.Id);
+                address.City = model.City;
+                address.Country = model.Country;
+                address.Line1 = model.Line1;
+                address.Line2 = model.Line2;
+                address.State = model.State;
+                address.Street = model.Street;
+                address.ZipCode = model.ZipCode;
+                _addressRepository.Update(address);
+            }
+
+            return RedirectToAction("Create", "Order", null);
         }
 
         private void AddErrorsFromResult(IdentityResult result)

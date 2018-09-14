@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.ModelConfiguration;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 
 namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
@@ -8,6 +9,9 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public UserEntityConfig()
         {
             HasKey(c => c.Id);
+
+            Property(t => t.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(c => c.Created)
                 .IsRequired()
@@ -21,14 +25,16 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            HasOptional(c => c.Address)
-                .WithRequired(a => a.AppUser);
-
             HasMany(c => c.Orders)
                 .WithRequired(o => o.AppUser);
 
             HasOptional(c => c.Cart)
-                .WithRequired(o => o.AppUser);
+                .WithRequired(o => o.AppUser)
+                .Map(c => c.MapKey("AppUser_Id"));
+
+            HasOptional(c => c.Address)
+                .WithRequired(c => c.AppUser)
+                .Map(c => c.MapKey("AppUser_Id"));
         }
     }
 }

@@ -3,9 +3,9 @@ using E_Shop_Engine.Domain.DomainModel;
 
 namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 {
-    public class CartEntityConfig : EntityTypeConfiguration<Cart>
+    public class OrderedCartEntityConfig : EntityTypeConfiguration<OrderedCart>
     {
-        public CartEntityConfig()
+        public OrderedCartEntityConfig()
         {
             HasKey(c => c.ID);
         }

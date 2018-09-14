@@ -1,0 +1,28 @@
+﻿@using E_Shop_Engine.Domain.Enumerables
+@model E_Shop_Engine.Website.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Order";
+}
+
+<h3>Order</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <hr />
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })   
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.PaymentMethod, new { @class = "input-group-text" })
+        </div>
+        @Html.EnumDropDownListFor(model => model.PaymentMethod, "Select payment method", new { @class = "form-control" })
+    </div>
+
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        <a class="btn btn-danger btn-lg text-white" href="/Cart/Details">Cancel</a>
+        <input type="submit" value="Process" class="btn btn-success btn-lg" />
+    </div>
+}

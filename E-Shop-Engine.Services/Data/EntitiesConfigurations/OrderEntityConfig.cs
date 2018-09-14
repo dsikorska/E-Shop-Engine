@@ -22,6 +22,14 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 
             Property(o => o.OrderStatus)
                 .IsRequired();
+
+            HasRequired(c => c.AppUser)
+                .WithOptional()
+                .Map(c => c.MapKey("AppUser_Id"));
+
+            HasRequired(c => c.OrderedCart)
+                .WithRequiredPrincipal(c => c.Order)
+                .Map(c => c.MapKey("Order_Id"));
         }
     }
 }

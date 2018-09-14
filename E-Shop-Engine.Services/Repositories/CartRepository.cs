@@ -35,7 +35,7 @@ namespace E_Shop_Engine.Services.Repositories
             {
                 line.Quantity += quantity;
             }
-            Update(cart);
+            Save();
         }
 
         public void RemoveLine(Cart cart, Product product)
@@ -58,6 +58,7 @@ namespace E_Shop_Engine.Services.Repositories
         public void Clear(Cart cart)
         {
             cart.CartLines.Clear();
+            Update(cart);
         }
     }
 }
