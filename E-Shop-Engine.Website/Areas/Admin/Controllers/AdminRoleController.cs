@@ -43,7 +43,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/RoleAdmin
         public ActionResult Index()
         {
-            return View(RoleManager.Roles);
+            IQueryable<AppRole> model = RoleManager.Roles;
+            return View(model);
         }
 
         public ActionResult Create()

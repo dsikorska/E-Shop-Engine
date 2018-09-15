@@ -33,13 +33,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ViewResult Edit(int id, string returnUrl = "/Admin/Product")
+        public ViewResult Edit(int id)
         {
             Product product = _productRepository.GetById(id);
             ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
             model.Categories = _categoryRepository.GetAll();
             model.Subcategories = _subcategoryRepository.GetAll();
-            ViewBag.returnUrl = returnUrl;
 
             return View(model);
         }
@@ -47,7 +46,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         //TODO get byte array from db instead of storing in view
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductAdminViewModel model, string returnUrl = "/Admin/Product")
+        public ActionResult Edit(ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -56,7 +55,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             _productRepository.Update(Mapper.Map<Product>(model));
 
-            return Redirect(returnUrl);
+            return Redirect(ViewBag.returnUrl);
         }
 
         [HttpGet]
@@ -67,7 +66,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 Categories = _categoryRepository.GetAll(),
                 Subcategories = _subcategoryRepository.GetAll()
             };
-            ViewBag.returnUrl = "/Admin/Product";
+
             return View("Edit", model);
         }
 
@@ -75,7 +74,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductAdminViewModel model)
         {
-            ViewBag.returnUrl = "/Admin/Product";
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Create");
@@ -90,11 +88,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id, string returnUrl)
+        public ActionResult Details(int id)
         {
             Product product = _productRepository.GetById(id);
             ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
-            ViewBag.returnUrl = returnUrl;
             model.Created = product.Created.ToLocalTime();
             model.Edited = product.Edited.GetValueOrDefault().ToLocalTime();
 

@@ -28,7 +28,5 @@ namespace E_Shop_Engine.Website.Models
 
         [Display(Name = "Subcategory")]
         public string SubcategoryName { get; set; }
-
-        public string ReturnUrl { get; set; }
     }
 }

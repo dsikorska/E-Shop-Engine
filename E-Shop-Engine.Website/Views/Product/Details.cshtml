@@ -7,12 +7,12 @@
 <h3>@Model.Name</h3>
 
 <p>
-    <a class="btn btn-primary text-white" href="@Model.ReturnUrl">Go back</a>
+    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
 </p>
 
 <div class="d-flex flex-wrap">
     <div class="w-auto mr-2">
-        @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = Model.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-success text-white" })
+        @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = Model.Id }, new { @class = "btn btn-success text-white" })
         <img id="ImgPreview" class="img-fluid d-block"
              src="@Url.Action("GetImage", "Product", new { Model.Id })" />
     </div>

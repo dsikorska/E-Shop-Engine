@@ -32,7 +32,7 @@
         {
             foreach (var item in Model.CartLines)
             {
-            <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id?returnUrl=@Request.Url.PathAndQuery">
+            <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id">
                 <td>
                     @Html.DisplayFor(model => item.Product.Name)
                 </td>
@@ -43,7 +43,7 @@
                     @Html.DisplayFor(model => item.Product.Price)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "RemoveItem", new { id = item.Product.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-danger btn-sm mb-1" })
+                    @Html.ActionLink("Delete", "RemoveItem", new { id = item.Product.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
                 </td>
             </tr>
             }

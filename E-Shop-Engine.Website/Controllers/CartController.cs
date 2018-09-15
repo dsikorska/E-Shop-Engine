@@ -49,18 +49,17 @@ namespace E_Shop_Engine.Website.Controllers
 
         #region Logged users
 
-        public async Task<ActionResult> Details(string returnUrl = "/Home/Index")
+        public async Task<ActionResult> Details()
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await _userManager.FindByIdAsync(userId);
             CartViewModel model = Mapper.Map<Cart, CartViewModel>(user.Cart);
             model.TotalValue = _cartRepository.ComputeTotalValue(user.Cart);
-            ViewBag.returnUrl = returnUrl;
 
             return View(model);
         }
         //TODO
-        public ActionResult AddItem(int id, int quantity = 1, string returnUrl = "/Home/Index")
+        public ActionResult AddItem(int id, int quantity = 1)
         {
             using (_unitOfWork.NewUnitOfWork())
             {
@@ -81,10 +80,10 @@ namespace E_Shop_Engine.Website.Controllers
                 _cartRepository.AddItem(user.Cart, product, quantity);
             }
 
-            return Redirect(returnUrl);
+            return Redirect(ViewBag.returnUrl);
         }
         //TODO
-        public ActionResult RemoveItem(int id, string returnUrl = "/Home/Index")
+        public ActionResult RemoveItem(int id)
         {
             using (_unitOfWork.NewUnitOfWork())
             {
@@ -95,7 +94,7 @@ namespace E_Shop_Engine.Website.Controllers
                 _cartRepository.RemoveLine(user.Cart, product);
             }
 
-            return Redirect(returnUrl);
+            return Redirect(ViewBag.returnUrl);
         }
 
         #endregion

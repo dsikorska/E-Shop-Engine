@@ -20,7 +20,7 @@
         @if (Model.Any())
         {
         <div class="carousel-item active">
-            <a href="@Url.Action("Details", "Product", new { id = Model.First().Id, returnUrl = Request.Url.PathAndQuery })">
+            <a href="@Url.Action("Details", "Product", new { id = Model.First().Id })">
                 <img id="ImgPreview" class="d-block w-100" alt="@Model.First().Name Price: @Model.First().Price.ToString()"
                      src="@Url.Action("GetImage", "Product", new { Model.First().Id })" />
             </a>
@@ -33,7 +33,7 @@
             for (int i = 1; i < Model.Count(); i++)
             {
         <div class="carousel-item">
-            <a href="@Url.Action("Details", "Product", new { id = Model[i].Id, returnUrl = Request.Url.PathAndQuery })">
+            <a href="@Url.Action("Details", "Product", new { id = Model[i].Id })">
                 <img id="ImgPreview" class="d-block w-100" alt="@Model[i].Name Price: @Model[i].Price.ToString()"
                      src="@Url.Action("GetImage", "Product", new { Model[i].Id })" />
             </a>

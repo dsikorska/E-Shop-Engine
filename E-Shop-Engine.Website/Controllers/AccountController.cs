@@ -45,12 +45,11 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Index(string returnUrl = "/Home/Index")
+        public async Task<ActionResult> Index()
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
             UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
-            ViewBag.returnUrl = returnUrl;
 
             return View(model);
         }
@@ -178,20 +177,20 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 return View("_Error", new string[] { "You are already logged in." });
             }
-            ViewBag.returnUrl = returnUrl;
+
             return View();
         }
 
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<ActionResult> Login(UserLoginViewModel model, string returnUrl = "/Home/Index")
+        public async Task<ActionResult> Login(UserLoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -208,10 +207,10 @@ namespace E_Shop_Engine.Website.Controllers
                     {
                         IsPersistent = false
                     }, ident);
-                    return Redirect(returnUrl);
+                    return Redirect(ViewBag.returnUrl);
                 }
             }
-            ViewBag.returnUrl = returnUrl;
+
             return View(model);
         }
 
@@ -223,26 +222,24 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Create(string returnUrl = "/Home/Index")
+        public ActionResult Create()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 return View("_Error", new string[] { "You are already logged in." });
             }
-            ViewBag.returnUrl = returnUrl;
+
             return View();
         }
 
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<ActionResult> Create(UserCreateViewModel model, string returnUrl = "/Home/Index")
+        public async Task<ActionResult> Create(UserCreateViewModel model)
         {
-            ViewBag.returnUrl = returnUrl;
-
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return Redirect(returnUrl);
+                return Redirect(ViewBag.returnUrl);
             }
 
             if (ModelState.IsValid)

@@ -12,7 +12,7 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class ProductController : Controller
     {
-        IProductRepository _productRepository;
+        private IProductRepository _productRepository;
 
         public ProductController(IProductRepository productRepository)
         {
@@ -28,11 +28,10 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
-        public ViewResult Details(int id, string returnUrl)
+        public ViewResult Details(int id)
         {
             Product product = _productRepository.GetById(id);
             ProductViewModel model = Mapper.Map<ProductViewModel>(product);
-            model.ReturnUrl = returnUrl;
 
             return View(model);
         }

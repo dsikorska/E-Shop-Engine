@@ -28,17 +28,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ViewResult Edit(int id, string returnUrl = "/Admin/Category")
+        public ViewResult Edit(int id)
         {
             Category category = _categoryRepository.GetById(id);
             CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
-            ViewBag.returnUrl = returnUrl;
+
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CategoryAdminViewModel model, string returnUrl = "/Admin/Category")
+        public ActionResult Edit(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -46,14 +46,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             _categoryRepository.Update(Mapper.Map<Category>(model));
 
-            return Redirect(returnUrl);
+            return Redirect(ViewBag.returnUrl);
         }
 
         [HttpGet]
         public ViewResult Create()
         {
             CategoryAdminViewModel model = new CategoryAdminViewModel();
-            ViewBag.returnUrl = "/Admin/Category";
+
             return View("Edit", model);
         }
 
@@ -61,7 +61,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CategoryAdminViewModel model)
         {
-            ViewBag.returnUrl = "/Admin/Category";
             if (!ModelState.IsValid)
             {
                 return View("Edit", model);
@@ -71,11 +70,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id, string returnUrl)
+        public ActionResult Details(int id)
         {
             Category category = _categoryRepository.GetById(id);
             CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
-            ViewBag.returnUrl = returnUrl;
+
             return View(model);
         }
         //TODO inform user about error

@@ -5,7 +5,7 @@
     @foreach (var product in Model)
     {
         <div class="card">
-            <a href="@Url.Action("Details", "Product", new { id = product.Id, returnUrl = Request.Url.PathAndQuery })">
+            <a href="@Url.Action("Details", "Product", new { id = product.Id })">
                 <div class="w-100">
                     <img id="ImgPreview" class="card-img-top" alt="@product.Name Price: @product.Price.ToString()"
                          src="@Url.Action("GetImage", "Product", new { product.Id })" />
@@ -16,7 +16,7 @@
                 </div>
             </a>
             <div class="card-body text-center p-0 pb-4">
-                @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = product.Id, returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-success text-white" })
+                @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = product.Id }, new { @class = "btn btn-success text-white" })
             </div>
         </div>
     }

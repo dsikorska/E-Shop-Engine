@@ -32,7 +32,7 @@
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        @Html.ActionLink("Your Account", "Index", "Account", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "nav-link" })
+                        @Html.ActionLink("Your Account", "Index", "Account", null, new { @class = "nav-link" })
                     }
                 </li>
                 <li class="nav-item active">
@@ -44,17 +44,17 @@
                 <li class="nav-item active">
                     @if (!HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        @Html.ActionLink("Sign In", "Create", "Account", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "nav-link" })
+                        @Html.ActionLink("Sign In", "Create", "Account", null, new { @class = "nav-link" })
                     }
                 </li>
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        @Html.ActionLink("Log Out", "Logout", "Account", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "nav-link" })
+                        @Html.ActionLink("Log Out", "Logout", "Account", null, new { @class = "nav-link" })
                     }
                     else
                     {
-                        @Html.ActionLink("Log In", "Login", "Account", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "nav-link" })
+                        @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "nav-link" })
                     }
                 </li>
             </ul>
