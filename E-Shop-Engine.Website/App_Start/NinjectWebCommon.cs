@@ -73,7 +73,7 @@ namespace E_Shop_Engine.Website.App_Start
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
             kernel.Bind<IUserStore<AppUser>>().To<UserStore<AppUser>>().InRequestScope();
             kernel.Bind<AppUserManager>().ToSelf().InRequestScope();
-            kernel.Bind<AppRoleManager>().ToSelf().InRequestScope();
+            //kernel.Bind<AppRoleManager>().ToMethod(x => HttpContext.Current.GetOwinContext().GetUserManager<AppRoleManager>());
             kernel.Bind<IAuthenticationManager>().ToMethod(x => HttpContext.Current.GetOwinContext().Authentication);
             kernel.Bind(typeof(IRepository<>)).To((typeof(Repository<>))).InRequestScope();
             kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();

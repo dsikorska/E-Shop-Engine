@@ -12,7 +12,8 @@ namespace E_Shop_Engine.Services.Data.Identity
         public void Configuration(IAppBuilder app)
         {
             app.CreatePerOwinContext<AppDbContext>(AppDbContext.Create);
-            //app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
+            // TODO when comment out then roles don't work
+            app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions

@@ -2,11 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 //TODO custom controller implementation???
 //TODO nested routing
 //TODO admin area controllers nameing
@@ -23,21 +25,21 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         //    }
         //}
 
-        //private AppRoleManager RoleManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<AppRoleManager>();
-        //    }
-        //}
+        private AppRoleManager RoleManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<AppRoleManager>();
+            }
+        }
 
         private readonly AppUserManager UserManager;
-        private readonly AppRoleManager RoleManager;
+        //private readonly AppRoleManager RoleManager;
 
-        public AdminRoleController(AppUserManager userManager, AppRoleManager roleManager)
+        public AdminRoleController(AppUserManager userManager/*, AppRoleManager roleManager*/)
         {
             UserManager = userManager;
-            RoleManager = roleManager;
+            //RoleManager = roleManager;
         }
 
         // GET: Admin/RoleAdmin

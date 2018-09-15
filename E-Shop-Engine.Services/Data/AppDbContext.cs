@@ -45,6 +45,7 @@ namespace E_Shop_Engine.Services.Data
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+            modelBuilder.Entity<AppRole>().ToTable("AppRoles");
 
             modelBuilder.Configurations.Add(new AddressEntityConfig());
             modelBuilder.Configurations.Add(new CategoryEntityConfig());
