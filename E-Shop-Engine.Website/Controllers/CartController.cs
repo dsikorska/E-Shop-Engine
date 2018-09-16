@@ -48,7 +48,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         #region Logged users
-
+        //TODO init cart at user creation
         public async Task<ActionResult> Details()
         {
             string userId = HttpContext.User.Identity.GetUserId();

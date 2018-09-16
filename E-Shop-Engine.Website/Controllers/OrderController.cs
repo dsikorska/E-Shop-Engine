@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -28,7 +29,13 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Order
         public ActionResult Index()
         {
-            return View(_orderRepository.GetAll());
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+
+            IEnumerable<Order> model = user.Orders;
+            IEnumerable<OrderViewModel> viewModel = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(model);
+
+            return View(viewModel);
         }
 
         public ActionResult Create()
@@ -68,10 +75,10 @@ namespace E_Shop_Engine.Website.Controllers
 
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
-            //TODO ???
-            if (model.AppUser.Id == model.AppUser.Id)
+
+            if (user.Orders.Contains(model))
             {
-                return View(model);
+                return View(Mapper.Map<OrderViewModel>(model));
             }
 
             ModelState.AddModelError("", "Order Not Found");

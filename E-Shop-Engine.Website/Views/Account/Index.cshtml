@@ -4,24 +4,35 @@
     ViewBag.Title = "My Account";
 }
 
-<input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
-<div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
-    <a class="btn btn-secondary text-white" href="@ViewBag.returnUrl">Go back</a>
-    @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-personal-tab" data-toggle="tab" href="#nav-personal" role="tab" aria-controls="nav-personal" aria-selected="true">Profile Informations</a>
+        <a class="nav-item nav-link" id="nav-address-tab" data-toggle="tab" href="#nav-address" role="tab" aria-controls="nav-address" aria-selected="false">Address</a>
+        <a class="nav-item nav-link" id="nav-orders-tab" data-toggle="tab" href="#nav-orders" role="tab" aria-controls="nav-orders" aria-selected="false">Orders</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-personal" role="tabpanel" aria-labelledby="nav-personal-tab">
+        <div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
+            @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
+        </div>
+
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Name) and @Html.DisplayNameFor(model => model.Surname)</dt>
+            <dd>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+            <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+        </dl>
+    </div>
+    <div class="tab-pane fade" id="nav-orders" role="tabpanel" aria-labelledby="nav-orders-tab">
+        @Html.Action("Index", "Order", null)
+    </div>
+    <div class="tab-pane fade" id="nav-address" role="tabpanel" aria-labelledby="nav-address-tab">
+        @Html.Action("AddressDetails", "Account", null)
+    </div>
 </div>
-
-<dl>
-    <dt>@Html.DisplayNameFor(model => model.Name)</dt>
-    <dd>@Html.DisplayFor(model => model.Name)</dd>
-
-    <dt>@Html.DisplayNameFor(model => model.Surname)</dt>
-    <dd>@Html.DisplayFor(model => model.Surname)</dd>
-
-    <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-    <dd>@Html.DisplayFor(model => model.Email)</dd>
-
-    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
-</dl>
-

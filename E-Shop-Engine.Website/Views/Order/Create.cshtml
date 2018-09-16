@@ -1,18 +1,16 @@
-﻿@using E_Shop_Engine.Domain.Enumerables
-@model E_Shop_Engine.Website.Models.OrderViewModel
+﻿@model E_Shop_Engine.Website.Models.OrderViewModel
 
 @{
-    ViewBag.Title = "Order";
+    ViewBag.Title = "New Order";
 }
 
-<h3>Order</h3>
+<h3>New Order</h3>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     <hr />
-
-    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })   
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">

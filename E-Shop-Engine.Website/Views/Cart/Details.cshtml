@@ -1,10 +1,10 @@
 ﻿@model E_Shop_Engine.Website.Models.CartViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Your Cart";
 }
 
-<h2>Your Cart</h2>
+<h3>Your Cart</h3>
 
 <p>
     <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Continue shopping</a>
@@ -32,20 +32,20 @@
         {
             foreach (var item in Model.CartLines)
             {
-            <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id">
-                <td>
-                    @Html.DisplayFor(model => item.Product.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Product.Price)
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "RemoveItem", new { id = item.Product.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
-                </td>
-            </tr>
+                <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id">
+                    <td>
+                        @Html.DisplayFor(model => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Product.Price)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "RemoveItem", new { id = item.Product.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
+                    </td>
+                </tr>
             }
         }
     </tbody>

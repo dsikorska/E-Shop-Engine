@@ -1,25 +1,74 @@
 ﻿@model E_Shop_Engine.Website.Models.OrderViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Order Details";
 }
 
-<h3>Details</h3>
+<h3>Order Details</h3>
 
-<div class="d-flex flex-wrap">
-    <div class="w-auto mr-2">
-        <dl>
-            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
-            <dd>@Html.DisplayFor(model => model.Created)</dd>
-        </dl>
+<div class="">
+    <div class="w-100 text-center">
+        <p>
+            @Html.DisplayNameFor(model => model.Created)
+            @Html.DisplayFor(model => model.Created)
+        </p>
+        <p>
+            @Html.DisplayNameFor(model => model.Finished)
+            @Html.DisplayFor(model => model.Finished)
+        </p>
     </div>
-    <div class="w-74">
-        <dl>
-            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
-            <dd class="border-bottom">@Html.DisplayFor(model => model.Created)</dd>
-        </dl>
+    <div class="w-100">
+        <table class="table table-striped table-responsive-sm table-hover table-light text-center">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Catalog Number
+                    </th>
+                    <th scope="col">
+                        Name
+                    </th>
+                    <th scope="col">
+                        Quantity
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderedCart.CartLines)
+                {
+                    <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.ID">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.CatalogNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Price)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3 class="float-right">Total value: @Model.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)</h3>
     </div>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Go back", "Index", "Account", null, new { @class = "btn btn-primary" })
 </p>
+
+@section Scripts
+{
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".clickable-row").click(function () {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+}

@@ -317,6 +317,7 @@
     <Content Include="Views\Order\Create.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
     <Content Include="Views\Account\Address.cshtml" />
+    <Content Include="Views\Account\AddressDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

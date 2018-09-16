@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop_Engine.Website.Models
 {
@@ -18,5 +19,7 @@ namespace E_Shop_Engine.Website.Models
         [Required(AllowEmptyStrings = false)]
         [EmailAddress]
         public string Email { get; set; }
+
+        public IEnumerable<OrderViewModel> Orders { get; set; }
     }
 }

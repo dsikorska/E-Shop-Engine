@@ -286,7 +286,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView(model);
             }
 
             using (_unitOfWork.NewUnitOfWork())
@@ -305,6 +305,25 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             return RedirectToAction("Create", "Order", null);
+        }
+
+        public ActionResult AddressDetails()
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = UserManager.FindById(userId);
+
+            AddressViewModel model;
+
+            if (user.Address != null)
+            {
+                model = Mapper.Map<AddressViewModel>(user.Address);
+            }
+            else
+            {
+                return RedirectToAction("Address");
+            }
+
+            return PartialView(model);
         }
 
         private void AddErrorsFromResult(IdentityResult result)

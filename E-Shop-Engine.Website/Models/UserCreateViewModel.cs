@@ -2,7 +2,6 @@
 
 namespace E_Shop_Engine.Website.Models
 {
-    //TODO add address
     public class UserCreateViewModel
     {
         [Required(AllowEmptyStrings = false)]

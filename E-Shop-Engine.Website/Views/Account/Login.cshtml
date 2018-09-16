@@ -4,14 +4,14 @@
     ViewBag.Title = "Log In";
 }
 
-<h2>Log In</h2>
+<h3>Log In</h3>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     <hr />
-    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Email, new { @class = "input-group-text" })
@@ -24,7 +24,9 @@
         </div>
         @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
     </div>
-    <button class="btn btn-primary" type="submit">Log In</button>
+    <div class="text-center">
+        <button class="btn btn-success" type="submit">Log In</button>
+    </div>
 }
 
 @section Scripts {

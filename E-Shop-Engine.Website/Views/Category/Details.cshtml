@@ -1,10 +1,10 @@
 ﻿@model E_Shop_Engine.Website.Models.CategoryViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.Name;
 }
 
-<h2>@Model.Name</h2>
+<h3>@Model.Name</h3>
 
 <div class="w-100 text-center my-4">
     @foreach (var subcategory in Model.Subcategories)
