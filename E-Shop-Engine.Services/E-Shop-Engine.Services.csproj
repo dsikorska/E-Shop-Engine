@@ -63,6 +63,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -154,6 +157,10 @@
     <Compile Include="Migrations\201809151958011_Fix AppRole table.Designer.cs">
       <DependentUpon>201809151958011_Fix AppRole table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809170736494_Fix AppUser Id generation.cs" />
+    <Compile Include="Migrations\201809170736494_Fix AppUser Id generation.Designer.cs">
+      <DependentUpon>201809170736494_Fix AppUser Id generation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
@@ -163,7 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\E-Shop-Engine.Domain\E-Shop-Engine.Domain.csproj">
@@ -226,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809151958011_Fix AppRole table.resx">
       <DependentUpon>201809151958011_Fix AppRole table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809170736494_Fix AppUser Id generation.resx">
+      <DependentUpon>201809170736494_Fix AppUser Id generation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

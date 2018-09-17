@@ -12,7 +12,7 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class ProductController : Controller
     {
-        private IProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
 
         public ProductController(IProductRepository productRepository)
         {
@@ -22,23 +22,26 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            IEnumerable<Product> products = _productRepository.GetAll();
-            IEnumerable<ProductViewModel> model = products.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
-            return View("_ProductsDeck", model);
+
+            IQueryable<Product> model = _productRepository.GetAll();
+            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IQueryable<Product>, IEnumerable<ProductViewModel>>(model);
+            return View("_ProductsDeck", viewModel);
         }
 
         [HttpGet]
         public ViewResult Details(int id)
         {
-            Product product = _productRepository.GetById(id);
-            ProductViewModel model = Mapper.Map<ProductViewModel>(product);
 
-            return View(model);
+            Product model = _productRepository.GetById(id);
+            ProductViewModel viewModel = Mapper.Map<ProductViewModel>(model);
+
+            return View(viewModel);
         }
 
         [HttpGet]
         public FileContentResult GetImage(int id)
         {
+
             Product product = _productRepository.GetById(id);
             if (product?.ImageData != null && product.ImageData.Length != 0)
             {

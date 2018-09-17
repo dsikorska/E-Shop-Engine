@@ -13,17 +13,15 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly AppUserManager _userManager;
 
-        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager, IUnitOfWork unitOfWork)
+        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _userManager = userManager;
-            _unitOfWork = unitOfWork;
         }
 
         // GET: Order
@@ -54,17 +52,20 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 return View(model);
             }
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
+            model.Created = DateTime.UtcNow;
+            model.AppUser = user;
 
-            using (_unitOfWork.NewUnitOfWork())
+            if (model.OrderedCart.CartLines.Count == 0)
             {
-                string userId = HttpContext.User.Identity.GetUserId();
-                AppUser user = _userManager.FindById(userId);
-                model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
-                model.Created = DateTime.UtcNow;
-                model.AppUser = user;
-                _orderRepository.Create(Mapper.Map<Order>(model));
-                _cartRepository.Clear(user.Cart);
+                ModelState.AddModelError("", "Cannot order empty cart");
+                return Redirect("/Cart/Details");
             }
+
+            _orderRepository.Create(Mapper.Map<Order>(model));
+            _cartRepository.Clear(user.Cart);
 
             return Redirect("/Home/Index");
         }
@@ -80,7 +81,6 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 return View(Mapper.Map<OrderViewModel>(model));
             }
-
             ModelState.AddModelError("", "Order Not Found");
             return RedirectToAction("Index");
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -33,14 +34,12 @@ namespace E_Shop_Engine.Website.Controllers
 
         private readonly AppUserManager UserManager;
         private readonly IAuthenticationManager AuthManager;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Address> _addressRepository;
 
-        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IUnitOfWork unitOfWork, IRepository<Address> addressRepository)
+        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository)
         {
             UserManager = userManager;
             AuthManager = authManager;
-            _unitOfWork = unitOfWork;
             _addressRepository = addressRepository;
         }
 
@@ -85,8 +84,7 @@ namespace E_Shop_Engine.Website.Controllers
                 return View(model);
             }
 
-            IdentityResult validPass = null;
-            validPass = await UserManager.PasswordValidator.ValidateAsync(model.NewPassword);
+            IdentityResult validPass = await UserManager.PasswordValidator.ValidateAsync(model.NewPassword);
             if (validPass.Succeeded)
             {
                 user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.NewPassword);
@@ -168,10 +166,10 @@ namespace E_Shop_Engine.Website.Controllers
                         AddErrorsFromResult(result);
                     }
                 }
-            }
-            else
-            {
-                ModelState.AddModelError("", "User Not Found");
+                else
+                {
+                    ModelState.AddModelError("", "User Not Found");
+                }
             }
             return View(model);
         }
@@ -202,12 +200,12 @@ namespace E_Shop_Engine.Website.Controllers
                 else
                 {
                     ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-                    AuthManager.SignOut();
+                    AuthManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignIn(new AuthenticationProperties
                     {
                         IsPersistent = false
                     }, ident);
-                    return Redirect(ViewBag.returnUrl);
+                    return Redirect("/");
                 }
             }
 
@@ -217,7 +215,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         public ActionResult Logout()
         {
-            AuthManager.SignOut();
+            AuthManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
@@ -246,8 +244,14 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 AppUser user = Mapper.Map<AppUser>(model);
                 user.Created = DateTime.UtcNow;
+                user.Cart = new Cart()
+                {
+                    CartLines = new Collection<CartLine>(),
+                    AppUser = user
+                };
 
-                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                IdentityResult result = new IdentityResult();
+                result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
@@ -261,6 +265,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Address()
         {
             string userId = HttpContext.User.Identity.GetUserId();
@@ -268,7 +273,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             AddressViewModel model;
 
-            if (user.Address != null)
+            if (user?.Address != null)
             {
                 model = Mapper.Map<AddressViewModel>(user.Address);
             }
@@ -280,20 +285,36 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Address(AddressViewModel model)
+        public ActionResult Address(AddressViewModel model, bool isOrder = false)
         {
             if (!ModelState.IsValid)
             {
                 return PartialView(model);
             }
 
-            using (_unitOfWork.NewUnitOfWork())
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = UserManager.FindById(userId);
+            Address address = _addressRepository.GetById(model.Id);
+            if (address == null)
             {
-                string userId = HttpContext.User.Identity.GetUserId();
-                AppUser user = UserManager.FindById(userId);
-                Address address = _addressRepository.GetById(model.Id);
+                address = new Address()
+                {
+                    City = model.City,
+                    Country = model.Country,
+                    Line1 = model.Line1,
+                    Line2 = model.Line2,
+                    State = model.State,
+                    Street = model.Street,
+                    ZipCode = model.ZipCode,
+                    AppUser = user
+                };
+                _addressRepository.Create(address);
+            }
+            else
+            {
                 address.City = model.City;
                 address.Country = model.Country;
                 address.Line1 = model.Line1;
@@ -304,23 +325,25 @@ namespace E_Shop_Engine.Website.Controllers
                 _addressRepository.Update(address);
             }
 
-            return RedirectToAction("Create", "Order", null);
+            if (isOrder)
+            {
+                return RedirectToAction("Create", "Order", null);
+            }
+
+            return Redirect("/Account");
         }
 
+        [Authorize]
         public ActionResult AddressDetails()
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = UserManager.FindById(userId);
 
-            AddressViewModel model;
+            AddressViewModel model = new AddressViewModel();
 
-            if (user.Address != null)
+            if (user?.Address != null)
             {
                 model = Mapper.Map<AddressViewModel>(user.Address);
-            }
-            else
-            {
-                return RedirectToAction("Address");
             }
 
             return PartialView(model);

@@ -8,7 +8,7 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class SubcategoryController : Controller
     {
-        IRepository<Subcategory> _subcategoryRepository;
+        private readonly IRepository<Subcategory> _subcategoryRepository;
 
         public SubcategoryController(IRepository<Subcategory> subcategoryRepository)
         {

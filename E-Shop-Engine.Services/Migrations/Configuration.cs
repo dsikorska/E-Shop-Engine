@@ -1,7 +1,9 @@
 namespace E_Shop_Engine.Services.Migrations
 {
     using System;
+    using System.Collections.ObjectModel;
     using System.Data.Entity.Migrations;
+    using E_Shop_Engine.Domain.DomainModel;
     using E_Shop_Engine.Domain.DomainModel.IdentityModel;
     using E_Shop_Engine.Services.Data;
     using E_Shop_Engine.Services.Data.Identity;
@@ -44,8 +46,14 @@ namespace E_Shop_Engine.Services.Migrations
                     Surname = userName,
                     UserName = email,
                     Email = email,
-                    Created = DateTime.UtcNow
+                    Created = DateTime.UtcNow,
+                    Cart = new Cart()
+                    {
+                        CartLines = new Collection<CartLine>()
+                    }
                 };
+
+                newUser.Cart.AppUser = newUser;
 
                 IdentityResult result = userManager.Create(newUser, password);
                 user = userManager.Find(email, password);

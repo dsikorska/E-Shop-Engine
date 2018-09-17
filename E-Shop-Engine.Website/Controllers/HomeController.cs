@@ -28,25 +28,25 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Categories - for navbar
         public PartialViewResult NavList()
         {
-            IEnumerable<Category> categories = _categoryRepository.GetAll();
-            IEnumerable<CategoryViewModel> model = categories.Select(p => Mapper.Map<CategoryViewModel>(p)).ToList();
-            return PartialView("_Categories", model);
+            IQueryable<Category> model = _categoryRepository.GetAll();
+            IEnumerable<CategoryViewModel> viewModel = Mapper.Map<IQueryable<Category>, IEnumerable<CategoryViewModel>>(model);
+            return PartialView("_Categories", viewModel);
         }
 
         [HttpGet]
         public PartialViewResult GetSpecialOffers()
         {
-            IEnumerable<Product> product = _productRepository.GetAllSpecialOffers();
-            IList<ProductViewModel> model = product.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
-            return PartialView("SpecialOffers", model);
+            IQueryable<Product> model = _productRepository.GetAllSpecialOffers();
+            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IQueryable<Product>, IEnumerable<ProductViewModel>>(model);
+            return PartialView("SpecialOffers", viewModel);
         }
 
         [HttpGet]
         public PartialViewResult GetSpecialOffersInDeck()
         {
-            IEnumerable<Product> product = _productRepository.GetAllShowingInDeck();
-            IEnumerable<ProductViewModel> model = product.Select(p => Mapper.Map<ProductViewModel>(p)).ToList();
-            return PartialView("_ProductsDeck", model);
+            IQueryable<Product> model = _productRepository.GetAllShowingInDeck();
+            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IQueryable<Product>, IEnumerable<ProductViewModel>>(model);
+            return PartialView("_ProductsDeck", viewModel);
         }
     }
 }

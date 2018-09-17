@@ -54,7 +54,8 @@ namespace E_Shop_Engine.Website.App_Start
 
                 cfg.CreateMap<Product, ProductViewModel>()
                     .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-                    .ForMember(dest => dest.SubcategoryName, opt => opt.MapFrom(src => src.Subcategory.Name));
+                    .ForMember(dest => dest.SubcategoryName, opt => opt.MapFrom(src => src.Subcategory.Name))
+                    .ForMember(dest => dest.ImageData, opt => opt.AllowNull());
 
                 cfg.CreateMap<Category, CategoryViewModel>()
                     .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))

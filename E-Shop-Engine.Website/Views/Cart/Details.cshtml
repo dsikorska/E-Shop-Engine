@@ -51,8 +51,8 @@
     </tbody>
 </table>
 <hr />
-<h3>Total: @Model.TotalValue</h3>
-@Html.ActionLink("Order", "Address", "Account", null, new { @class = "btn btn-success btn-lg w-100" })
+<h3>Total value: @Model.TotalValue</h3>
+@Html.ActionLink("Order", "Address", "Account", new { isOrder = true }, new { @class = "btn btn-success btn-lg w-100" })
 
 @section Scripts
 {

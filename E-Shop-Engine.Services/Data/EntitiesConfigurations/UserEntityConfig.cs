@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 
 namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
@@ -9,9 +8,6 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public UserEntityConfig()
         {
             HasKey(c => c.Id);
-
-            Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(c => c.Created)
                 .IsRequired()

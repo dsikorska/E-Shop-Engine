@@ -13,14 +13,14 @@ namespace E_Shop_Engine.Services.Repositories
             _dbSet = _context.Products;
         }
 
-        public IList<Product> GetAllSpecialOffers()
+        public IQueryable<Product> GetAllSpecialOffers()
         {
-            return _dbSet.Where(p => p.ShowAsSpecialOffer == true).Select(p => p).ToList();
+            return _dbSet.Where(p => p.ShowAsSpecialOffer == true).Select(p => p);
         }
 
-        public IList<Product> GetAllShowingInDeck()
+        public IQueryable<Product> GetAllShowingInDeck()
         {
-            return _dbSet.Where(p => p.ShowAtMainPage == true).Select(p => p).ToList();
+            return _dbSet.Where(p => p.ShowAtMainPage == true).Select(p => p);
         }
 
         public IEnumerable<Product> GetProductsByCategory(int id)
