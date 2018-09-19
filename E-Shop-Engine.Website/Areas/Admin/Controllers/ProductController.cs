@@ -43,7 +43,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
-        //TODO get byte array from db instead of storing in view
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductAdminViewModel model)
@@ -98,6 +97,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             _productRepository.Delete(id);
@@ -105,7 +105,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //TODO share between ctrls
         [HttpGet]
         public FileContentResult GetImage(int id)
         {

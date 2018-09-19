@@ -1,0 +1,103 @@
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
+
+@{
+    ViewBag.Title = "Order " + Model.Id + " Details";
+}
+
+<h3>Order @Model.Id Details</h3>
+
+<p>
+    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+</p>
+
+<div class="d-flex flex-nowrap">
+    <div class="w-auto mr-2 border-right border-primary">
+        <dl class="clickable-row pointer" data-href="/Admin/Account/Details/@Model.AppUser.Id">
+            <dt>User Id</dt>
+            <dd>@Html.DisplayFor(model => model.AppUser.Id)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.AppUser.Name) @Html.DisplayNameFor(model => model.AppUser.Surname)</dt>
+            <dd>@Html.DisplayFor(model => model.AppUser.Name) @Html.DisplayFor(model => model.AppUser.Surname)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.AppUser.Email)</dt>
+            <dd>@Html.DisplayFor(model => model.AppUser.Email)</dd>
+        </dl>
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
+            <dd>@Html.DisplayFor(model => model.Created)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Finished)</dt>
+            <dd>@Html.DisplayFor(model => model.Finished)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.IsPaid)</dt>
+            <dd>@Html.DisplayFor(model => model.IsPaid)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.OrderStatus)</dt>
+            <dd>@Html.DisplayFor(model => model.OrderStatus)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.PaymentMethod)</dt>
+            <dd>@Html.DisplayFor(model => model.PaymentMethod)</dd>
+        </dl>
+    </div>
+    <div class="w-74">
+        <table class="table table-striped table-responsive-sm table-hover table-light text-center">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Catalog Number
+                    </th>
+                    <th scope="col">
+                        Name
+                    </th>
+                    <th scope="col">
+                        Quantity
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Value
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderedCart.CartLines)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.CatalogNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Price)
+                        </td>
+                        <td>
+                            @(item.Product.Price * item.Quantity)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Product", new { id = item.Product.ID }, new { @class = "btn btn-info btn-sm mb-1" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3>Total value: @Model.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)</h3>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".clickable-row").click(function () {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+}

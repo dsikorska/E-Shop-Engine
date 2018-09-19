@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -32,8 +33,13 @@ namespace E_Shop_Engine.Website.Controllers
 
             IEnumerable<Order> model = user.Orders;
             IEnumerable<OrderViewModel> viewModel = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(model);
+            viewModel = viewModel.Select(x =>
+                {
+                    x.Created = x.Created.ToLocalTime();
+                    return x;
+                });
 
-            return View(viewModel);
+            return View(viewModel.OrderByDescending(x => x.Created));
         }
 
         public ActionResult Create()
@@ -60,8 +66,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (model.OrderedCart.CartLines.Count == 0)
             {
-                ModelState.AddModelError("", "Cannot order empty cart");
-                return Redirect("/Cart/Details");
+                return View("_Error", new string[] { "Cannot order empty cart." });
             }
 
             _orderRepository.Create(Mapper.Map<Order>(model));
@@ -79,7 +84,9 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (user.Orders.Contains(model))
             {
-                return View(Mapper.Map<OrderViewModel>(model));
+                OrderViewModel viewModel = Mapper.Map<OrderViewModel>(model);
+                viewModel.Created = viewModel.Created.ToLocalTime();
+                return View(viewModel);
             }
             ModelState.AddModelError("", "Order Not Found");
             return RedirectToAction("Index");

@@ -36,7 +36,7 @@
                     @Html.DisplayFor(modelItem => item.Finished)
                 </td>
                 <td>
-                    @item.OrderedCart.CartLines.Count
+                    @item.OrderedCart.CartLines.Sum(x => x.Quantity)
                 </td>
                 <td>
                     @item.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)

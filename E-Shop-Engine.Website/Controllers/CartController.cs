@@ -31,19 +31,17 @@ namespace E_Shop_Engine.Website.Controllers
         //    }
         //}
 
+        [Authorize]
         public ActionResult CountItems()
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
-            if (user == null)
-            {
-                return PartialView("_Cart", 0);
-            }
             int model = _cartRepository.CountItems(user.Cart);
 
             return PartialView("_Cart", model);
         }
 
+        [Authorize]
         public async Task<ActionResult> Details()
         {
             string userId = HttpContext.User.Identity.GetUserId();
@@ -53,7 +51,8 @@ namespace E_Shop_Engine.Website.Controllers
 
             return View(model);
         }
-        //TODO
+
+        [Authorize]
         public ActionResult AddItem(int id, int quantity = 1)
         {
             Product product = _productRepository.GetById(id);
@@ -64,8 +63,21 @@ namespace E_Shop_Engine.Website.Controllers
 
             return Redirect(ViewBag.returnUrl);
         }
-        //TODO
-        public ActionResult RemoveItem(int id)
+
+        [Authorize]
+        public ActionResult RemoveItem(int id, int quantity = 1)
+        {
+            Product product = _productRepository.GetById(id);
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+
+            _cartRepository.RemoveItem(user.Cart, product, quantity);
+
+            return Redirect(ViewBag.returnUrl);
+        }
+
+        [Authorize]
+        public ActionResult RemoveLine(int id)
         {
             Product product = _productRepository.GetById(id);
             string userId = HttpContext.User.Identity.GetUserId();

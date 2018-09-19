@@ -38,6 +38,21 @@ namespace E_Shop_Engine.Services.Repositories
             Update(cart);
         }
 
+        public void RemoveItem(Cart cart, Product product, int quantity = 1)
+        {
+            CartLine line = cart.CartLines
+                ?.Where(p => p.Product.ID == product.ID)
+                .DefaultIfEmpty()
+                .FirstOrDefault();
+
+            if (line != null)
+            {
+                line.Quantity -= quantity;
+            }
+
+            Update(cart);
+        }
+
         public void RemoveLine(Cart cart, Product product)
         {
             CartLine line = cart.CartLines.Where(l => l.Product.ID == product.ID).FirstOrDefault();

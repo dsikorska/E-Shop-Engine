@@ -84,6 +84,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             try
@@ -92,7 +93,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             catch (DbUpdateException e)
             {
-                //all products needs to be move to another subcategory
+                return View("_Error", new string[] { "Move products to other category." });
             }
 
             return RedirectToAction("Index");

@@ -1,0 +1,69 @@
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
+
+@{
+    ViewBag.Title = "Edit " + Model.Id;
+}
+
+<h3>Edit @Model.Id</h3>
+
+@using (Html.BeginForm(null, null, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled", id = "validation-summary" })
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset disabled>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                @Html.LabelFor(model => model.Id, new { @class = "input-group-text" })
+            </div>
+            @Html.EditorFor(model => model.Id, new { @class = "form-control" })
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                @Html.LabelFor(model => model.Created, new { @class = "input-group-text" })
+            </div>
+            @Html.EditorFor(model => model.Created, new { @class = "form-control" })
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                @Html.LabelFor(model => model.PaymentMethod, new { @class = "input-group-text" })
+            </div>
+            @Html.EditorFor(model => model.PaymentMethod, new { @class = "form-control" })
+        </div>
+    </fieldset>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Finished, new { @class = "input-group-text" })
+        </div>
+        <input type="date" class="form-control single-line" name="Finished" id="Finished" />
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.IsPaid, new { @class = "input-group-text" })
+        </div>
+        @Html.CheckBoxFor(model => model.IsPaid, new { @class = "form-control" })
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.OrderStatus, new { @class = "input-group-text" })
+        </div>
+        @Html.EnumDropDownListFor(model => model.OrderStatus, "Select payment method", new { @class = "form-control" })
+    </div>
+
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        <a class="btn btn-secondary btn-lg text-white" href="@ViewBag.returnUrl">Go back</a>
+        <input type="submit" value="Save" class="btn btn-success btn-lg" />
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/validate")
+}
