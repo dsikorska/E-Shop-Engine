@@ -10,6 +10,9 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
+    [RouteArea("Admin", AreaPrefix = "Admin")]
+    [RoutePrefix("Product")]
+    [Route("{action}")]
     public class ProductAdminController : Controller
     {
         private IProductRepository _productRepository;

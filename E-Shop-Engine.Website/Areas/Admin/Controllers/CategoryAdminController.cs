@@ -9,6 +9,9 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
+    [RouteArea("Admin", AreaPrefix = "Admin")]
+    [RoutePrefix("Category")]
+    [Route("{action}")]
     public class CategoryAdminController : Controller
     {
         private readonly IRepository<Category> _categoryRepository;

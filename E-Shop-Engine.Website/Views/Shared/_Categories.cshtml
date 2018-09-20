@@ -11,19 +11,18 @@
         if (item.Subcategories.Count != 0)
         {
             <div class="dropright">
-                <a class="nav-link text-white btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="/Category/Details/@item.Id">@item.Name</a>
-
+                @Html.ActionLink(item.Name, "Details", "Category", new { id = item.Id, name = item.Name }, new { @class = "nav-link text-white btn btn-primary dropdown-toggle" })
                 <div class="dropdown-menu bg-primary">
                     @foreach (var subcategory in item.Subcategories)
                     {
-                        <a class="text-white btn btn-primary w-100" href="/Subcategory/Details/@subcategory.Id">@subcategory.Name</a>
+                        @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id, mainName = item.Name, subName = subcategory.Name }, new { @class = "text-white btn btn-primary w-100" })
                     }
                 </div>
             </div>
         }
         else
         {
-            <a class="nav-link text-white btn btn-primary" href="/Category/Details/@item.Id">@item.Name</a>
+            @Html.ActionLink(item.Name, "Details", "Category", new { id = item.Id, name = item.Name }, new { @class = "nav-link text-white btn btn-primary" })
         }
     }
-    </nav>
+</nav>

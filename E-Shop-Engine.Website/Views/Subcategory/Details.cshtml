@@ -5,7 +5,7 @@
 }
 
 
-@Html.ActionLink("Go to " + Model.CategoryName, "Details", "Category", new { id = Model.CategoryId }, new { @class = "btn btn-primary m-2" })
+@Html.ActionLink("Go to " + Model.CategoryName, "Details", "Category", new { id = Model.CategoryId, name = Model.CategoryName }, new { @class = "btn btn-primary m-2" })
 
 <h2>@Model.CategoryName - @Model.Name</h2>
 

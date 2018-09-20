@@ -9,12 +9,40 @@ namespace E_Shop_Engine.Website
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
+            AreaRegistration.RegisterAllAreas();
+
             routes.MapRoute(
-                "Default",
+                "",
+                "{id}/{name}",
+                new { controller = "Product", action = "Details" },
+                new { id = @"\d+" },
+                new string[] { "E_Shop_Engine.Website.Controllers" }
+                );
+
+            routes.MapRoute(
+                "",
+                "Category/{name}/{id}",
+                new { controller = "Category", action = "Details" },
+                new { id = @"\d+" },
+                new string[] { "E_Shop_Engine.Website.Controllers" }
+                );
+
+            routes.MapRoute(
+                "",
+                "Category/{mainName}/{subName}/{id}",
+                new { controller = "Subcategory", action = "Details" },
+                new { id = @"\d+" },
+                new string[] { "E_Shop_Engine.Website.Controllers" }
+                );
+
+            routes.MapRoute(
+                "",
                 "{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new string[] { "E_Shop_Engine.Website.Controllers" }
-            );
+                );
         }
     }
 }

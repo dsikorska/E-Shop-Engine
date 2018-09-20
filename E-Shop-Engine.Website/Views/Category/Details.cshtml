@@ -9,7 +9,7 @@
 <div class="w-100 text-center my-4">
     @foreach (var subcategory in Model.Subcategories)
     {
-        @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id }, new { @class = "btn btn-primary mr-2 mb-2" })
+        @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id, mainName = Model.Name, subName = subcategory.Name }, new { @class = "btn btn-primary mr-2 mb-2" })
     }
 </div>
 

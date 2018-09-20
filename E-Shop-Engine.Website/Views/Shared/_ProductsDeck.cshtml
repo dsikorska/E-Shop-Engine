@@ -5,7 +5,7 @@
     @foreach (var product in Model)
     {
         <div class="card">
-            <a href="@Url.Action("Details", "Product", new { id = product.Id })">
+            <a href="@Url.Action("Details", "Product", new { id = product.Id, name = product.Name })">
                 <div class="w-100">
                     <img id="ImgPreview" class="card-img-top" alt="@product.Name Price: @product.Price.ToString()"
                          src="@Url.Action("GetImage", "Product", new { product.Id })" />

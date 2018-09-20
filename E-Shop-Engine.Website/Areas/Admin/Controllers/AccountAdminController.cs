@@ -10,6 +10,9 @@ using Microsoft.AspNet.Identity;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
+    [RouteArea("Admin", AreaPrefix = "Admin")]
+    [RoutePrefix("Account")]
+    [Route("{action}")]
     public class AccountAdminController : Controller
     {
         //private AppUserManager UserManager

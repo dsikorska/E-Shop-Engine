@@ -22,7 +22,7 @@
             foreach (var item in Model)
             {
                 <div class="carousel-item">
-                    <a href="@Url.Action("Details", "Product", new { id = item.Id })">
+                    <a href="@Url.Action("Details", "Product", new { id = item.Id, name = item.Name })">
                         <img id="ImgPreview" class="d-block w-100" alt="@item.Name Price: @item.Price.ToString()"
                              src="@Url.Action("GetImage", "Product", new { item.Id })" />
                     </a>

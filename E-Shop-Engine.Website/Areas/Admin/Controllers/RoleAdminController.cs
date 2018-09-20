@@ -13,6 +13,9 @@ using Microsoft.AspNet.Identity.Owin;
 //TODO async methods ?
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
+    [RouteArea("Admin", AreaPrefix = "Admin")]
+    [RoutePrefix("Role")]
+    [Route("{action}")]
     public class RoleAdminController : Controller
     {
         //private AppUserManager UserManager
