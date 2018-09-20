@@ -5,46 +5,48 @@
     Layout = null;
 }
 
-<table class="table table-striped table-responsive-sm table-hover table-light text-center">
-    <thead>
-        <tr>
-            <th scope="col">
-                Created
-            </th>
-            <th scope="col">
-                Finished
-            </th>
-            <th scope="col">
-                Bought products
-            </th>
-            <th scope="col">
-                Total value
-            </th>
-            <th scope="col">
-                Action
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class=" table-responsive">
+    <table class="table table-striped table-hover table-light text-center">
+        <thead class="table-primary">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Finished)
-                </td>
-                <td>
-                    @item.OrderedCart.CartLines.Sum(x => x.Quantity)
-                </td>
-                <td>
-                    @item.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
-                </td>
+                <th scope="col">
+                    Created
+                </th>
+                <th scope="col">
+                    Finished
+                </th>
+                <th scope="col">
+                    Bought products
+                </th>
+                <th scope="col">
+                    Total value
+                </th>
+                <th scope="col">
+                    Action
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Finished)
+                    </td>
+                    <td>
+                        @item.OrderedCart.CartLines.Sum(x => x.Quantity)
+                    </td>
+                    <td>
+                        @item.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

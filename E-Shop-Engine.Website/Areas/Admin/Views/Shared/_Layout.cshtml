@@ -34,14 +34,14 @@
                 </li>
             </ul>
 
-            <div class="w-auto">
+            <div class="w-auto mx-auto">
                 @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year</p>
+                </footer>
             </div>
         </div>
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year</p>
-        </footer>
     </div>
     @RenderSection("Scripts", false)
 </body>

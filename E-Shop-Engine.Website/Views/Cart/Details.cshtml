@@ -10,54 +10,56 @@
     <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Continue shopping</a>
 </p>
 
-<table class="table table-striped table-responsive-sm table-hover table-light text-center">
-    <thead>
-        <tr>
-            <th scope="col">
-                Name
-            </th>
-            <th scope="col">
-                Quantity
-            </th>
-            <th scope="col">
-                Price
-            </th>
-            <th scope="col">
-                Action
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.CartLines != null)
-        {
-            foreach (var item in Model.CartLines)
+<div class=" table-responsive">
+    <table class="table table-striped table-hover table-light text-center">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Quantity
+                </th>
+                <th scope="col">
+                    Price
+                </th>
+                <th scope="col">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CartLines != null)
             {
-                <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id">
-                    <td>
-                        @Html.DisplayFor(model => item.Product.Name)
-                    </td>
-                    <td>
-                        @using (Html.BeginForm("RemoveItem", "Cart", new { id = item.Product.Id }, FormMethod.Post, new { @class = "d-inline" }))
-                        {
-                            <button class="btn btn-secondary btn-sm" type="submit">-</button>
-                        }
-                        @Html.DisplayFor(model => item.Quantity)
-                        @using (Html.BeginForm("AddItem", "Cart", new { id = item.Product.Id }, FormMethod.Post, new { @class = "d-inline" }))
-                        {
-                            <button class="btn btn-secondary btn-sm" type="submit">+</button>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => item.Product.Price)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Delete", "RemoveLine", new { id = item.Product.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
-                    </td>
-                </tr>
+                foreach (var item in Model.CartLines)
+                {
+                    <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id">
+                        <td>
+                            @Html.DisplayFor(model => item.Product.Name)
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("RemoveItem", "Cart", new { id = item.Product.Id }, FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                <button class="btn btn-secondary btn-sm" type="submit">-</button>
+                            }
+                            @Html.DisplayFor(model => item.Quantity)
+                            @using (Html.BeginForm("AddItem", "Cart", new { id = item.Product.Id }, FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                <button class="btn btn-secondary btn-sm" type="submit">+</button>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Product.Price)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Delete", "RemoveLine", new { id = item.Product.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 <hr />
 <h3>Total value: @Model.TotalValue</h3>
 @Html.ActionLink("Order", "Address", "Account", new { isOrder = true }, new { @class = "btn btn-success btn-lg w-100" })

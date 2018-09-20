@@ -9,7 +9,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top">
-        <a class="navbar-brand" href="/Home/Index">Navbar</a>
+        <a class="navbar-brand text-white btn btn-primary" href="/Home/Index">E-Shop</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,29 +29,29 @@
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        @Html.ActionLink("Your Account", "Index", "Account", null, new { @class = "nav-link" })
+                        @Html.ActionLink("Your Account", "Index", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
                     }
                 </li>
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.IsInRole("Administrators"))
                     {
-                        @Html.ActionLink("Admin Panel", "Index", "OrderAdmin", new { area = "Admin" }, new { @class = "nav-link" })
+                        @Html.ActionLink("Admin Panel", "Index", "OrderAdmin", new { area = "Admin" }, new { @class = "nav-link text-white btn btn-primary" })
                     }
                 </li>
                 <li class="nav-item active">
                     @if (!HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        @Html.ActionLink("Sign In", "Create", "Account", null, new { @class = "nav-link" })
+                        @Html.ActionLink("Sign In", "Create", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
                     }
                 </li>
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        @Html.ActionLink("Log Out", "Logout", "Account", null, new { @class = "nav-link" })
+                        @Html.ActionLink("Log Out", "Logout", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
                     }
                     else
                     {
-                        @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "nav-link" })
+                        @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
                     }
                 </li>
             </ul>

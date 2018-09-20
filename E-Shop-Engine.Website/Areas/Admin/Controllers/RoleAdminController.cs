@@ -9,7 +9,7 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-//TODO nested routing
+
 //TODO async methods ?
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {

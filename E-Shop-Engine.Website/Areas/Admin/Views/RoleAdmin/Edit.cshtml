@@ -1,11 +1,12 @@
 ﻿@model E_Shop_Engine.Website.Areas.Admin.Models.RoleEditViewModel
 
 @{ ViewBag.Title = "Edit Role";}
+
 @Html.ValidationSummary()
 @using (Html.BeginForm())
 {
     <input type="hidden" name="roleName" value="@Model.Role.Name" />
-    <div class="panel panel-primary">
+    <div class="card">
         <div class="panel-heading">Add To @Model.Role.Name</div>
         <table class="table table-striped">
             @if (Model.NonMembers.Count() == 0)

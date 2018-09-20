@@ -2,3 +2,8 @@ sortowanie po kolumnie
 search
 paging
 poprawic views
+product available in stock
+cart can be -1
+user dtails
+is all delete works?
+finish roles views

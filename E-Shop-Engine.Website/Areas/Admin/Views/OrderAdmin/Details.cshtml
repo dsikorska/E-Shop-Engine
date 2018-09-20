@@ -40,55 +40,58 @@
             <dd>@Html.DisplayFor(model => model.PaymentMethod)</dd>
         </dl>
     </div>
-    <div class="w-74">
-        <table class="table table-striped table-responsive-sm table-hover table-light text-center">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Catalog Number
-                    </th>
-                    <th scope="col">
-                        Name
-                    </th>
-                    <th scope="col">
-                        Quantity
-                    </th>
-                    <th scope="col">
-                        Price
-                    </th>
-                    <th scope="col">
-                        Value
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.OrderedCart.CartLines)
-                {
+    <div class="w-74 table-responsive">
+            <table class="table table-striped table-hover table-light text-center">
+                <thead class="table-primary">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.CatalogNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.Price)
-                        </td>
-                        <td>
-                            @(item.Product.Price * item.Quantity)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Details", "Details", "ProductAdmin", new { id = item.Product.ID }, new { @class = "btn btn-info btn-sm mb-1" })
-                        </td>
+                        <th scope="col">
+                            Catalog Number
+                        </th>
+                        <th scope="col">
+                            Name
+                        </th>
+                        <th scope="col">
+                            Quantity
+                        </th>
+                        <th scope="col">
+                            Price
+                        </th>
+                        <th scope="col">
+                            Value
+                        </th>
+                        <th scope="col">
+                            Action
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        <h3>Total value: @Model.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)</h3>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderedCart.CartLines)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.CatalogNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Price)
+                            </td>
+                            <td>
+                                @(item.Product.Price * item.Quantity)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "ProductAdmin", new { id = item.Product.ID }, new { @class = "btn btn-info btn-sm mb-1" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h3>Total value: @Model.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)</h3>
+        </div>
 </div>
 
 @section Scripts

@@ -7,11 +7,12 @@
 <h3>@Model.Name</h3>
 
 <div class="w-100 text-center my-4">
-    @foreach (var subcategory in Model.Subcategories)
-    {
-        @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id, mainName = Model.Name, subName = subcategory.Name }, new { @class = "btn btn-primary mr-2 mb-2" })
-    }
+    <div class="text-left">
+        @foreach (var subcategory in Model.Subcategories)
+        {
+            @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id, mainName = Model.Name, subName = subcategory.Name }, new { @class = "btn btn-primary mr-2 mb-2" })
+        }
+    </div>
+    @Html.Partial("_ProductsDeck", Model.Products)
 </div>
-
-@Html.Partial("_ProductsDeck", Model.Products)
 

@@ -4,10 +4,11 @@
     ViewBag.Title = Model.Name;
 }
 
-
-@Html.ActionLink("Go to " + Model.CategoryName, "Details", "Category", new { id = Model.CategoryId, name = Model.CategoryName }, new { @class = "btn btn-primary m-2" })
-
 <h2>@Model.CategoryName - @Model.Name</h2>
 
-@Html.Partial("_ProductsDeck", Model.Products)
-
+<div class="w-100 text-center my-4">
+    <div class="text-left">
+        @Html.ActionLink("Go to " + Model.CategoryName, "Details", "Category", new { id = Model.CategoryId, name = Model.CategoryName }, new { @class = "btn btn-primary m-2" })
+    </div>
+    @Html.Partial("_ProductsDeck", Model.Products)
+</div>
