@@ -34,7 +34,7 @@
                     }
                     </td>
                     <td>
-                        @using (Html.BeginForm("Delete", "AdminRole", new { id = role.Id }, FormMethod.Post))
+                        @using (Html.BeginForm("Delete", "RoleAdmin", new { id = role.Id }, FormMethod.Post))
                         {
                             @Html.ActionLink("Edit", "Edit", new { id = role.Id }, new { @class = "btn btn-primary btn-xs" })
                             <button class="btn btn-danger btn-xs"

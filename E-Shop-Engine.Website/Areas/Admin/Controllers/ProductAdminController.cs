@@ -10,13 +10,13 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
-    public class ProductController : Controller
+    public class ProductAdminController : Controller
     {
         private IProductRepository _productRepository;
         private IRepository<Category> _categoryRepository;
         private IRepository<Subcategory> _subcategoryRepository;
 
-        public ProductController(IProductRepository productRepository, IRepository<Category> categoryRepository, IRepository<Subcategory> subcategoryRepository)
+        public ProductAdminController(IProductRepository productRepository, IRepository<Category> categoryRepository, IRepository<Subcategory> subcategoryRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;

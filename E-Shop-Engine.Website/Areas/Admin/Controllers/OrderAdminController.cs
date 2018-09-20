@@ -8,11 +8,11 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
-    public class OrderController : Controller
+    public class OrderAdminController : Controller
     {
         private readonly Repository<Order> _orderRepository;
 
-        public OrderController(Repository<Order> orderRepository)
+        public OrderAdminController(Repository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }

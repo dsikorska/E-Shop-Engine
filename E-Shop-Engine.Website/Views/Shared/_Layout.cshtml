@@ -35,7 +35,7 @@
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.IsInRole("Administrators"))
                     {
-                        @Html.ActionLink("Admin Panel", "Index", "Home", new { area = "Admin" }, new { @class = "nav-link" })
+                        @Html.ActionLink("Admin Panel", "Index", "OrderAdmin", new { area = "Admin" }, new { @class = "nav-link" })
                     }
                 </li>
                 <li class="nav-item active">

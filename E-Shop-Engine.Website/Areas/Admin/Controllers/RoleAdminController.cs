@@ -10,11 +10,10 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 //TODO nested routing
-//TODO admin area controllers nameing
 //TODO async methods ?
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
-    public class AdminRoleController : Controller
+    public class RoleAdminController : Controller
     {
         //private AppUserManager UserManager
         //{
@@ -35,7 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         private readonly AppUserManager UserManager;
         //private readonly AppRoleManager RoleManager;
 
-        public AdminRoleController(AppUserManager userManager/*, AppRoleManager roleManager*/)
+        public RoleAdminController(AppUserManager userManager/*, AppRoleManager roleManager*/)
         {
             UserManager = userManager;
             //RoleManager = roleManager;

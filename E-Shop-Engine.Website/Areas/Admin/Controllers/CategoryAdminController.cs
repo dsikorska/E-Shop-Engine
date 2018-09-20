@@ -9,45 +9,42 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
-    public class SubcategoryController : Controller
+    public class CategoryAdminController : Controller
     {
-        private readonly IRepository<Subcategory> _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
 
-        public SubcategoryController(IRepository<Subcategory> subcategoryRepository, IRepository<Category> categoryRepository)
+        public CategoryAdminController(IRepository<Category> categoryRepository)
         {
-            _subcategoryRepository = subcategoryRepository;
             _categoryRepository = categoryRepository;
         }
 
-        // GET: Admin/Subcategory
+        // GET: Admin/Category
         [HttpGet]
         public ActionResult Index()
         {
-            IQueryable<Subcategory> model = _subcategoryRepository.GetAll();
-            IEnumerable<SubcategoryAdminViewModel> viewModel = Mapper.Map<IQueryable<Subcategory>, IEnumerable<SubcategoryAdminViewModel>>(model);
+            IQueryable<Category> model = _categoryRepository.GetAll();
+            IEnumerable<CategoryAdminViewModel> viewModel = Mapper.Map<IQueryable<Category>, IEnumerable<CategoryAdminViewModel>>(model);
             return View(viewModel);
         }
 
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            Subcategory subcategory = _subcategoryRepository.GetById(id);
-            SubcategoryAdminViewModel model = Mapper.Map<SubcategoryAdminViewModel>(subcategory);
-            model.Categories = _categoryRepository.GetAll();
+            Category category = _categoryRepository.GetById(id);
+            CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(SubcategoryAdminViewModel model)
+        public ActionResult Edit(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            _subcategoryRepository.Update(Mapper.Map<Subcategory>(model));
+            _categoryRepository.Update(Mapper.Map<Category>(model));
 
             return Redirect(ViewBag.returnUrl);
         }
@@ -55,31 +52,28 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            SubcategoryAdminViewModel model = new SubcategoryAdminViewModel
-            {
-                Categories = _categoryRepository.GetAll()
-            };
+            CategoryAdminViewModel model = new CategoryAdminViewModel();
 
             return View("Edit", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SubcategoryAdminViewModel model)
+        public ActionResult Create(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View("Edit", model);
             }
-            _subcategoryRepository.Create(Mapper.Map<Subcategory>(model));
+            _categoryRepository.Create(Mapper.Map<Category>(model));
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult Details(int id)
         {
-            Subcategory subcategory = _subcategoryRepository.GetById(id);
-            SubcategoryAdminViewModel model = Mapper.Map<SubcategoryAdminViewModel>(subcategory);
+            Category category = _categoryRepository.GetById(id);
+            CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
 
             return View(model);
         }
@@ -89,7 +83,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             try
             {
-                _subcategoryRepository.Delete(id);
+                _categoryRepository.Delete(id);
             }
             catch (DbUpdateException e)
             {

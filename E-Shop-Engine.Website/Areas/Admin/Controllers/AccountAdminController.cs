@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
-    public class AccountController : Controller
+    public class AccountAdminController : Controller
     {
         //private AppUserManager UserManager
         //{
@@ -22,7 +22,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         private readonly AppUserManager UserManager;
 
-        public AccountController(AppUserManager userManager)
+        public AccountAdminController(AppUserManager userManager)
         {
             UserManager = userManager;
         }

@@ -47,8 +47,8 @@
                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                     <td>@Html.DisplayFor(modelItem => item.Price)</td>
                     <td>
-                        @Html.ActionLink("Details", "Details", "Product", new { id = item.ID }, new { @class = "btn btn-info btn-sm mb-1" })
-                        @Html.ActionLink("Edit", "Edit", "Product", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mb-1" })                        
+                        @Html.ActionLink("Details", "Details", "ProductAdmin", new { id = item.ID }, new { @class = "btn btn-info btn-sm mb-1" })
+                        @Html.ActionLink("Edit", "Edit", "ProductAdmin", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mb-1" })                        
                     </td>
                 </tr>
                 }

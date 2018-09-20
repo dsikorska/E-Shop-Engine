@@ -1,0 +1,4 @@
+sortowanie po kolumnie
+search
+paging
+poprawic views
