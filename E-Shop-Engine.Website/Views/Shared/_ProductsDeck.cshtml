@@ -16,7 +16,11 @@
                 </div>
             </a>
             <div class="card-body text-center p-0 pb-4">
-                @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = product.Id }, new { @class = "btn btn-success text-white" })
+                @using (Html.BeginForm("AddItem", "Cart", new { id = product.Id }, FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-success" type="submit">Add to Cart</button>
+                }
             </div>
         </div>
     }

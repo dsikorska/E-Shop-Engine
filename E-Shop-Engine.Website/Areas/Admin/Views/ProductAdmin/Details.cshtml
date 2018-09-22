@@ -4,14 +4,14 @@
     ViewBag.Title = "Details " + Model.Name;
 }
 
-<h3>Details @Model.Name</h3>
+<h1>Details @Model.Name</h1>
 
 <p>
     <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
 </p>
 
-<div class="d-flex flex-wrap">
+<div class="d-md-flex flex-nowrap">
     <div class="w-auto mr-2">
         <dl>
             <dt>@Html.DisplayNameFor(model => model.Created)</dt>
@@ -31,7 +31,7 @@
             }
         </dl>
 
-        <img id="ImgPreview" class="img-fluid d-block"
+        <img id="ImgPreview" class="d-block img-max-size"
              src="@Url.Action("GetImage", "ProductAdmin", new { Model.Id })" />
         <dl>
             <dt>@Html.DisplayNameFor(model => model.Name)</dt>
@@ -48,7 +48,7 @@
             }
         </dl>
     </div>
-    <div class="w-74">
+    <div class="w-75">
         <dl>
             <dt>@Html.DisplayNameFor(model => model.Price)</dt>
             <dd class="border-bottom">@Html.DisplayFor(model => model.Price)</dd>
@@ -82,7 +82,7 @@
             }
             else
             {
-                <dd>@Html.DisplayFor(model => model.Description)</dd>
+                <dd class="">@Html.DisplayFor(model => model.Description)</dd>
             }
         </dl>
     </div>

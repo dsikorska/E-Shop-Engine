@@ -4,14 +4,13 @@
     ViewBag.Title = "Edit " + Model.Id;
 }
 
-<h3>Edit @Model.Id</h3>
+<h1>Edit @Model.Id</h1>
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <hr />
-
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled", id = "validation-summary" })
+    <hr />
     @Html.HiddenFor(model => model.Id)
 
     <fieldset disabled>
@@ -44,11 +43,9 @@
         <input type="date" class="form-control single-line" name="Finished" id="Finished" />
     </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.IsPaid, new { @class = "input-group-text" })
-        </div>
-        @Html.CheckBoxFor(model => model.IsPaid, new { @class = "form-control" })
+    <div class="custom-control custom-checkbox form-control-lg w-100 text-center">
+        @Html.CheckBoxFor(model => model.IsPaid, new { @class = "custom-control-input" })
+        <label for="IsPaid" class="custom-control-label">Is Paid?</label>
     </div>
 
     <div class="input-group mb-3">

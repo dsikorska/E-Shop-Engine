@@ -1,61 +1,52 @@
 ﻿@model E_Shop_Engine.Website.Models.ProductViewModel
 
 @{
-    ViewBag.Title = Model.Name;
+                ViewBag.Title = Model.Name;
 }
 
-<h3>@Model.Name</h3>
+<div class="mx-auto">
+    <div class="text-left">
+        <p class="my-0">
+            <a class="btn btn-primary text-white my-2" href="@ViewBag.returnUrl">Go back</a>
+        </p>
 
-<p>
-    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
-</p>
+        @if (Model.SubcategoryName != null)
+        {
+            <p class="my-0">@Model.CategoryName / @Model.SubcategoryName</p>
+        }
+        else
+        {
+            <p class="my-0">@Model.CategoryName</p>
+        }
 
-<div class="d-flex flex-wrap">
-    <div class="w-auto mr-2">
-        @Html.ActionLink("Add to cart", "AddItem", "Cart", new { id = Model.Id }, new { @class = "btn btn-success text-white" })
-        <img id="ImgPreview" class="img-fluid d-block"
+        <h3 class="my-0">@Model.Name</h3>
+        <small>Catalog Number: @Model.CatalogNumber</small>
+    </div>
+
+    <div class="w-100 text-center">
+        <img id="ImgPreview" class="img-max-size"
              src="@Url.Action("GetImage", "Product", new { Model.Id })" />
     </div>
-    <div class="w-74">
-        <dl>
-            <dt>@Html.DisplayNameFor(model => model.Name)</dt>
-            <dd>@Html.DisplayFor(model => model.Name)</dd>
 
-            <dt>@Html.DisplayNameFor(model => model.CatalogNumber)</dt>
-            @if (Model.CatalogNumber == null)
-            {
-                <dd>- None -</dd>
-            }
-            else
-            {
-                <dd>@Html.DisplayFor(model => model.CatalogNumber)</dd>
-            }
-
-            <dt>@Html.DisplayNameFor(model => model.Price)</dt>
-            <dd class="border-bottom">@Html.DisplayFor(model => model.Price)</dd>
-
-            <dt>@Html.DisplayNameFor(model => model.CategoryName)</dt>
-            <dd class="border-bottom">@Html.DisplayFor(model => model.CategoryName)</dd>
-
-            <dt>@Html.DisplayNameFor(model => model.SubcategoryName)</dt>
-            @if (Model.SubcategoryName == null)
-            {
-                <dd class="border-bottom">- None -</dd>
-            }
-            else
-            {
-                <dd class="border-bottom">@Html.DisplayFor(model => model.SubcategoryName)</dd>
-            }
-
-            <dt>@Html.DisplayNameFor(model => model.Description)</dt>
-            @if (Model.Description == null)
-            {
-                <dd>- None -</dd>
-            }
-            else
-            {
-                <dd>@Html.DisplayFor(model => model.Description)</dd>
-            }
-        </dl>
+    <div class="text-center">
+        @using (Html.BeginForm("AddItem", "Cart", new { id = Model.Id }, FormMethod.Post, new { @class = "d-inline" }))
+        {
+            @Html.AntiForgeryToken()
+            <button class="btn btn-success my-2" type="submit">Add to Cart</button>
+        }
     </div>
+
+        <h2 class="text-center">@Html.DisplayNameFor(model => model.Price)</h2>
+        <h3 class="border-bottom text-center">@Html.DisplayFor(model => model.Price)</h3>
+
+        <strong>@Html.DisplayNameFor(model => model.Description)</strong>
+        @if (Model.Description == null)
+        {
+            <p>- None -</p>
+        }
+        else
+        {
+            <p>@Html.DisplayFor(model => model.Description)</p>
+        }
+
 </div>

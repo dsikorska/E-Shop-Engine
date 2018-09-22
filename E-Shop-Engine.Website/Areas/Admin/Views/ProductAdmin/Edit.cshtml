@@ -14,19 +14,18 @@
 
 @if (Model.Name != null)
 {
-    <h3>Edit @Model.Name</h3>
+    <h1>Edit @Model.Name</h1>
 }
 @if (Model.Name == null)
 {
-    <h3>New product</h3>
+    <h1>New product</h1>
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <hr />
-
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
@@ -80,14 +79,14 @@
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.CategoryId, "Select category...", new { @class = "input-group-text" })
         </div>
-        @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.Categories, "Id", "Name"), new { @class = "custom-select" })
+        @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.Categories, "Id", "Name"), "---", new { @class = "custom-select" })
     </div>
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.SubcategoryId, "Select subcategory...", new { @class = "input-group-text" })
         </div>
-        @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), "", new { @class = "custom-select" })
+        @Html.DropDownListFor(model => model.SubcategoryId, new SelectList(Model.Subcategories, "Id", "Name"), "- None -", new { @class = "custom-select" })
     </div>
 
     <div class="custom-control custom-checkbox form-control-lg">
@@ -100,6 +99,7 @@
         @Html.LabelFor(model => model.ShowAtMainPage, htmlAttributes: new { @class = "custom-control-label" })
     </div>
 
+    @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.Created)
 
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
@@ -108,31 +108,31 @@
     </div>
 }
 
-<script type="text/javascript">
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#ImgPreview').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#ImageData").change(function () {
-        readURL(this);
-    });
-
-    $.validator.methods.range = function (value, element, param) {
-        var globalizedValue = value.replace(",", ".");
-        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    }
-
-    $.validator.methods.number = function (value, element) {
-        return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
-    }
-</script>
-
 @section Scripts {
     @Scripts.Render("~/Bundles/validate")
+
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#ImgPreview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#ImageData").change(function () {
+            readURL(this);
+        });
+
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        };
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        };
+    </script>
 }

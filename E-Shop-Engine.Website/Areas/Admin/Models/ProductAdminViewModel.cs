@@ -16,7 +16,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [StringLength(200, MinimumLength = 2)]
         public string Name { get; set; }
 
-        [StringLength(5000)]
+        [StringLength(3900)]
         public string Description { get; set; }
 
         [Required]

@@ -61,7 +61,15 @@ namespace E_Shop_Engine.Website.Controllers
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
 
-            _cartRepository.AddItem(user.Cart, product, quantity);
+            if (product.NumberInStock > 0)
+            {
+                product.NumberInStock -= quantity;
+                _cartRepository.AddItem(user.Cart, product, quantity);
+            }
+            else
+            {
+                return View("_Error", new string[] { "Product out of stock!" });
+            }
 
             return Redirect(ViewBag.returnUrl);
         }
@@ -75,6 +83,7 @@ namespace E_Shop_Engine.Website.Controllers
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
 
+            product.NumberInStock += quantity;
             _cartRepository.RemoveItem(user.Cart, product, quantity);
 
             return Redirect(ViewBag.returnUrl);
@@ -83,12 +92,13 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult RemoveLine(int id)
+        public ActionResult RemoveLine(int id, int quantity)
         {
             Product product = _productRepository.GetById(id);
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
 
+            product.NumberInStock += quantity;
             _cartRepository.RemoveLine(user.Cart, product);
 
             return Redirect(ViewBag.returnUrl);

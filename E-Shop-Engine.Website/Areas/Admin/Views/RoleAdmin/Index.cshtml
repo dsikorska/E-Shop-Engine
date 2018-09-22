@@ -2,10 +2,10 @@
 @model IEnumerable<E_Shop_Engine.Domain.DomainModel.IdentityModel.AppRole>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Roles";
 }
 
-<h2>Roles</h2>
+<h1>Roles</h1>
 
 <p class="text-right">
     @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-success" })
@@ -52,7 +52,7 @@
                             @using (Html.BeginForm("Delete", null, FormMethod.Post))
                             {
                                 @Html.AntiForgeryToken()
-                                @Html.Hidden("id", item.Id)
+                                @Html.Hidden("id", role.Id)
                                 <input type="submit" value="Delete" class="btn btn-danger btn-sm mb-1" />
                             }
                         </td>

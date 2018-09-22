@@ -4,7 +4,7 @@
     ViewBag.Title = "Your Cart";
 }
 
-<h3>Your Cart</h3>
+<h1>Your Cart</h1>
 
 <p>
     <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Continue shopping</a>
@@ -33,18 +33,20 @@
             {
                 foreach (var item in Model.CartLines)
                 {
-                    <tr class="clickable-row pointer" data-href="/Product/Details/@item.Product.Id">
+                    <tr class="clickable-row pointer" data-href="/@item.Product.Id/@item.Product.Name">
                         <td>
                             @Html.DisplayFor(model => item.Product.Name)
                         </td>
                         <td>
                             @using (Html.BeginForm("RemoveItem", "Cart", new { id = item.Product.Id }, FormMethod.Post, new { @class = "d-inline" }))
                             {
+                                @Html.AntiForgeryToken()
                                 <button class="btn btn-secondary btn-sm" type="submit">-</button>
                             }
                             @Html.DisplayFor(model => item.Quantity)
                             @using (Html.BeginForm("AddItem", "Cart", new { id = item.Product.Id }, FormMethod.Post, new { @class = "d-inline" }))
                             {
+                                @Html.AntiForgeryToken()
                                 <button class="btn btn-secondary btn-sm" type="submit">+</button>
                             }
                         </td>
@@ -52,7 +54,11 @@
                             @Html.DisplayFor(model => item.Product.Price)
                         </td>
                         <td>
-                            @Html.ActionLink("Delete", "RemoveLine", new { id = item.Product.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
+                            @using (Html.BeginForm("RemoveLine", "Cart", new { id = item.Product.Id, quantity = item.Quantity }, FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-danger btn-sm mb-1" type="submit">Delete</button>
+                            }
                         </td>
                     </tr>
                 }

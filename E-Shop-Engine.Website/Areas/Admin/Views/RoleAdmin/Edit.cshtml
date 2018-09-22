@@ -2,10 +2,13 @@
 
 @{ ViewBag.Title = "Edit Role";}
 
+<h1>Edit Role</h1>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
     <input type="hidden" name="roleName" value="@Model.Role.Name" />
     <div class="card">
         <div class="card-header alert-primary">Add To @Model.Role.Name</div>
@@ -63,3 +66,6 @@
     </div>
 }
 
+@section Scripts {
+    @Scripts.Render("~/Bundles/validate")
+}

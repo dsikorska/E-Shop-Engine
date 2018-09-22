@@ -1,16 +1,16 @@
 ﻿@model string
 @{ ViewBag.Title = "Create Role";}
-<h2>Create Role</h2>
+
+<h1>Create Role</h1>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <hr />
-
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr/>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <label for="name" class="input-group-text">Name</label>            
+            <label for="name" class="input-group-text">Name</label>
         </div>
         @Html.TextBox("name", null, new { @class = "form-control" })
     </div>
@@ -18,4 +18,8 @@
         <a class="btn btn-secondary btn-lg text-white" href="@ViewBag.returnUrl">Go back</a>
         <input type="submit" value="Save" class="btn btn-success btn-lg" />
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/validate")
 }

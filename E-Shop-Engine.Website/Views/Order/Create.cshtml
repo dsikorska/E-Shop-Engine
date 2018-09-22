@@ -4,7 +4,7 @@
     ViewBag.Title = "New Order";
 }
 
-<h3>New Order</h3>
+<h1>New Order</h1>
 
 @using (Html.BeginForm())
 {
@@ -23,4 +23,8 @@
         <a class="btn btn-danger btn-lg text-white" href="/Cart/Details">Cancel</a>
         <input type="submit" value="Process" class="btn btn-success btn-lg" />
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/validate")
 }

@@ -14,19 +14,18 @@
 
 @if (Model.Name != null)
 {
-    <h3>Edit @Model.Name</h3>
+    <h1>Edit @Model.Name</h1>
 }
 @if (Model.Name == null)
 {
-    <h3>New category</h3>
+    <h1>New category</h1>
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <hr />
-
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled", id = "validation-summary" })
+    <hr />
     @Html.HiddenFor(model => model.Id)
 
     <div class="input-group mb-3">
