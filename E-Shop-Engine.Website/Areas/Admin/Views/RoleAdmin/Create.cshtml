@@ -1,13 +1,21 @@
 ﻿@model string
 @{ ViewBag.Title = "Create Role";}
 <h2>Create Role</h2>
-@Html.ValidationSummary(false)
+
 @using (Html.BeginForm())
 {
-    <div class="form-group">
-        <label>Name</label>
-        <input name="name" value="@Model" class="form-control" />
+    @Html.AntiForgeryToken()
+    <hr />
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label for="name" class="input-group-text">Name</label>            
+        </div>
+        @Html.TextBox("name", null, new { @class = "form-control" })
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        <a class="btn btn-secondary btn-lg text-white" href="@ViewBag.returnUrl">Go back</a>
+        <input type="submit" value="Save" class="btn btn-success btn-lg" />
+    </div>
 }

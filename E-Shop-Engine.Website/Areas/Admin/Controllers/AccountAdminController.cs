@@ -38,6 +38,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
         {
             AppUser user = await UserManager.FindByIdAsync(id);
@@ -74,6 +76,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(UserAdminViewModel model)
         {
             AppUser user = await UserManager.FindByIdAsync(model.Id);

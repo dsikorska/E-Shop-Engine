@@ -101,6 +101,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             _productRepository.Delete(id);

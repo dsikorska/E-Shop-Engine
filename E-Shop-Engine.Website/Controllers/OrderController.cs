@@ -51,6 +51,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Create(OrderViewModel model)
         {

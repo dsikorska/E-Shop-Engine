@@ -86,7 +86,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             return View(model);
         }
-
+        //TODO error filter 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Delete(int id)
         {

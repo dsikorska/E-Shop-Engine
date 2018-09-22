@@ -36,7 +36,12 @@
                         <td>@user.Email</td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = user.Id }, new { @class = "btn btn-primary btn-sm mb-1" })
-                            @Html.ActionLink("Delete", "Delete", new { id = user.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
+                            @using (Html.BeginForm("Delete", null, FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("id", user.Id)
+                                <input type="submit" value="Delete" class="btn btn-danger btn-sm mb-1" />
+                            }
                         </td>
                     </tr>
                 }

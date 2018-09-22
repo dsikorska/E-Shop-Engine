@@ -50,7 +50,12 @@
                     <td>
                         @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mb-1" })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm mb-1" })
+                        @using (Html.BeginForm("Delete", null, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", item.Id)
+                            <input type="submit" value="Delete" class="btn btn-danger btn-sm mb-1" />
+                        }
                     </td>
                 </tr>
             }

@@ -56,6 +56,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Required]string name)
         {
             if (ModelState.IsValid)
@@ -90,6 +91,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(RoleModificationViewModel model)
         {
             IdentityResult result;
@@ -117,6 +119,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);

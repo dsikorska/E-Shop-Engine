@@ -53,6 +53,8 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult AddItem(int id, int quantity = 1)
         {
             Product product = _productRepository.GetById(id);
@@ -65,6 +67,8 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult RemoveItem(int id, int quantity = 1)
         {
             Product product = _productRepository.GetById(id);
@@ -77,6 +81,8 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult RemoveLine(int id)
         {
             Product product = _productRepository.GetById(id);
