@@ -41,7 +41,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             Product product = _productRepository.GetById(id);
             ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
             model.Categories = _categoryRepository.GetAll();
-            model.Subcategories = _subcategoryRepository.GetAll();
 
             return View(model);
         }
@@ -65,8 +64,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ProductAdminViewModel model = new ProductAdminViewModel
             {
-                Categories = _categoryRepository.GetAll(),
-                Subcategories = _subcategoryRepository.GetAll()
+                Categories = _categoryRepository.GetAll()
             };
 
             return View("Edit", model);
@@ -87,6 +85,19 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _productRepository.Create(product);
 
             return RedirectToAction("Index");
+        }
+
+        public JsonResult GetSubcategories(int id)
+        {
+            ICollection<Subcategory> subcategories = _categoryRepository.GetById(id)?.Subcategories;
+            IEnumerable<SubcategoryAdminViewModel> model = Mapper.Map<ICollection<Subcategory>, IEnumerable<SubcategoryAdminViewModel>>(subcategories);
+            var viewModel = model.Select(x => new
+            {
+                Id = x.Id,
+                Name = x.Name
+            });
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

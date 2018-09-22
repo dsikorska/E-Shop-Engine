@@ -1,11 +1,11 @@
 sortowanie po kolumnie
 search
 paging
-poprawic views
 user dtails
 save enum as string in db
 new product - subcategory select
 better way to outofstock?
+returnUrl at admin
 
 The DELETE statement conflicted with the REFERENCE constraint "FK_dbo.OrderedCartLines_dbo.Products_Product_ID". The conflict occurred in database "ShopEngineDb", table "dbo.OrderedCartLines", column 'Product_ID'.
 The statement has been terminated.
