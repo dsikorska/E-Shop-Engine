@@ -3,7 +3,6 @@ search
 paging
 user dtails
 save enum as string in db
-new product - subcategory select
 better way to outofstock?
 returnUrl at admin
 

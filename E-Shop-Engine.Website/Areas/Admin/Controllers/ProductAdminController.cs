@@ -56,7 +56,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             _productRepository.Update(Mapper.Map<Product>(model));
 
-            return Redirect(ViewBag.returnUrl);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

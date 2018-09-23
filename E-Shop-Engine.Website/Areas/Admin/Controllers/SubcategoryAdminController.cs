@@ -52,7 +52,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             _subcategoryRepository.Update(Mapper.Map<Subcategory>(model));
 
-            return Redirect(ViewBag.returnUrl);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
