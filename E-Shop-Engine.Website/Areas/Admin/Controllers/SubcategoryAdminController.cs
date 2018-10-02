@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
-    public class SubcategoryAdminController : Controller
+    public class SubcategoryAdminController : PagingBaseController
     {
         private readonly IRepository<Subcategory> _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
@@ -25,10 +26,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Subcategory
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageNumber = page ?? 1;
             IQueryable<Subcategory> model = _subcategoryRepository.GetAll();
-            IEnumerable<SubcategoryAdminViewModel> viewModel = Mapper.Map<IQueryable<Subcategory>, IEnumerable<SubcategoryAdminViewModel>>(model);
+            IPagedList<SubcategoryAdminViewModel> viewModel = IQueryableToPagedList<Subcategory, SubcategoryAdminViewModel, int>(model, x => x.CategoryID, pageNumber);
             return View(viewModel);
         }
 

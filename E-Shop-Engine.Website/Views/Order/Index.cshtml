@@ -1,4 +1,7 @@
-﻿@model IEnumerable<E_Shop_Engine.Website.Models.OrderViewModel>
+﻿@using X.PagedList;
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Common;
+@model IPagedList<E_Shop_Engine.Website.Models.OrderViewModel>
 
 @{
     ViewBag.Title = "Your Orders";
@@ -50,3 +53,18 @@
         </tbody>
     </table>
 </div>
+
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page); }, new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" },
+    UlElementClasses = new string[] { "pagination justify-content-center" },
+    LinkToFirstPageFormat = "<<",
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    LinkToLastPageFormat = ">>",
+    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+    MaximumPageNumbersToDisplay = 10
+})

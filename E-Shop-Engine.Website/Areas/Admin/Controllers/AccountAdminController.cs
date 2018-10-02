@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
 using Microsoft.AspNet.Identity;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Account")]
     [Route("{action}")]
-    public class AccountAdminController : Controller
+    public class AccountAdminController : PagingBaseController
     {
         //private AppUserManager UserManager
         //{
@@ -31,10 +32,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Identity
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageNumber = page ?? 1;
             IQueryable<AppUser> model = UserManager.Users;
-            IEnumerable<UserAdminViewModel> viewModel = Mapper.Map<IQueryable<AppUser>, IEnumerable<UserAdminViewModel>>(model);
+            IPagedList<UserAdminViewModel> viewModel = IQueryableToPagedList<AppUser, UserAdminViewModel, string>(model, x => x.Email, pageNumber);
             return View(viewModel);
         }
 

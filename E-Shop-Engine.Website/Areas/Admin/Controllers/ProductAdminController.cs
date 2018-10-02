@@ -7,13 +7,15 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Product")]
     [Route("{action}")]
-    public class ProductAdminController : Controller
+    public class ProductAdminController : PagingBaseController
     {
         private IProductRepository _productRepository;
         private IRepository<Category> _categoryRepository;
@@ -28,10 +30,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Product
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageNumber = page ?? 1;
             IQueryable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductAdminViewModel> viewModel = Mapper.Map<IQueryable<Product>, IEnumerable<ProductAdminViewModel>>(model);
+            IPagedList<ProductAdminViewModel> viewModel = IQueryableToPagedList<Product, ProductAdminViewModel, string>(model, x => x.Name, pageNumber);
             return View(viewModel);
         }
 

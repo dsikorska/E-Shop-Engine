@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Category")]
     [Route("{action}")]
-    public class CategoryAdminController : Controller
+    public class CategoryAdminController : PagingBaseController
     {
         private readonly IRepository<Category> _categoryRepository;
 
@@ -23,10 +24,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Category
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageNumber = page ?? 1;
             IQueryable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryAdminViewModel> viewModel = Mapper.Map<IQueryable<Category>, IEnumerable<CategoryAdminViewModel>>(model);
+            IPagedList<CategoryAdminViewModel> viewModel = IQueryableToPagedList<Category, CategoryAdminViewModel, int>(model, x => x.ID, pageNumber);
             return View(viewModel);
         }
 

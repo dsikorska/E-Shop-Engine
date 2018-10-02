@@ -1,4 +1,8 @@
-﻿@model IEnumerable<E_Shop_Engine.Website.Areas.Admin.Models.CategoryAdminViewModel>
+﻿@using X.PagedList;
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Common;
+@using E_Shop_Engine.Website.Areas.Admin.Models;
+@model IPagedList<CategoryAdminViewModel>
 
 @{
     ViewBag.Title = "Categories";
@@ -50,3 +54,18 @@
         </tbody>
     </table>
 </div>
+
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page); }, new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" },
+    UlElementClasses = new string[] { "pagination justify-content-center" },
+    LinkToFirstPageFormat = "<<",
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    LinkToLastPageFormat = ">>",
+    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+    MaximumPageNumbersToDisplay = 10
+})

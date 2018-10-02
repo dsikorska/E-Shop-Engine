@@ -9,10 +9,11 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : PagingBaseController
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
@@ -26,20 +27,20 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageNumber = page ?? 1;
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
 
             IEnumerable<Order> model = user.Orders;
-            IEnumerable<OrderViewModel> viewModel = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(model);
-            viewModel = viewModel.Select(x =>
-                {
-                    x.Created = x.Created.ToLocalTime();
-                    return x;
-                });
-
-            return View(viewModel.OrderByDescending(x => x.Created));
+            model = model.Select(x =>
+            {
+                x.Created = x.Created.ToLocalTime();
+                return x;
+            });
+            IPagedList<OrderViewModel> viewModel = IEnumerableToPagedList<Order, OrderViewModel, DateTime>(model, x => x.Created, pageNumber, 10, true);
+            return View(viewModel);
         }
 
         public ActionResult Create()

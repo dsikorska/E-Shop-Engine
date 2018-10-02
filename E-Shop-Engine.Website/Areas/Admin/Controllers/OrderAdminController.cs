@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Services.Repositories;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Order")]
     [Route("{action}")]
-    public class OrderAdminController : Controller
+    public class OrderAdminController : PagingBaseController
     {
         private readonly Repository<Order> _orderRepository;
 
@@ -21,10 +23,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            IQueryable<Order> model = _orderRepository.GetAll().OrderBy(x => x.Created);
-            IEnumerable<OrderAdminViewModel> viewModel = Mapper.Map<IQueryable<Order>, IEnumerable<OrderAdminViewModel>>(model);
+            int pageNumber = page ?? 1;
+            IQueryable<Order> model = _orderRepository.GetAll();
+            IPagedList<OrderAdminViewModel> viewModel = IQueryableToPagedList<Order, OrderAdminViewModel, DateTime>(model, x => x.Created, pageNumber, 25, true);
             return View(viewModel);
         }
 

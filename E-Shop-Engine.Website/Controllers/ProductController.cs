@@ -11,7 +11,7 @@ using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : PagingBaseController
     {
         private readonly IProductRepository _productRepository;
 
@@ -25,16 +25,14 @@ namespace E_Shop_Engine.Website.Controllers
         {
             int pageNumber = page ?? 1;
             IQueryable<Product> model = _productRepository.GetAll();
-            IPagedList<Product> pagedModel = model.OrderBy(x => x.Edited).ToPagedList(pageNumber, 25);
-            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(pagedModel);
-            IPagedList<ProductViewModel> viewModel = new StaticPagedList<ProductViewModel>(mappedModel, pagedModel.GetMetaData());
+            IPagedList<ProductViewModel> viewModel = IQueryableToPagedList<Product, ProductViewModel, DateTime?>(model, x => x.Edited, page, 25);
             return View("_ProductsDeck", viewModel);
         }
 
         public PartialViewResult ProductsToPagedList(IEnumerable<ProductViewModel> model, int? page)
         {
             int pageNumber = page ?? 1;
-            IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(model, pageNumber, 25);
+            IPagedList<ProductViewModel> viewModel = IEnumerableToPagedList(model, pageNumber, 25);
 
             return PartialView("_ProductsDeck", viewModel);
         }
