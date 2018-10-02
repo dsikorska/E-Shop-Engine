@@ -7,6 +7,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Models;
+using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
@@ -20,12 +21,22 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: Product
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-
+            int pageNumber = page ?? 1;
             IQueryable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IQueryable<Product>, IEnumerable<ProductViewModel>>(model);
+            IPagedList<Product> pagedModel = model.OrderBy(x => x.Edited).ToPagedList(pageNumber, 25);
+            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(pagedModel);
+            IPagedList<ProductViewModel> viewModel = new StaticPagedList<ProductViewModel>(mappedModel, pagedModel.GetMetaData());
             return View("_ProductsDeck", viewModel);
+        }
+
+        public PartialViewResult ProductsToPagedList(IEnumerable<ProductViewModel> model, int? page)
+        {
+            int pageNumber = page ?? 1;
+            IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(model, pageNumber, 25);
+
+            return PartialView("_ProductsDeck", viewModel);
         }
 
         [HttpGet]

@@ -10,5 +10,5 @@
     <div class="text-left">
         @Html.ActionLink("Go to " + Model.CategoryName, "Details", "Category", new { id = Model.CategoryId, name = Model.CategoryName }, new { @class = "btn btn-primary m-2" })
     </div>
-    @Html.Partial("_ProductsDeck", Model.Products)
+    @Html.Action("ProductsToPagedList", "Product", new { model = Model.Products })
 </div>

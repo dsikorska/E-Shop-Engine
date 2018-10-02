@@ -13,6 +13,7 @@
             @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id, mainName = Model.Name, subName = subcategory.Name }, new { @class = "btn btn-primary mr-2 mb-2" })
         }
     </div>
-    @Html.Partial("_ProductsDeck", Model.Products)
+    
+    @Html.Action("ProductsToPagedList", "Product", new { model = Model.Products})
 </div>
 
