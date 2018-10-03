@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Enumerables;
@@ -20,5 +21,21 @@ namespace E_Shop_Engine.Website.Models
         [Display(Name = "Payment Method")]
         public PaymentMethod? PaymentMethod { get; set; }
         public OrderStatus OrderStatus { get; set; }
+
+        public decimal TotalValue
+        {
+            get
+            {
+                return OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity);
+            }
+        }
+
+        public int TotalProducts
+        {
+            get
+            {
+                return OrderedCart.CartLines.Sum(x => x.Quantity);
+            }
+        }
     }
 }

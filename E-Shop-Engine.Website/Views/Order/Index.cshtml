@@ -13,16 +13,16 @@
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    Created
+                    <a href="@Request.Url.LocalPath?page=1&sortOrder=Created&descending=True">Created</a>
                 </th>
                 <th scope="col">
-                    Finished
+                    <a href="@Request.Url.LocalPath?page=1&sortOrder=Finished&descending=True">Finished</a>
                 </th>
                 <th scope="col">
-                    Bought products
+                    <a href="@Request.Url.LocalPath?page=1&sortOrder=TotalProducts&descending=True">Total Products</a>
                 </th>
                 <th scope="col">
-                    Total value
+                    <a href="@Request.Url.LocalPath?page=1&sortOrder=TotalValue&descending=True">Total Value</a>
                 </th>
                 <th scope="col">
                     Action
@@ -40,10 +40,10 @@
                         @Html.DisplayFor(modelItem => item.Finished)
                     </td>
                     <td>
-                        @item.OrderedCart.CartLines.Sum(x => x.Quantity)
+                        @item.TotalProducts
                     </td>
                     <td>
-                        @item.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)
+                        @item.TotalValue
                     </td>
                     <td>
                         @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
@@ -54,7 +54,7 @@
     </table>
 </div>
 
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page); }, new PagedListRenderOptions
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.Descending); }, new PagedListRenderOptions
 {
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" },

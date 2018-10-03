@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -27,19 +28,32 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: Order
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder, bool descending = true)
         {
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "Created";
+            }
             int pageNumber = page ?? 1;
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
 
-            IEnumerable<Order> model = user.Orders;
-            model = model.Select(x =>
+            IQueryable<Order> model = user.Orders.AsQueryable();
+            IQueryable<OrderViewModel> mappedModel = model.ProjectTo<OrderViewModel>();
+
+            PropertyInfo sortBy = typeof(OrderViewModel).GetProperty(sortOrder);
+            mappedModel = descending ? mappedModel.OrderByDescending(x => sortBy.GetValue(x)) : mappedModel.OrderBy(x => sortBy.GetValue(x));
+
+            IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 1);
+
+            ViewBag.SortOrder = sortOrder;
+            ViewBag.SortDescending = descending;
+
+            viewModel = viewModel.Select(x =>
             {
                 x.Created = x.Created.ToLocalTime();
                 return x;
             });
-            IPagedList<OrderViewModel> viewModel = IEnumerableToPagedList<Order, OrderViewModel, DateTime>(model, x => x.Created, pageNumber, 10, true);
             return View(viewModel);
         }
 
