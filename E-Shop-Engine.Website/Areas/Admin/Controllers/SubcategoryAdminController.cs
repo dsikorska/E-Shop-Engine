@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -13,7 +14,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
-    public class SubcategoryAdminController : PagingBaseController
+    public class SubcategoryAdminController : BaseController
     {
         private readonly IRepository<Subcategory> _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
@@ -26,11 +27,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Subcategory
         [HttpGet]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder, bool descending = false)
         {
-            int pageNumber = page ?? 1;
+            ReverseSorting(ref descending, sortOrder);
+
             IQueryable<Subcategory> model = _subcategoryRepository.GetAll();
-            IPagedList<SubcategoryAdminViewModel> viewModel = IQueryableToPagedList<Subcategory, SubcategoryAdminViewModel, int>(model, x => x.CategoryID, pageNumber);
+            IEnumerable<SubcategoryAdminViewModel> mappedModel = SortBy<Subcategory, SubcategoryAdminViewModel>(model, "CategoryID", sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<SubcategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+
+            SaveSortingState(sortOrder, descending);
+
             return View(viewModel);
         }
 

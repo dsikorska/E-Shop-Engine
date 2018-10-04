@@ -15,7 +15,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Product")]
     [Route("{action}")]
-    public class ProductAdminController : PagingBaseController
+    public class ProductAdminController : BaseController
     {
         private IProductRepository _productRepository;
         private IRepository<Category> _categoryRepository;
@@ -30,11 +30,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Product
         [HttpGet]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder, bool descending = false)
         {
-            int pageNumber = page ?? 1;
+            ReverseSorting(ref descending, sortOrder);
             IQueryable<Product> model = _productRepository.GetAll();
-            IPagedList<ProductAdminViewModel> viewModel = IQueryableToPagedList<Product, ProductAdminViewModel, string>(model, x => x.Name, pageNumber);
+            IEnumerable<ProductAdminViewModel> mappedModel = SortBy<Product, ProductAdminViewModel>(model, "Name", sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<ProductAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+
+            SaveSortingState(sortOrder, descending);
+
             return View(viewModel);
         }
 

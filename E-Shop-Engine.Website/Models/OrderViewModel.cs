@@ -19,8 +19,8 @@ namespace E_Shop_Engine.Website.Models
 
         [Required]
         [Display(Name = "Payment Method")]
-        public PaymentMethod? PaymentMethod { get; set; }
-        public OrderStatus OrderStatus { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; } = null;
+        public OrderStatus OrderStatus { get; set; } = OrderStatus.InProgress;
 
         public decimal TotalValue
         {

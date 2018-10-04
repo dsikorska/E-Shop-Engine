@@ -11,7 +11,7 @@ using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class ProductController : PagingBaseController
+    public class ProductController : BaseController
     {
         private readonly IProductRepository _productRepository;
 

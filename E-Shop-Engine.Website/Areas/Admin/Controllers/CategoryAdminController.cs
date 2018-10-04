@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -13,7 +14,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Category")]
     [Route("{action}")]
-    public class CategoryAdminController : PagingBaseController
+    public class CategoryAdminController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;
 
@@ -24,11 +25,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Category
         [HttpGet]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder, bool descending = false)
         {
-            int pageNumber = page ?? 1;
+            ReverseSorting(ref descending, sortOrder);
             IQueryable<Category> model = _categoryRepository.GetAll();
-            IPagedList<CategoryAdminViewModel> viewModel = IQueryableToPagedList<Category, CategoryAdminViewModel, int>(model, x => x.ID, pageNumber);
+            IEnumerable<CategoryAdminViewModel> mappedModel = SortBy<Category, CategoryAdminViewModel>(model, "Id", sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<CategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+
+            SaveSortingState(sortOrder, descending);
+
             return View(viewModel);
         }
 

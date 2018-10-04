@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -13,7 +13,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Order")]
     [Route("{action}")]
-    public class OrderAdminController : PagingBaseController
+    public class OrderAdminController : BaseController
     {
         private readonly Repository<Order> _orderRepository;
 
@@ -23,11 +23,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder, bool descending = true)
         {
-            int pageNumber = page ?? 1;
+            ReverseSorting(ref descending, sortOrder);
             IQueryable<Order> model = _orderRepository.GetAll();
-            IPagedList<OrderAdminViewModel> viewModel = IQueryableToPagedList<Order, OrderAdminViewModel, DateTime>(model, x => x.Created, pageNumber, 25, true);
+            IEnumerable<OrderAdminViewModel> mappedModel = SortBy<Order, OrderAdminViewModel>(model, "Created", sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<OrderAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+
+            SaveSortingState(sortOrder, descending);
+
             return View(viewModel);
         }
 

@@ -15,19 +15,19 @@
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    Id
+                    @Html.ActionLink("Id", "Index", new { page = 1, sortOrder = "Id", descending = false })
                 </th>
                 <th scope="col">
-                    Created
+                    @Html.ActionLink("Created", "Index", new { page = 1, sortOrder = "Created", descending = true })
                 </th>
                 <th scope="col">
-                    Is Paid?
+                    @Html.ActionLink("Is Paid?", "Index", new { page = 1, sortOrder = "IsPaid", descending = true })
                 </th>
                 <th scope="col">
-                    Status
+                    @Html.ActionLink("Status", "Index", new { page = 1, sortOrder = "OrderStatus", descending = false })
                 </th>
                 <th scope="col">
-                    Value
+                    @Html.ActionLink("Value", "Index", new { page = 1, sortOrder = "TotalValue", descending = true })
                 </th>
                 <th scope="col">
                     Action
@@ -51,7 +51,7 @@
                         @Html.DisplayFor(modelItem => item.OrderStatus)
                     </td>
                     <td>
-                        @item.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)
+                        @item.TotalValue
                     </td>
                     <td>
                         @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
@@ -63,7 +63,7 @@
     </table>
 </div>
 
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page); }, new PagedListRenderOptions
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.SortDescending); }, new PagedListRenderOptions
 {
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" },

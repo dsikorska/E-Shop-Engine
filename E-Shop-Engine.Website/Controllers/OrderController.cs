@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -14,7 +13,7 @@ using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class OrderController : PagingBaseController
+    public class OrderController : BaseController
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
@@ -26,43 +25,35 @@ namespace E_Shop_Engine.Website.Controllers
             _cartRepository = cartRepository;
             _userManager = userManager;
         }
-
+        //TODO redirect from account
         // GET: Order
         public ActionResult Index(int? page, string sortOrder, bool descending = true)
         {
-            if (string.IsNullOrEmpty(sortOrder))
-            {
-                sortOrder = "Created";
-            }
-            int pageNumber = page ?? 1;
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
 
+            ReverseSorting(ref descending, sortOrder);
+
             IQueryable<Order> model = user.Orders.AsQueryable();
-            IQueryable<OrderViewModel> mappedModel = model.ProjectTo<OrderViewModel>();
+            IEnumerable<OrderViewModel> mappedModel = SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
 
-            PropertyInfo sortBy = typeof(OrderViewModel).GetProperty(sortOrder);
-            mappedModel = descending ? mappedModel.OrderByDescending(x => sortBy.GetValue(x)) : mappedModel.OrderBy(x => sortBy.GetValue(x));
-
-            IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 1);
-
-            ViewBag.SortOrder = sortOrder;
-            ViewBag.SortDescending = descending;
+            int pageNumber = page ?? 1;
+            IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 10);
 
             viewModel = viewModel.Select(x =>
             {
                 x.Created = x.Created.ToLocalTime();
                 return x;
             });
+
+            SaveSortingState(sortOrder, descending);
+
             return View(viewModel);
         }
 
         public ActionResult Create()
         {
-            OrderViewModel model = new OrderViewModel()
-            {
-                PaymentMethod = null
-            };
+            OrderViewModel model = new OrderViewModel();
             return View(model);
         }
 

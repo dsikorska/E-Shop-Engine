@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -14,7 +15,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Account")]
     [Route("{action}")]
-    public class AccountAdminController : PagingBaseController
+    public class AccountAdminController : BaseController
     {
         //private AppUserManager UserManager
         //{
@@ -32,11 +33,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Identity
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string sortOrder, bool descending = false)
         {
-            int pageNumber = page ?? 1;
+            ReverseSorting(ref descending, sortOrder);
             IQueryable<AppUser> model = UserManager.Users;
-            IPagedList<UserAdminViewModel> viewModel = IQueryableToPagedList<AppUser, UserAdminViewModel, string>(model, x => x.Email, pageNumber);
+            IEnumerable<UserAdminViewModel> mappedModel = SortBy<AppUser, UserAdminViewModel>(model, "Email", sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<UserAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+
+            SaveSortingState(sortOrder, descending);
+
             return View(viewModel);
         }
 

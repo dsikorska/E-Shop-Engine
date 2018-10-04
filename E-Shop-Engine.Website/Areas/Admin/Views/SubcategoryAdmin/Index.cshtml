@@ -19,10 +19,10 @@
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    Name
+                    @Html.ActionLink("Name", "Index", new { page = 1, sortOrder = "Name", descending = false})
                 </th>
                 <th scope="col">
-                    Category
+                    @Html.ActionLink("Category", "Index", new { page = 1, sortOrder = "CategoryName", descending = false })
                 </th>
                 <th scope="col">
                     Action
@@ -55,7 +55,7 @@
     </table>
 </div>
 
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page); }, new PagedListRenderOptions
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.SortDescending); }, new PagedListRenderOptions
 {
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" },
