@@ -28,6 +28,16 @@ namespace E_Shop_Engine.Services.Repositories
             return _dbSet.Where(p => p.CategoryID == id).Select(p => p);
         }
 
+        public IEnumerable<Product> GetProductsByName(string name)
+        {
+            return _dbSet.Where(p => p.Name.Contains(name)).Select(p => p);
+        }
+
+        public IEnumerable<Product> GetProductsByCatalogNumber(string catalogNumber)
+        {
+            return _dbSet.Where(p => p.CatalogNumber.Contains(catalogNumber)).Select(p => p);
+        }
+
         public override void Create(Product entity)
         {
             entity.Created = DateTime.UtcNow;

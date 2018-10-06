@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -45,6 +46,36 @@ namespace E_Shop_Engine.Website.Controllers
             ProductViewModel viewModel = Mapper.Map<ProductViewModel>(model);
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult Search(string text, int? page)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                TempData["search"] = text;
+            }
+            else
+            {
+                text = TempData["search"].ToString();
+                TempData.Keep("search");
+            }
+
+            int pageNumber = page ?? 1;
+            IEnumerable<Product> model = null;
+            Expression<Func<Product, string>> sortCondition = x => x.Name;
+
+            model = _productRepository.GetProductsByName(text).ToList();
+
+            if (model.Count() == 0)
+            {
+                model = _productRepository.GetProductsByCatalogNumber(text);
+                sortCondition = x => x.CatalogNumber;
+            }
+
+            IPagedList<ProductViewModel> viewModel = IEnumerableToPagedList<Product, ProductViewModel, string>(model, sortCondition, pageNumber, 25);
+
+            return View("_ProductsDeck", viewModel);
         }
 
         [HttpGet]

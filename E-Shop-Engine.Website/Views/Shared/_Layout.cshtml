@@ -15,17 +15,20 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline w-auto m-auto">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+
+            @using (Html.BeginForm("Search", "Product", FormMethod.Get, new { @class = "form-inline w-auto m-auto" }))
+            {
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="text">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            }
+
             <ul class="navbar-nav">
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
                         @Html.Action("CountItems", "Cart")
                     }
-                    </li>
+                </li>
                 <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
