@@ -13,7 +13,21 @@
             @Html.ActionLink(subcategory.Name, "Details", "Subcategory", new { id = subcategory.Id, mainName = Model.Name, subName = subcategory.Name }, new { @class = "btn btn-primary mr-2 mb-2" })
         }
     </div>
-    
-    @Html.Action("ProductsToPagedList", "Product", new { model = Model.Products})
+
+    <div class="dropdown text-right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Price&descending=true">Price descending</a>
+            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Price&descending=false">Price</a>
+            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Name&descending=true">Name descending</a>
+            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Name&descending=false">Name</a>
+            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=CatalogNumber&descending=true">Catalog Number descending</a>
+            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=CatalogNumber&descending=false">Catalog Number</a>
+        </div>
+    </div>
+
+    @Html.Action("ProductsToPagedList", "Product", new { model = Model.Products, sortOrder = ViewBag.SortOrder, descending = ViewBag.SortDescending })
 </div>
 

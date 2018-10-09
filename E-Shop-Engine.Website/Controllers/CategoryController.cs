@@ -6,7 +6,7 @@ using E_Shop_Engine.Website.Models;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;
 
@@ -16,8 +16,13 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
-        public ViewResult Details(int id)
+        public ViewResult Details(int id, string sortOrder, bool descending = false)
         {
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                SaveSortingState(sortOrder, descending);
+            }
+            TempData.Keep();
             Category category = _categoryRepository.GetById(id);
             CategoryViewModel model = Mapper.Map<CategoryViewModel>(category);
             return View(model);

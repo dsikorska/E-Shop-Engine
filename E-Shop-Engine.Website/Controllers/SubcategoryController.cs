@@ -6,7 +6,7 @@ using E_Shop_Engine.Website.Models;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class SubcategoryController : Controller
+    public class SubcategoryController : BaseController
     {
         private readonly IRepository<Subcategory> _subcategoryRepository;
 
@@ -16,8 +16,13 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
-        public ViewResult Details(int id)
+        public ViewResult Details(int id, string sortOrder, bool descending = false)
         {
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                SaveSortingState(sortOrder, descending);
+            }
+            TempData.Keep();
             Subcategory subcategory = _subcategoryRepository.GetById(id);
             SubcategoryViewModel model = Mapper.Map<SubcategoryViewModel>(subcategory);
 

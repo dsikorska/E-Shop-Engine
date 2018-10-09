@@ -12,30 +12,6 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class BaseController : Controller
     {
-        protected IPagedList<T> IEnumerableToPagedList<T>(IEnumerable<T> model, int? page, int pageSize = 25)
-        {
-            int pageNumber = page ?? 1;
-            IPagedList<T> pagedModel = new PagedList<T>(model, pageNumber, pageSize);
-            return pagedModel;
-        }
-
-        protected IPagedList<TDestination> IEnumerableToPagedList<TSource, TDestination, TSort>(IEnumerable<TSource> model, Expression<Func<TSource, TSort>> sortCondition, int? page, int pageSize = 25, bool descending = false)
-        {
-            int pageNumber = page ?? 1;
-            IPagedList<TSource> pagedModel;
-            if (descending)
-            {
-                pagedModel = model.AsQueryable().OrderByDescending(sortCondition).ToPagedList(pageNumber, pageSize);
-            }
-            else
-            {
-                pagedModel = model.AsQueryable().OrderBy(sortCondition).ToPagedList(pageNumber, pageSize);
-            }
-            IEnumerable<TDestination> mappedModel = Mapper.Map<IEnumerable<TDestination>>(pagedModel);
-            IPagedList<TDestination> viewModel = new StaticPagedList<TDestination>(mappedModel, pagedModel.GetMetaData());
-            return viewModel;
-        }
-
         protected IPagedList<TDestination> IQueryableToPagedList<TSource, TDestination, TSort>(IQueryable<TSource> model, Expression<Func<TSource, TSort>> sortCondition, int? page, int pageSize = 25, bool descending = false)
         {
             int pageNumber = page ?? 1;
@@ -65,6 +41,19 @@ namespace E_Shop_Engine.Website.Controllers
 
             PropertyInfo sortBy = typeof(TDestination).GetProperty(sortOrder);
             IEnumerable<TDestination> result = descending ? mappedModel.AsEnumerable().OrderByDescending(x => sortBy.GetValue(x, null)) : mappedModel.AsEnumerable().OrderBy(x => sortBy.GetValue(x, null));
+
+            return result;
+        }
+
+        protected IEnumerable<T> SortBy<T>(IQueryable<T> model, string defaultSortOrder, string sortOrder = null, bool descending = false)
+        {
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = defaultSortOrder;
+            }
+
+            PropertyInfo sortBy = typeof(T).GetProperty(sortOrder);
+            IEnumerable<T> result = descending ? model.AsEnumerable().OrderByDescending(x => sortBy.GetValue(x, null)) : model.AsEnumerable().OrderBy(x => sortBy.GetValue(x, null));
 
             return result;
         }
