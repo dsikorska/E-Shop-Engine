@@ -221,6 +221,7 @@
     <Content Include="Areas\Admin\Views\OrderAdmin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\OrderAdmin\Details.cshtml" />
     <Content Include="Areas\Admin\Views\OrderAdmin\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\SettingsAdmin\Edit.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -260,12 +261,14 @@
     <Compile Include="Areas\Admin\Controllers\OrderAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SettingsAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubcategoryAdminController.cs" />
     <Compile Include="Areas\Admin\Models\CategoryAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OrderAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleModificationViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\SettingsAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubcategoryAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />

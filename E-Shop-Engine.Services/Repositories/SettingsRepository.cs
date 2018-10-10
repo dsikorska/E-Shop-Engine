@@ -21,5 +21,11 @@ namespace E_Shop_Engine.Services.Repositories
         {
             return _dbSet.FirstOrDefault();
         }
+
+        public void Update(Settings entity)
+        {
+            _context.Entry<Settings>(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
     }
 }

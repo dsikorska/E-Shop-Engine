@@ -13,6 +13,10 @@ namespace E_Shop_Engine.Website.App_Start
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<Settings, SettingsAdminViewModel>();
+
+                cfg.CreateMap<SettingsAdminViewModel, Settings>();
+
                 cfg.CreateMap<AppUser, UserEditViewModel>();
 
                 cfg.CreateMap<UserEditViewModel, AppUser>()
