@@ -1,4 +1,5 @@
-﻿@using X.PagedList;
+﻿@using E_Shop_Engine.Website.Extensions;
+@using X.PagedList;
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Common;
 @using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -51,7 +52,7 @@
                         @Html.DisplayFor(modelItem => item.OrderStatus)
                     </td>
                     <td>
-                        @item.TotalValue
+                        @item.TotalValue @Html.Settings().Currency
                     </td>
                     <td>
                         @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })

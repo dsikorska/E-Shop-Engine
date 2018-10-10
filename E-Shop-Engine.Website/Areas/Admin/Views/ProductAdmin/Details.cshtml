@@ -1,6 +1,7 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.ProductAdminViewModel
 
-@{ 
+@{
     ViewBag.Title = "Details " + Model.Name;
 }
 
@@ -51,7 +52,7 @@
     <div class="w-75">
         <dl>
             <dt>@Html.DisplayNameFor(model => model.Price)</dt>
-            <dd class="border-bottom">@Html.DisplayFor(model => model.Price)</dd>
+            <dd class="border-bottom">@Html.DisplayFor(model => model.Price) @Html.Settings().Currency</dd>
 
             <dt>@Html.DisplayNameFor(model => model.NumberInStock)</dt>
             <dd class="border-bottom">@Html.DisplayFor(model => model.NumberInStock)</dd>

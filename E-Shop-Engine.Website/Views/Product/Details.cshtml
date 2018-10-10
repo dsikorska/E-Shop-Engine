@@ -1,7 +1,8 @@
-﻿@model E_Shop_Engine.Website.Models.ProductViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.ProductViewModel
 
 @{
-                ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.Name;
 }
 
 <div class="mx-auto">
@@ -36,17 +37,17 @@
         }
     </div>
 
-        <h2 class="text-center">@Html.DisplayNameFor(model => model.Price)</h2>
-        <h3 class="border-bottom text-center">@Html.DisplayFor(model => model.Price)</h3>
+    <h2 class="text-center">@Html.DisplayNameFor(model => model.Price)</h2>
+    <h3 class="border-bottom text-center">@Html.DisplayFor(model => model.Price) @Html.Settings().Currency</h3>
 
-        <strong>@Html.DisplayNameFor(model => model.Description)</strong>
-        @if (Model.Description == null)
-        {
-            <p>- None -</p>
-        }
-        else
-        {
-            <p>@Html.DisplayFor(model => model.Description)</p>
-        }
+    <strong>@Html.DisplayNameFor(model => model.Description)</strong>
+    @if (Model.Description == null)
+    {
+        <p>- None -</p>
+    }
+    else
+    {
+        <p>@Html.DisplayFor(model => model.Description)</p>
+    }
 
 </div>

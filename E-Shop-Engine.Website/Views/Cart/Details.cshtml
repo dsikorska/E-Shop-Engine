@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.CartViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.CartViewModel
 
 @{
     ViewBag.Title = "Your Cart";
@@ -51,7 +52,7 @@
                             }
                         </td>
                         <td>
-                            @Html.DisplayFor(model => item.Product.Price)
+                            @Html.DisplayFor(model => item.Product.Price) @Html.Settings().Currency
                         </td>
                         <td>
                             @using (Html.BeginForm("RemoveLine", "Cart", new { id = item.Product.Id, quantity = item.Quantity }, FormMethod.Post, new { @class = "d-inline" }))
@@ -67,7 +68,7 @@
     </table>
 </div>
 <hr />
-<h3>Total value: @Model.TotalValue</h3>
+<h3>Total value: @Model.TotalValue @Html.Settings().Currency</h3>
 @Html.ActionLink("Order", "Address", "Account", new { isOrder = true }, new { @class = "btn btn-success btn-lg w-100" })
 
 @section Scripts

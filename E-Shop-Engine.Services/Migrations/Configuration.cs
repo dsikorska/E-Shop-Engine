@@ -3,6 +3,7 @@ namespace E_Shop_Engine.Services.Migrations
     using System;
     using System.Collections.ObjectModel;
     using System.Data.Entity.Migrations;
+    using System.Linq;
     using E_Shop_Engine.Domain.DomainModel;
     using E_Shop_Engine.Domain.DomainModel.IdentityModel;
     using E_Shop_Engine.Services.Data;
@@ -19,18 +20,28 @@ namespace E_Shop_Engine.Services.Migrations
 
         protected override void Seed(AppDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            Settings currentSettings = context.Settings.FirstOrDefault();
+            if (currentSettings == null)
+            {
+                Settings settings = new Settings()
+                {
+                    Currency = "USD",
+                    ShopName = "My Demo Shop",
+                    AdminEmailAddress = "my@email.com",
+                    NotificationReplyEmail = "noreply@emil.com",
+                    SMTPEnableSSL = false
+                };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.       
+                context.Settings.Add(settings);
+            }
 
             AppUserManager userManager = new AppUserManager(new UserStore<AppUser>(), context);
             AppRoleManager roleManager = new AppRoleManager(new RoleStore<AppRole>(context));
-            //TODO sensitive data
+
             string roleName = "Administrators";
             string userName = "Admin";
             string password = "123456";
-            string email = "ladyhail@outlook.com";
+            string email = "my@email.com";
 
             if (!roleManager.RoleExists(roleName))
             {

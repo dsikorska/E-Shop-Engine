@@ -1,4 +1,5 @@
-﻿@using X.PagedList;
+﻿@using E_Shop_Engine.Website.Extensions;
+@using X.PagedList;
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Common;
 @using E_Shop_Engine.Website.Models;
@@ -10,12 +11,12 @@
         <div class="card">
             <a href="@Url.Action("Details", "Product", new { id = product.Id, name = product.Name })">
                 <div class="w-100">
-                    <img id="ImgPreview" class="card-img-top" alt="@product.Name Price: @product.Price.ToString()"
+                    <img id="ImgPreview" class="card-img-top" alt="@product.Name Price: @product.Price.ToString() @Html.Settings().Currency"
                          src="@Url.Action("GetImage", "Product", new { product.Id })" />
                 </div>
                 <div class="card-body text-center">
                     <h5 class="card-title">@product.Name</h5>
-                    <h4 class="card-title">@product.Price</h4>
+                    <h4 class="card-title">@product.Price @Html.Settings().Currency</h4>
                 </div>
             </a>
             <div class="card-body text-center p-0 pb-4">

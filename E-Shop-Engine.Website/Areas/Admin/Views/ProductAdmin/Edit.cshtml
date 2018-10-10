@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.ProductAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.ProductAdminViewModel
 
 @{
     if (Model.Name != null)
@@ -45,6 +46,7 @@
             @Html.LabelFor(model => model.Price, new { @class = "input-group-text" })
         </div>
         @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+        <span>@Html.Settings().Currency</span>
     </div>
 
     <div class="input-group mb-3">

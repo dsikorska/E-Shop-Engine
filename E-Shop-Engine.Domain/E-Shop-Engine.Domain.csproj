@@ -64,6 +64,7 @@
     <Compile Include="DomainModel\OrderedCart.cs" />
     <Compile Include="DomainModel\Product.cs" />
     <Compile Include="DomainModel\OrderedCartLine.cs" />
+    <Compile Include="DomainModel\Settings.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
     <Compile Include="Enumerables\PaymentMethod.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Interfaces\ICartRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\ISettingsRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

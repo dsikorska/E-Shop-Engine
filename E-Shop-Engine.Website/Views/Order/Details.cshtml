@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.OrderViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.OrderViewModel
 
 @{
     ViewBag.Title = "Order Details";
@@ -49,13 +50,13 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Product.Price)
+                            @Html.DisplayFor(modelItem => item.Product.Price) @Html.Settings().Currency
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <h3 class="float-right">Total value: @Model.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)</h3>
+        <h3 class="float-right">Total value: @Model.TotalValue @Html.Settings().Currency</h3>
     </div>
 </div>
 <p>

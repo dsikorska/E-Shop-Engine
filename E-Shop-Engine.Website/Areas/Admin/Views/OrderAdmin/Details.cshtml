@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
 
 @{
     ViewBag.Title = "Order " + Model.Id + " Details";
@@ -78,10 +79,10 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Product.Price)
+                            @Html.DisplayFor(modelItem => item.Product.Price) @Html.Settings().Currency
                         </td>
                         <td>
-                            @(item.Product.Price * item.Quantity)
+                            @(item.Product.Price * item.Quantity) @Html.Settings().Currency
                         </td>
                         <td>
                             @Html.ActionLink("Details", "Details", "ProductAdmin", new { id = item.Product.ID }, new { @class = "btn btn-info btn-sm mb-1" })
@@ -90,7 +91,7 @@
                 }
             </tbody>
         </table>
-        <h3>Total value: @Model.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity)</h3>
+        <h3>Total value: @Model.TotalValue @Html.Settings().Currency</h3>
     </div>
 </div>
 

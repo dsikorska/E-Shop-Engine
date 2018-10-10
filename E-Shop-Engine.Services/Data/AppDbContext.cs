@@ -24,6 +24,7 @@ namespace E_Shop_Engine.Services.Data
         public DbSet<OrderedCartLine> OrderedCartLines { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         public AppDbContext() : base("ShopEngineDb")
         {
