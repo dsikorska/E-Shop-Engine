@@ -1,6 +1,3 @@
-sortowanie po kolumnie
-search
-paging
 user dtails
 save enum as string in db
 better way to outofstock?

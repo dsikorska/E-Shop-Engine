@@ -38,11 +38,13 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 sortOrder = TempData["SortOrder"].ToString();
                 descending = (bool)TempData["SortDescending"];
+                ViewBag.SortOrder = sortOrder;
+                ViewBag.SortDescending = descending;
             }
 
             IEnumerable<ProductViewModel> sortedModel = SortBy(model.AsQueryable(), "Name", sortOrder, descending);
             int pageNumber = page ?? 1;
-            IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(sortedModel, pageNumber, 2);
+            IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(sortedModel, pageNumber, 25);
 
             return PartialView("_ProductsDeck", viewModel);
         }
