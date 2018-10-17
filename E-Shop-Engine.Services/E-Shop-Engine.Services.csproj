@@ -168,6 +168,14 @@
     <Compile Include="Migrations\201810101728266_Add Settings table.Designer.cs">
       <DependentUpon>201810101728266_Add Settings table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810171847169_Update OrderedCartLine table.cs" />
+    <Compile Include="Migrations\201810171847169_Update OrderedCartLine table.Designer.cs">
+      <DependentUpon>201810171847169_Update OrderedCartLine table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810171901584_Cascade delete on Products and OrderedCartLine.cs" />
+    <Compile Include="Migrations\201810171901584_Cascade delete on Products and OrderedCartLine.Designer.cs">
+      <DependentUpon>201810171901584_Cascade delete on Products and OrderedCartLine.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
@@ -249,6 +257,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810101728266_Add Settings table.resx">
       <DependentUpon>201810101728266_Add Settings table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810171847169_Update OrderedCartLine table.resx">
+      <DependentUpon>201810171847169_Update OrderedCartLine table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810171901584_Cascade delete on Products and OrderedCartLine.resx">
+      <DependentUpon>201810171901584_Cascade delete on Products and OrderedCartLine.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

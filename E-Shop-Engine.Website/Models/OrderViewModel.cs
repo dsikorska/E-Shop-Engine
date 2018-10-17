@@ -22,19 +22,19 @@ namespace E_Shop_Engine.Website.Models
         public PaymentMethod? PaymentMethod { get; set; } = null;
         public OrderStatus OrderStatus { get; set; } = OrderStatus.InProgress;
 
-        public decimal TotalValue
+        public decimal? TotalValue
         {
             get
             {
-                return OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity);
+                return OrderedCart?.CartLines.Sum(x => x.Product.Price * x.Quantity);
             }
         }
 
-        public int TotalProducts
+        public int? TotalProducts
         {
             get
             {
-                return OrderedCart.CartLines.Sum(x => x.Quantity);
+                return OrderedCart?.CartLines.Sum(x => x.Quantity);
             }
         }
     }

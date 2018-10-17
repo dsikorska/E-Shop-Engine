@@ -8,13 +8,19 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public OrderedCartLineEntityConfig()
         {
             HasKey(c => c.ID);
-            HasRequired(c => c.Product);
 
             HasRequired(c => c.Cart)
                 .WithMany(c => c.CartLines);
 
             Property(c => c.Quantity)
                 .IsRequired();
+
+            Property(c => c.ProductId)
+                .IsOptional();
+
+            HasOptional(c => c.Product)
+                .WithMany()
+                .WillCascadeOnDelete(true);
         }
     }
 }

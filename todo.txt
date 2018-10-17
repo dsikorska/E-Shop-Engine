@@ -1,7 +1,4 @@
 user dtails
 save enum as string in db
-better way to outofstock?
+better way to outofstock? (modal)
 returnUrl at admin
-
-The DELETE statement conflicted with the REFERENCE constraint "FK_dbo.OrderedCartLines_dbo.Products_Product_ID". The conflict occurred in database "ShopEngineDb", table "dbo.OrderedCartLines", column 'Product_ID'.
-The statement has been terminated.
