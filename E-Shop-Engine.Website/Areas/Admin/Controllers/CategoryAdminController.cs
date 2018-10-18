@@ -7,6 +7,7 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
+using E_Shop_Engine.Website.CustomFilters;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -14,6 +15,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Category")]
     [Route("{action}")]
+    [ReturnUrl]
     public class CategoryAdminController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;

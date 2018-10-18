@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using X.PagedList;
 
@@ -50,6 +51,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
+        [ReturnUrl]
         public ViewResult Details(int id)
         {
 

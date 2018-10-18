@@ -8,12 +8,14 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
 namespace E_Shop_Engine.Website.Controllers
 {
+    [ReturnUrl]
     public class AccountController : Controller
     {
         //private IAuthenticationManager AuthManager

@@ -7,6 +7,7 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
+using E_Shop_Engine.Website.CustomFilters;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -14,6 +15,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
+    [ReturnUrl]
     public class SubcategoryAdminController : BaseController
     {
         private readonly IRepository<Subcategory> _subcategoryRepository;
@@ -96,7 +98,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             return View(model);
         }
-        //TODO error filter 
+
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Delete(int id)

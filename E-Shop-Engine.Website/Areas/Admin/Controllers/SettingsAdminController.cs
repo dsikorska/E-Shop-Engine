@@ -3,12 +3,14 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.CustomFilters;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Settings")]
     [Route("{action}")]
+    [ReturnUrl]
     public class SettingsAdminController : Controller
     {
         private readonly ISettingsRepository _settingsRepository;
