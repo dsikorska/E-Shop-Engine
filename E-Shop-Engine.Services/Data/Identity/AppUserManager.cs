@@ -14,12 +14,30 @@ namespace E_Shop_Engine.Services.Data.Identity
         {
             AppDbContext db = dbContext as AppDbContext;
             Store = new UserStore<AppUser>(db);
+            this.PasswordValidator = new PasswordValidator()
+            {
+                RequireDigit = true,
+                RequiredLength = 6,
+                RequireLowercase = true,
+                RequireUppercase = true,
+                RequireNonLetterOrDigit = true
+            };
         }
         //TODO validate password
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
             AppDbContext db = context.Get<AppDbContext>();
-            AppUserManager manager = new AppUserManager(new UserStore<AppUser>(), db);
+            AppUserManager manager = new AppUserManager(new UserStore<AppUser>(), db)
+            {
+                PasswordValidator = new PasswordValidator()
+                {
+                    RequireDigit = true,
+                    RequiredLength = 6,
+                    RequireLowercase = true,
+                    RequireUppercase = true,
+                    RequireNonLetterOrDigit = true
+                }
+            };
 
             return manager;
         }

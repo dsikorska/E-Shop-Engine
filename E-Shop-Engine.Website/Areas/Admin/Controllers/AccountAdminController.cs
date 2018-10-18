@@ -7,6 +7,7 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
+using E_Shop_Engine.Website.CustomFilters;
 using Microsoft.AspNet.Identity;
 using X.PagedList;
 
@@ -15,6 +16,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Account")]
     [Route("{action}")]
+    [ReturnUrl]
     public class AccountAdminController : BaseController
     {
         //private AppUserManager UserManager

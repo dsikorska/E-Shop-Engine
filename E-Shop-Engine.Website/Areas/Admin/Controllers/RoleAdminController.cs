@@ -7,15 +7,16 @@ using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.CustomFilters;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
-//TODO async methods ?
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Role")]
     [Route("{action}")]
+    [ReturnUrl]
     public class RoleAdminController : Controller
     {
         //private AppUserManager UserManager
