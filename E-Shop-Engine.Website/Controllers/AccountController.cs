@@ -11,7 +11,9 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace E_Shop_Engine.Website.Controllers
 {
@@ -37,12 +39,14 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly AppUserManager UserManager;
         private readonly IAuthenticationManager AuthManager;
         private readonly IRepository<Address> _addressRepository;
+        private readonly IMailingRepository _mailingRepository;
 
-        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository)
+        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository, IMailingRepository mailingRepository)
         {
             UserManager = userManager;
             AuthManager = authManager;
             _addressRepository = addressRepository;
+            _mailingRepository = mailingRepository;
         }
 
         [Authorize]
@@ -201,6 +205,14 @@ namespace E_Shop_Engine.Website.Controllers
                 }
                 else
                 {
+                    if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                    {
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        await _mailingRepository.ActivationMail(user.Email, callbackUrl);
+                        return View("_Error", new string[] { "You must have a confirmed email to log on." });
+                    }
+
                     ClaimsIdentity ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignIn(new AuthenticationProperties
@@ -256,6 +268,12 @@ namespace E_Shop_Engine.Website.Controllers
                 result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //TODO
+                    DpapiDataProtectionProvider provider = new DpapiDataProtectionProvider("E-Shop-Engine");
+                    UserManager.UserTokenProvider = new DataProtectorTokenProvider<AppUser, string>(provider.Create("EmailToken")) as IUserTokenProvider<AppUser, string>;
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await _mailingRepository.ActivationMail(user.Email, callbackUrl);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -265,6 +283,85 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return View("_Error");
+            }
+            IdentityResult result = await UserManager.ConfirmEmailAsync(userId, token);
+            return View(result.Succeeded ? "ConfirmEmail" : "_Error");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> ForgotPassword(string email)
+        {
+            AppUser user = await UserManager.FindByEmailAsync(email);
+            if (ModelState.IsValid)
+            {
+                if (user == null || !await UserManager.IsEmailConfirmedAsync(user.Id))
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                string callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(email);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("_Error") : View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(UserResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            AppUser user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.NewPassword);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            AddErrorsFromResult(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         [Authorize]
