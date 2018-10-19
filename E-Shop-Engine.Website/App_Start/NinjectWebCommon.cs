@@ -78,6 +78,7 @@ namespace E_Shop_Engine.Website.App_Start
             kernel.Bind<IProductRepository>().To<ProductRepository>().InRequestScope();
             kernel.Bind<ICartRepository>().To<CartRepository>().InRequestScope();
             kernel.Bind<ISettingsRepository>().To<SettingsRepository>();
+            kernel.Bind<IMailingRepository>().To<MailingRepository>().InRequestScope();
         }
     }
 }

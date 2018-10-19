@@ -23,7 +23,7 @@ namespace E_Shop_Engine.Services.Data.Identity
                 RequireNonLetterOrDigit = true
             };
         }
-        //TODO validate password
+
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
             AppDbContext db = context.Get<AppDbContext>();

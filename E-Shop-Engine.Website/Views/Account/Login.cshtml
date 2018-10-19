@@ -29,6 +29,10 @@
     </div>
 }
 
+<div class="text-center">
+    @Html.ActionLink("Reset password", "ResetPassword", "Account", null, new { @class = "btn btn-secondary" })
+</div>
+
 @section Scripts {
     @Scripts.Render("~/Bundles/validate")
 }

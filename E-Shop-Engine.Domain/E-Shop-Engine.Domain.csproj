@@ -70,6 +70,7 @@
     <Compile Include="Enumerables\PaymentMethod.cs" />
     <Compile Include="Interfaces\IAppDbContext.cs" />
     <Compile Include="Interfaces\ICartRepository.cs" />
+    <Compile Include="Interfaces\IMailingRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISettingsRepository.cs" />
