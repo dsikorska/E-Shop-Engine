@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using E_Shop_Engine.Domain.DomainModel;
@@ -22,7 +23,7 @@ namespace E_Shop_Engine.Services.Repositories
             MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
             {
                 Subject = "Registering at " + _settings.ShopName,
-                Body = "Thank you for registering"
+                Body = "Thank you for registering",
             };
             await SendMail(mail);
         }
@@ -32,7 +33,7 @@ namespace E_Shop_Engine.Services.Repositories
             MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
             {
                 Subject = "Activate account at " + _settings.ShopName,
-                Body = "Please confirm your account by clicking <a href=\"" + url + "\">here</a>"
+                Body = "Please confirm your account by clicking <a href=\"" + url + "\">here</a>",
             };
             await SendMail(mail);
         }
@@ -42,13 +43,14 @@ namespace E_Shop_Engine.Services.Repositories
             MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
             {
                 Subject = "Reset password at " + _settings.ShopName,
-                Body = "Reset password by clicking <a href=\"" + url + "\">here</a>"
+                Body = "Reset password by clicking <a href=\"" + url + "\">here</a>",
             };
             await SendMail(mail);
         }
 
         private async Task SendMail(MailMessage mail)
         {
+            mail.IsBodyHtml = true;
             SmtpClient smtpClient = GetSmtpCLient();
 
             try
@@ -64,12 +66,18 @@ namespace E_Shop_Engine.Services.Repositories
         //TODO port to int
         private SmtpClient GetSmtpCLient()
         {
+            NetworkCredential credentials = new NetworkCredential()
+            {
+                Password = _settings.SMTPPassword,
+                UserName = _settings.SMTPUsername
+            };
+
             return new SmtpClient(_settings.SMTP, int.Parse(_settings.SMTPPort))
             {
-                Credentials = new System.Net.NetworkCredential(_settings.NotificationReplyEmail, _settings.SMTPPassword),
-                UseDefaultCredentials = false,
+                UseDefaultCredentials = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                EnableSsl = _settings.SMTPEnableSSL.Value
+                EnableSsl = true,
+                Credentials = credentials
             };
         }
     }
