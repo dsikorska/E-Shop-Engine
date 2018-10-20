@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace E_Shop_Engine.Services.Data.Identity
 {
@@ -22,6 +23,8 @@ namespace E_Shop_Engine.Services.Data.Identity
                 RequireUppercase = true,
                 RequireNonLetterOrDigit = true
             };
+            DpapiDataProtectionProvider provider = new DpapiDataProtectionProvider("E-Shop-Engine");
+            this.UserTokenProvider = new DataProtectorTokenProvider<AppUser, string>(provider.Create("EmailToken")) as IUserTokenProvider<AppUser, string>;
         }
 
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
@@ -38,6 +41,9 @@ namespace E_Shop_Engine.Services.Data.Identity
                     RequireNonLetterOrDigit = true
                 }
             };
+
+            DpapiDataProtectionProvider provider = new DpapiDataProtectionProvider("E-Shop-Engine");
+            manager.UserTokenProvider = new DataProtectorTokenProvider<AppUser, string>(provider.Create("EmailToken")) as IUserTokenProvider<AppUser, string>;
 
             return manager;
         }

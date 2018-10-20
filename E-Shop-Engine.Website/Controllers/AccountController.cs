@@ -11,9 +11,7 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataProtection;
 
 namespace E_Shop_Engine.Website.Controllers
 {
@@ -269,8 +267,6 @@ namespace E_Shop_Engine.Website.Controllers
                 if (result.Succeeded)
                 {
                     //TODO
-                    DpapiDataProtectionProvider provider = new DpapiDataProtectionProvider("E-Shop-Engine");
-                    UserManager.UserTokenProvider = new DataProtectorTokenProvider<AppUser, string>(provider.Create("EmailToken")) as IUserTokenProvider<AppUser, string>;
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await _mailingRepository.ActivationMail(user.Email, callbackUrl);
@@ -286,13 +282,13 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string token)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || token == null)
+            if (userId == null || code == null)
             {
                 return View("_Error");
             }
-            IdentityResult result = await UserManager.ConfirmEmailAsync(userId, token);
+            IdentityResult result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "_Error");
         }
 
