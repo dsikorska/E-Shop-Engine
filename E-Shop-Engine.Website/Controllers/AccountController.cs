@@ -266,9 +266,9 @@ namespace E_Shop_Engine.Website.Controllers
                 result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //TODO
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await _mailingRepository.WelcomeMail(user.Email);
                     await _mailingRepository.ActivationMail(user.Email, callbackUrl);
                     return RedirectToAction("Index", "Home");
                 }
@@ -286,10 +286,15 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (userId == null || code == null)
             {
-                return View("_Error");
+                return View("_Error", new string[] { "Something went wrong." });
             }
             IdentityResult result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "_Error");
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+
+            return View("_Error", new string[] { "Something went wrong." });
         }
 
         [AllowAnonymous]
@@ -322,7 +327,7 @@ namespace E_Shop_Engine.Website.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("_Error") : View();
+            return code == null ? View("_Error", new string[] { "Something went wrong." }) : View();
         }
 
         //
