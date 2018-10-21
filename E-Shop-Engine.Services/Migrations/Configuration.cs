@@ -27,7 +27,7 @@ namespace E_Shop_Engine.Services.Migrations
                 {
                     Currency = "USD",
                     ShopName = "My Demo Shop",
-                    AdminEmailAddress = "my@email.com",
+                    ContactEmailAddress = "my@email.com",
                     NotificationReplyEmail = "noreply@emil.com",
                     SMTPEnableSSL = false
                 };

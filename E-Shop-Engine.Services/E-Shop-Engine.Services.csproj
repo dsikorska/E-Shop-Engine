@@ -176,6 +176,10 @@
     <Compile Include="Migrations\201810171901584_Cascade delete on Products and OrderedCartLine.Designer.cs">
       <DependentUpon>201810171901584_Cascade delete on Products and OrderedCartLine.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810212028369_Update Settings.cs" />
+    <Compile Include="Migrations\201810212028369_Update Settings.Designer.cs">
+      <DependentUpon>201810212028369_Update Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
@@ -264,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810171901584_Cascade delete on Products and OrderedCartLine.resx">
       <DependentUpon>201810171901584_Cascade delete on Products and OrderedCartLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810212028369_Update Settings.resx">
+      <DependentUpon>201810212028369_Update Settings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
