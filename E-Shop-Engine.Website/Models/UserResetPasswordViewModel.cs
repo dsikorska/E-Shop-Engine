@@ -2,6 +2,7 @@
 
 namespace E_Shop_Engine.Website.Models
 {
+    //TODO hide email
     public class UserResetPasswordViewModel
     {
         [Required]

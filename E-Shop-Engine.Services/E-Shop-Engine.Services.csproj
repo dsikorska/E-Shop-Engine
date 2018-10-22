@@ -70,6 +70,7 @@
       <HintPath>..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
     </Reference>
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -182,6 +183,11 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\MailingRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
@@ -272,6 +278,15 @@
     <EmbeddedResource Include="Migrations\201810212028369_Update Settings.resx">
       <DependentUpon>201810212028369_Update Settings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EmailTemplates\ActivationTemplateMail.html" />
+    <Content Include="EmailTemplates\ResetPasswordTemplateMail.html" />
+    <Content Include="EmailTemplates\WelcomeTemplateMail.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

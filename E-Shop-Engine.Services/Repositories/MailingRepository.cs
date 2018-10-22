@@ -20,37 +20,34 @@ namespace E_Shop_Engine.Services.Repositories
 
         public async Task WelcomeMail(string mailTo)
         {
-            MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
-            {
-                Subject = "Registering at " + _settings.ShopName,
-                Body = "<p>Thank you for registering at " + _settings.ShopName + "</p>",
-            };
+            string body = Properties.Resources.WelcomeTemplateMail.Replace("#shopName#", _settings.ShopName);
+            string subject = "Welcome at " + _settings.ShopName;
+            string to = mailTo;
+            MailMessage mail = GetMessage(mailTo, body, subject);
             await SendMail(mail);
         }
 
         public async Task ActivationMail(string mailTo, string url)
         {
-            MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
-            {
-                Subject = "Activate account at " + _settings.ShopName,
-                Body = "<p>Please confirm your account by clicking <a href=\"" + url + "\">here</a></p>",
-            };
+            string body = Properties.Resources.ActivationTemplateMail.Replace("#url#", url).Replace("#shopName#", _settings.ShopName);
+            string subject = "Activate your account at " + _settings.ShopName;
+            string to = mailTo;
+            MailMessage mail = GetMessage(mailTo, body, subject);
             await SendMail(mail);
         }
 
         public async Task ResetPasswordMail(string mailTo, string url)
         {
-            MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
-            {
-                Subject = "Reset password at " + _settings.ShopName,
-                Body = "<p>Reset password by clicking <a href=\"" + url + "\">here</a></p>",
-            };
+            string body = Properties.Resources.ResetPasswordTemplateMail.Replace("#url#", url).Replace("#shopName#", _settings.ShopName);
+            string subject = "Reset password at " + _settings.ShopName;
+            string to = mailTo;
+            MailMessage mail = GetMessage(mailTo, body, subject);
             await SendMail(mail);
         }
 
         private async Task SendMail(MailMessage mail)
         {
-            mail.IsBodyHtml = true;
+
             SmtpClient smtpClient = GetSmtpCLient();
 
             try
@@ -78,6 +75,19 @@ namespace E_Shop_Engine.Services.Repositories
                 EnableSsl = _settings.SMTPEnableSSL,
                 Credentials = credentials
             };
+        }
+
+        private MailMessage GetMessage(string mailTo, string body, string subject)
+        {
+            MailAddress from = new MailAddress(_settings.NotificationReplyEmail, _settings.ShopName);
+            MailMessage mail = new MailMessage(_settings.NotificationReplyEmail, mailTo)
+            {
+                Subject = subject,
+                Body = body,
+                From = from,
+                IsBodyHtml = true
+            };
+            return mail;
         }
     }
 }
