@@ -70,9 +70,9 @@ namespace E_Shop_Engine.Services.Properties {
         ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///   [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string ActivationTemplateMail {
+        internal static string OneButtonTemplateMail {
             get {
-                return ResourceManager.GetString("ActivationTemplateMail", resourceCulture);
+                return ResourceManager.GetString("OneButtonTemplateMail", resourceCulture);
             }
         }
         
@@ -86,25 +86,9 @@ namespace E_Shop_Engine.Services.Properties {
         ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///   [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string ResetPasswordTemplateMail {
+        internal static string OnlyTextTemplateMail {
             get {
-                return ResourceManager.GetString("ResetPasswordTemplateMail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-        ///&lt;html style=&quot;width:100%;font-family:arial, &apos;helvetica neue&apos;, helvetica, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///    &lt;meta content=&quot;width=device-width, initial-scale=1&quot; name=&quot;viewport&quot;&gt;
-        ///    &lt;meta name=&quot;x-apple-disable-message-reformatting&quot;&gt;
-        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///   [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string WelcomeTemplateMail {
-            get {
-                return ResourceManager.GetString("WelcomeTemplateMail", resourceCulture);
+                return ResourceManager.GetString("OnlyTextTemplateMail", resourceCulture);
             }
         }
     }

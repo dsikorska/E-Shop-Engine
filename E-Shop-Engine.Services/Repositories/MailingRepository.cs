@@ -20,7 +20,11 @@ namespace E_Shop_Engine.Services.Repositories
 
         public async Task WelcomeMail(string mailTo)
         {
-            string body = Properties.Resources.WelcomeTemplateMail.Replace("#shopName#", _settings.ShopName);
+            string body = Properties.Resources.OnlyTextTemplateMail
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title", "Welcome at " + _settings.ShopName)
+                .Replace("#text#", "Thank You for registering at " + _settings.ShopName);
+
             string subject = "Welcome at " + _settings.ShopName;
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
@@ -29,7 +33,13 @@ namespace E_Shop_Engine.Services.Repositories
 
         public async Task ActivationMail(string mailTo, string url)
         {
-            string body = Properties.Resources.ActivationTemplateMail.Replace("#url#", url).Replace("#shopName#", _settings.ShopName);
+            string body = Properties.Resources.OneButtonTemplateMail
+                .Replace("#url#", url)
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title", "Activate Your account!")
+                .Replace("#text#", "Please click button below to activate Your account: ")
+                .Replace("#btnText#", "Activate account");
+
             string subject = "Activate your account at " + _settings.ShopName;
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
@@ -38,8 +48,26 @@ namespace E_Shop_Engine.Services.Repositories
 
         public async Task ResetPasswordMail(string mailTo, string url)
         {
-            string body = Properties.Resources.ResetPasswordTemplateMail.Replace("#url#", url).Replace("#shopName#", _settings.ShopName);
+            string body = Properties.Resources.OneButtonTemplateMail.Replace("#url#", url)
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title", "Reset password")
+                .Replace("#text#", "Please click button below to reset password: ")
+                .Replace("#btnText#", "Reset password");
+
             string subject = "Reset password at " + _settings.ShopName;
+            string to = mailTo;
+            MailMessage mail = GetMessage(mailTo, body, subject);
+            await SendMail(mail);
+        }
+
+        public async Task PasswordChangedMail(string mailTo)
+        {
+            string body = Properties.Resources.OnlyTextTemplateMail
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title", "Password changed")
+                .Replace("#text#", "Password to Your account has been changed");
+
+            string subject = "Password changed";
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
             await SendMail(mail);

@@ -284,9 +284,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EmailTemplates\ActivationTemplateMail.html" />
-    <Content Include="EmailTemplates\ResetPasswordTemplateMail.html" />
-    <Content Include="EmailTemplates\WelcomeTemplateMail.html" />
+    <Content Include="EmailTemplates\OneButtonTemplateMail.html" />
+    <Content Include="EmailTemplates\OnlyTextTemplateMail.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
