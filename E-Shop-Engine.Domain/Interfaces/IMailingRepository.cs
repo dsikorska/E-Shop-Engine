@@ -7,5 +7,6 @@ namespace E_Shop_Engine.Domain.Interfaces
         Task WelcomeMail(string mailTo);
         Task ActivationMail(string mailTo, string url);
         Task ResetPasswordMail(string mailTo, string url);
+        Task PasswordChangedMail(string mailTo);
     }
 }

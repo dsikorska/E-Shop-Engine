@@ -103,6 +103,7 @@ namespace E_Shop_Engine.Website.Controllers
                 IdentityResult result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _mailingRepository.PasswordChangedMail(user.Email);
                     return RedirectToAction("Index");
                 }
                 else
