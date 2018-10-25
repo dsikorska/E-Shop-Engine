@@ -54,6 +54,10 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = await UserManager.FindByIdAsync(userId);
             UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
 
+            //if (Request.IsAjaxRequest())
+            //{
+            //    return PartialView(model);
+            //}
             return View(model);
         }
 
@@ -145,7 +149,7 @@ namespace E_Shop_Engine.Website.Controllers
                 return View(model);
             }
             string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = await UserManager.FindByIdAsync(userId);
+            AppUser user = null;
             if (user != null)
             {
                 user.Email = model.Email;
@@ -164,18 +168,22 @@ namespace E_Shop_Engine.Website.Controllers
                     IdentityResult result = await UserManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index");
+                        TempData["notifyType"] = "notification-success";
+                        TempData["notifyTitle"] = "Success!";
+                        TempData["notifyText"] = "Your profile informations updated!";
+                        return Json(new { url = Url.Action("Index") });
                     }
                     else
                     {
                         AddErrorsFromResult(result);
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "User Not Found");
-                }
             }
+            else
+            {
+                ModelState.AddModelError("", "User Not Found");
+            }
+            Response.StatusCode = 400;
             return View(model);
         }
 
