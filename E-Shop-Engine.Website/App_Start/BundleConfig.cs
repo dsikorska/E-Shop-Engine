@@ -6,7 +6,6 @@ namespace E_Shop_Engine.Website
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-            // put validation to other bundle
             bundles.Add(new ScriptBundle("~/Bundles/universal")
             .Include(
                 "~/Scripts/jquery-{version}.js",
@@ -17,6 +16,11 @@ namespace E_Shop_Engine.Website
             bundles.Add(new ScriptBundle("~/Bundles/validate")
                 .Include(
                     "~/Scripts/jquery.validate*",
+                    "~/Scripts/jquery.unobtrusive*"
+                ));
+
+            bundles.Add(new ScriptBundle("~/Bundles/ajax")
+                .Include(
                     "~/Scripts/jquery.unobtrusive*"
                 ));
 

@@ -1,38 +1,26 @@
-﻿@model E_Shop_Engine.Website.Models.UserEditViewModel
-
-@{
+﻿@{
     ViewBag.Title = "My Account";
 }
 
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-personal-tab" data-toggle="tab" href="#nav-personal" role="tab" aria-controls="nav-personal" aria-selected="true">Profile Informations</a>
-        <a class="nav-item nav-link" id="nav-address-tab" data-toggle="tab" href="#nav-address" role="tab" aria-controls="nav-address" aria-selected="false">Address</a>
-        <a class="nav-item nav-link" id="nav-orders-tab" data-toggle="tab" href="#nav-orders" role="tab" aria-controls="nav-orders" aria-selected="false">Orders</a>
+        @Ajax.ActionLink("Profile Informations", "Details", "Account", null,
+            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link active show", id = "nav-personal-tab", data_toggle = "tab", role = "tab", aria_selected = "true" })
+
+        @Ajax.ActionLink("Address", "AddressDetails", "Account", null,
+            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link", id = "nav-orders-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
+            
+        @Ajax.ActionLink("Orders", "Index", "Order", null,
+            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link", id = "nav-address-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-personal" role="tabpanel" aria-labelledby="nav-personal-tab">
-        <div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
-            @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
-        </div>
-
-        <dl>
-            <dt>@Html.DisplayNameFor(model => model.Name) and @Html.DisplayNameFor(model => model.Surname)</dt>
-            <dd>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname)</dd>
-
-            <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-            <dd>@Html.DisplayFor(model => model.Email)</dd>
-
-            <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-            <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
-        </dl>
-    </div>
-    <div class="tab-pane fade" id="nav-orders" role="tabpanel" aria-labelledby="nav-orders-tab">
-        @Html.Action("Index", "Order", null)
-    </div>
-    <div class="tab-pane fade" id="nav-address" role="tabpanel" aria-labelledby="nav-address-tab">
-        @Html.Action("AddressDetails", "Account", null)
-    </div>
+        @Html.Action("Details", "Account")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/ajax")
+}

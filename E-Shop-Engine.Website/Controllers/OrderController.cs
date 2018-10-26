@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -27,14 +28,16 @@ namespace E_Shop_Engine.Website.Controllers
             _cartRepository = cartRepository;
             _userManager = userManager;
         }
-        //TODO redirect from account
+
         // GET: Order
         public ActionResult Index(int? page, string sortOrder, bool descending = true)
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
-
-            ReverseSorting(ref descending, sortOrder);
+            if (page == 1)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
 
             IQueryable<Order> model = user.Orders.AsQueryable();
             IEnumerable<OrderViewModel> mappedModel = SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
@@ -50,6 +53,10 @@ namespace E_Shop_Engine.Website.Controllers
 
             SaveSortingState(sortOrder, descending);
 
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(viewModel);
+            }
             return View(viewModel);
         }
 
@@ -65,7 +72,8 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return PartialView(model);
             }
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
@@ -75,13 +83,14 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (model.OrderedCart.CartLines.Count == 0)
             {
-                return View("_Error", new string[] { "Cannot order empty cart." });
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return PartialView("_Error", new string[] { "Cannot order empty cart." });
             }
 
             _orderRepository.Create(Mapper.Map<Order>(model));
             _cartRepository.Clear(user.Cart);
 
-            return Redirect("/Home/Index");
+            return Json(new { url = Url.Action("Index", "Home") });
         }
 
         public ActionResult Details(int id)

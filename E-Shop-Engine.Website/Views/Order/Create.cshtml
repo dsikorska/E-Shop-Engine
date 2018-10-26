@@ -6,7 +6,7 @@
 
 <h1>New Order</h1>
 
-@using (Html.BeginForm())
+@using (Ajax.BeginForm(new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success", OnFailure = "Failed" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
@@ -27,4 +27,19 @@
 
 @section Scripts {
     @Scripts.Render("~/Bundles/validate")
+
+    <script src="~/Scripts/custom/notify.js" type="text/javascript"></script>
+
+    <script>
+        function Success(result) {
+            Redirect(result);
+        }
+
+        function Failed(result) {
+            ReplaceContent(result.responseText);
+            SetNotify("notification-error", "Error", "Something unexpected happend!");
+            $('#notify').show();
+            HideNotify();
+        }
+    </script>
 }

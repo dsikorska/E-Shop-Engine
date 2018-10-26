@@ -49,13 +49,19 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Details()
         {
             string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = await UserManager.FindByIdAsync(userId);
+            AppUser user = UserManager.FindById(userId);
             UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
 
-            return View(model);
+            return PartialView(model);
         }
 
         [Authorize]
