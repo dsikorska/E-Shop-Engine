@@ -26,6 +26,11 @@ namespace E_Shop_Engine.Website.Controllers
             return View();
         }
 
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
         // GET: Categories - for navbar
         public PartialViewResult NavList()
         {

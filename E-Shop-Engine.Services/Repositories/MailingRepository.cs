@@ -22,7 +22,7 @@ namespace E_Shop_Engine.Services.Repositories
         {
             string body = Properties.Resources.OnlyTextTemplateMail
                 .Replace("#shopName#", _settings.ShopName)
-                .Replace("#title", "Welcome at " + _settings.ShopName)
+                .Replace("#title#", "Welcome at " + _settings.ShopName)
                 .Replace("#text#", "Thank You for registering at " + _settings.ShopName);
 
             string subject = "Welcome at " + _settings.ShopName;
@@ -36,7 +36,7 @@ namespace E_Shop_Engine.Services.Repositories
             string body = Properties.Resources.OneButtonTemplateMail
                 .Replace("#url#", url)
                 .Replace("#shopName#", _settings.ShopName)
-                .Replace("#title", "Activate Your account!")
+                .Replace("#title#", "Activate Your account!")
                 .Replace("#text#", "Please click button below to activate Your account: ")
                 .Replace("#btnText#", "Activate account");
 
@@ -50,7 +50,7 @@ namespace E_Shop_Engine.Services.Repositories
         {
             string body = Properties.Resources.OneButtonTemplateMail.Replace("#url#", url)
                 .Replace("#shopName#", _settings.ShopName)
-                .Replace("#title", "Reset password")
+                .Replace("#title#", "Reset password")
                 .Replace("#text#", "Please click button below to reset password: ")
                 .Replace("#btnText#", "Reset password");
 
@@ -64,7 +64,7 @@ namespace E_Shop_Engine.Services.Repositories
         {
             string body = Properties.Resources.OnlyTextTemplateMail
                 .Replace("#shopName#", _settings.ShopName)
-                .Replace("#title", "Password changed")
+                .Replace("#title#", "Password changed")
                 .Replace("#text#", "Password to Your account has been changed");
 
             string subject = "Password changed";
