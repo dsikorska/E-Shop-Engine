@@ -6,7 +6,7 @@
 
 <h1>Edit Account Informations</h1>
 
-@using (Ajax.BeginForm(new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success", OnFailure = "Failed", UpdateTargetId = "form", InsertionMode = InsertionMode.Replace }))
+@using (Ajax.BeginForm(new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success", OnFailure = "Failed" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
@@ -53,7 +53,8 @@
             Redirect(result);
         }
 
-        function Failed() {
+        function Failed(result) {
+            ReplaceContent(result.responseText);
             SetNotify("notification-error", "Error", "Something unexpected happend!");
             $('#notify').show();
             HideNotify();

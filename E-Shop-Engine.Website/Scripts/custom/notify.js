@@ -1,13 +1,19 @@
-﻿function Redirect(result) {
+﻿function ReplaceContent(text) {
+    $('#content').html(text);
+}
+
+function Redirect(result) {
     if (result.url) {
         window.location.href = result.url;
+    } else {
+        ReplaceContent(result);
     }
 }
 
 function HideNotify() {
     setTimeout(function () {
         $('#notify').hide();
-    }, 3000);
+    }, 5000);
 }
 
 function SetNotify(type, title, text) {
