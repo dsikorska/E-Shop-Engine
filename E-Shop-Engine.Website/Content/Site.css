@@ -62,3 +62,7 @@
     max-width: 100%;
     max-height: 300px;
 }
+
+#contactForm {
+    min-width: 300px;
+}

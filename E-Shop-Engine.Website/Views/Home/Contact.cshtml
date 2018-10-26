@@ -1,0 +1,14 @@
+﻿@using E_Shop_Engine.Website.Extensions
+@{
+    ViewBag.Title = "Contact";
+}
+
+<h1>Contact Us</h1>
+
+<form id="contactForm" action="https://formspree.io/@Html.Settings().ContactEmailAddress"
+      method="POST">
+    <input type="text" name="name" placeholder="Your name" class="d-block my-2 w-100 form-control" maxlength="100">
+    <input type="email" name="_replyto" placeholder="Your email" required class="d-block my-2 w-100 form-control" maxlength="100">
+    <textarea name="message" placeholder="Your message" required class="d-block my-2 w-100 form-control" maxlength="5000"></textarea>
+    <input type="submit" value="Send" class="btn btn-success d-block w-50 m-auto">
+</form>

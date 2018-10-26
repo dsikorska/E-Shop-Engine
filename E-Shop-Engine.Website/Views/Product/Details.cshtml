@@ -30,10 +30,18 @@
     </div>
 
     <div class="text-center">
-        @using (Html.BeginForm("AddItem", "Cart", new { id = Model.Id }, FormMethod.Post, new { @class = "d-inline" }))
+        @if (Model.NumberInStock == 0)
         {
-            @Html.AntiForgeryToken()
-            <button class="btn btn-success my-2" type="submit">Add to Cart</button>
+            <button class="btn btn-danger my-2" disabled>Out of stock!</button>
+        }
+        else
+        {
+
+            using (Html.BeginForm("AddItem", "Cart", new { id = Model.Id }, FormMethod.Post, new { @class = "d-inline" }))
+            {
+                @Html.AntiForgeryToken()
+                <button class="btn btn-success my-2" type="submit">Add to Cart</button>
+            }
         }
     </div>
 

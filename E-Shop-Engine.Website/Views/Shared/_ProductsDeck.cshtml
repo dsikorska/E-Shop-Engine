@@ -20,10 +20,17 @@
                 </div>
             </a>
             <div class="card-body text-center p-0 pb-4">
-                @using (Html.BeginForm("AddItem", "Cart", new { id = product.Id }, FormMethod.Post, new { @class = "d-inline" }))
+                @if (product.NumberInStock == 0)
                 {
-                    @Html.AntiForgeryToken()
-                    <button class="btn btn-success" type="submit">Add to Cart</button>
+                    <button class="btn btn-danger" disabled>Out of stock!</button>
+                }
+                else
+                {
+                    using (Html.BeginForm("AddItem", "Cart", new { id = product.Id }, FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-success" type="submit">Add to Cart</button>
+                    }
                 }
             </div>
         </div>
