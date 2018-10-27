@@ -222,6 +222,7 @@
     <Content Include="Areas\Admin\Views\OrderAdmin\Details.cshtml" />
     <Content Include="Areas\Admin\Views\OrderAdmin\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\SettingsAdmin\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountAdmin\Details.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -282,6 +283,7 @@
     <Compile Include="Controllers\SubcategoryController.cs" />
     <Compile Include="CustomFilters\ReturnUrlAttribute.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
+    <Compile Include="Extensions\EnumHelpers.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Global.asax.cs">
@@ -291,6 +293,7 @@
     <Compile Include="Models\CartLineViewModel.cs" />
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />

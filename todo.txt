@@ -1,4 +1,3 @@
-user dtails
 save enum as string in db
 custom errors add more
 

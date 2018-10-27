@@ -40,7 +40,7 @@
                         }
                     </li>
                     <li class="nav-item active">
-                        @Html.ActionLink("Contact", "Contact", "Home", new { area = "Admin" }, new { @class = "nav-link text-white btn btn-primary" })
+                        @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link text-white btn btn-primary" })
                     </li>
                     <li class="nav-item active">
                         @if (!HttpContext.Current.User.Identity.IsAuthenticated)

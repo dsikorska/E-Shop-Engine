@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -13,11 +14,13 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Category> _categoryRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IMailingRepository _mailingRepository;
 
-        public HomeController(IRepository<Category> categoryRepository, IProductRepository productRepository)
+        public HomeController(IRepository<Category> categoryRepository, IProductRepository productRepository, IMailingRepository mailingRepository)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
+            _mailingRepository = mailingRepository;
         }
 
         // GET: Home
@@ -29,6 +32,19 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Contact()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> Contact(ContactViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            await _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
+            return RedirectToAction("Index");
         }
 
         // GET: Categories - for navbar

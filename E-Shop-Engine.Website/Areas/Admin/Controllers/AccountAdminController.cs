@@ -49,6 +49,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        public async Task<ActionResult> Details(string id)
+        {
+            AppUser user = await UserManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                UserAdminViewModel viewModel = Mapper.Map<UserAdminViewModel>(user);
+                return View(viewModel);
+            }
+            return Redirect("Index");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
