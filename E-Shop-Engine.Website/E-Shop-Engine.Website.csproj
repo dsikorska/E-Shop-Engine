@@ -341,7 +341,7 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\Create.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
-    <Content Include="Views\Account\Address.cshtml" />
+    <Content Include="Views\Account\AddressEdit.cshtml" />
     <Content Include="Views\Account\AddressDetails.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />

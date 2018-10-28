@@ -60,7 +60,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
-            return View(new UserChangePasswordViewModel());
+            return View();
         }
 
         [Authorize]
@@ -72,6 +72,7 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 return View(model);
             }
+
             if (model.NewPassword != model.NewPasswordCopy)
             {
                 ModelState.AddModelError("", "The new password and confirmation password does not match.");
@@ -146,6 +147,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
+
             if (user != null)
             {
                 user.Email = model.Email;
@@ -153,6 +155,7 @@ namespace E_Shop_Engine.Website.Controllers
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
+                    return View(model);
                 }
 
                 if (validEmail.Succeeded)
@@ -162,6 +165,7 @@ namespace E_Shop_Engine.Website.Controllers
                     user.PhoneNumber = model.PhoneNumber;
                     user.UserName = model.Email;
                     IdentityResult result = await UserManager.UpdateAsync(user);
+
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");
@@ -169,12 +173,13 @@ namespace E_Shop_Engine.Website.Controllers
                     else
                     {
                         AddErrorsFromResult(result);
+                        return View(model);
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "User Not Found");
-                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "User Not Found");
             }
             return View(model);
         }
@@ -344,16 +349,20 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             AppUser user = await UserManager.FindByNameAsync(model.Email);
+
             if (user == null)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                ModelState.AddModelError("", "User Not Found");
+                return View(model);
             }
+
             IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.NewPassword);
+
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
             AddErrorsFromResult(result);
             return View();
         }
@@ -367,7 +376,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
-        public ActionResult Address()
+        public ActionResult AddressEdit()
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = UserManager.FindById(userId);
@@ -389,7 +398,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Address(AddressViewModel model, bool isOrder = false)
+        public ActionResult AddressEdit(AddressViewModel model, bool isOrder = false)
         {
             if (!ModelState.IsValid)
             {
