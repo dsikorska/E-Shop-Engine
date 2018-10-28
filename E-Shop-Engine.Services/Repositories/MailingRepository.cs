@@ -18,6 +18,13 @@ namespace E_Shop_Engine.Services.Repositories
             _settings = context.Settings.FirstOrDefault();
         }
 
+        public async Task CustomMail(string sender, string senderName, string body)
+        {
+            string subject = "Contact from " + senderName + " <" + senderName + ">";
+            MailMessage mail = GetMessage(_settings.ContactEmailAddress, body, subject);
+            await SendMail(mail);
+        }
+
         public async Task WelcomeMail(string mailTo)
         {
             string body = Properties.Resources.OnlyTextTemplateMail

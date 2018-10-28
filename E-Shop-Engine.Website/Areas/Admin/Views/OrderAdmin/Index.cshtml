@@ -49,7 +49,11 @@
                         @Html.DisplayFor(modelItem => item.IsPaid)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.OrderStatus)
+                        @{
+                            var name = item.OrderStatus.GetDisplayName();
+                            name = name == null ? item.OrderStatus.ToString() : name;
+                        }
+                        @Html.DisplayFor(modelItem => name)
                     </td>
                     <td>
                         @item.TotalValue @Html.Settings().Currency

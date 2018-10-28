@@ -1,0 +1,23 @@
+﻿@model E_Shop_Engine.Website.Areas.Admin.Models.UserAdminViewModel
+
+@{
+    ViewBag.Title = "User Details - " + Model.Name + Model.Surname;
+}
+
+<h1>User Details - @Model.Name @Model.Surname</h1>
+
+<p>
+    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+</p>
+
+<dl>
+    <dt>@Html.DisplayNameFor(model => model.Name) @Html.DisplayNameFor(model => model.Surname)</dt>
+    <dd>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+    <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+</dl>

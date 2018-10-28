@@ -11,8 +11,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         public string Currency { get; set; }
 
-        [Display(Name = "Admin Email Address")]
-        public string AdminEmailAddress { get; set; }
+        [Display(Name = "Contact Email Address")]
+        public string ContactEmailAddress { get; set; }
 
         [Display(Name = "Notification Reply Email")]
         public string NotificationReplyEmail { get; set; }
@@ -23,6 +23,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Display(Name = "SMTP Username")]
         public string SMTPUsername { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
         [Display(Name = "SMTP Password")]
         public string SMTPPassword { get; set; }
 
