@@ -194,6 +194,7 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Scripts\custom\clickable-row.js" />
     <Content Include="Scripts\custom\decimal-validator.js" />
+    <Content Include="Scripts\custom\notify.js" />
     <Content Include="Scripts\custom\preview-img.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -346,6 +347,8 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Account\Details.cshtml" />
+
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

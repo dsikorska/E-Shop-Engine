@@ -7,8 +7,31 @@
     <title>@ViewBag.Title</title>
     @Scripts.Render("~/Bundles/universal")
     @Styles.Render("~/Content/css")
+    <script src="~/Scripts/custom/notify.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#notify').show()) {
+                let notifyType = document.getElementById('notifyType').className;
+                let notifyTitle = $('#notifyTitle');
+                let notifyText = $('#notifyText');
+                let closeBtn = $('.notification-dismiss');
+                SetStyles(notifyType, notifyTitle, notifyText, closeBtn);
+                HideNotify();
+            }
+        });
+    </script>
 </head>
 <body>
+    <!-- Start Modal -->
+    <div class="notification" id="notify" tabindex="-1" role="dialog">
+        <div id="notifyType" class="@TempData["notifyType"]" role="document">
+            <h4 class="notification-title" id="notifyTitle">@TempData["notifyTitle"]</h4>
+            <div class="notification-text" id="notifyText">@TempData["notifyText"]</div>
+            <span class="notification-dismiss">x</span>
+        </div>
+    </div>
+    <!-- End Modal-->
+
     <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top">
         <a class="navbar-brand text-white btn btn-primary" href="/Home/Index">@Html.Settings().ShopName</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +87,7 @@
     <div class="container-fluid pl-0">
         <div class="d-flex h-90-vh">
             @Html.Action("NavList", "Home")
-            <div class="w-auto mx-auto">
+            <div class="w-auto mx-auto" id="content">
                 @RenderBody()
                 <hr />
                 <footer>

@@ -65,4 +65,87 @@
 
 #contactForm {
     min-width: 300px;
+=======
+.notification {
+    position: fixed;
+    width: 320px;
+    padding: 0px 10px 10px;
+    z-index: 9998;
+    box-sizing: border-box;
+    height: auto;
+    top: auto;
+    bottom: 0px;
+    left: auto;
+    right: 0px;
+}
+
+.notification-success {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 13px;
+    margin: 10px 0px 0px;
+    padding: 10px;
+    display: block;
+    box-sizing: border-box;
+    opacity: 1;
+    transition: all 0.3s ease-in-out 0s;
+    transform: translate3d(0px, 0px, 0px);
+    will-change: transform, opacity;
+    border-top: 2px solid rgb(94, 164, 0);
+    background-color: rgb(240, 245, 234);
+    color: rgb(75, 88, 58);
+    box-shadow: rgba(94, 164, 0, 0.9) 0px 0px 1px;
+    right: 0px;
+    height: 61px;
+}
+
+.notification-error {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 13px;
+    margin: 10px 0px 0px;
+    padding: 10px;
+    display: block;
+    box-sizing: border-box;
+    opacity: 1;
+    transition: all 0.3s ease-in-out 0s;
+    transform: translate3d(0px, 0px, 0px);
+    will-change: transform, opacity;
+    border-top: 2px solid rgb(236, 61, 61);
+    background-color: rgb(244, 233, 233);
+    color: rgb(65, 47, 47);
+    box-shadow: rgba(236, 61, 61, 0.9) 0px 0px 1px;
+    right: 0px;
+    height: 61px;
+}
+
+.notification-title {
+    font-size: 14px;
+    margin: 0px 0px 5px;
+    padding: 0px;
+    font-weight: bold;
+}
+
+.notification-text {
+    margin: 0px;
+    padding: 0px;
+}
+
+.notification-dismiss {
+    font-family: Arial;
+    font-size: 12px;
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    line-height: 15px;
+    color: rgb(244, 233, 233);
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-weight: bold;
+    text-align: center;
 }

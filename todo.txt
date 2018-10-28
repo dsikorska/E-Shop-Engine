@@ -1,6 +1,9 @@
 user dtails
 save enum as string in db
 custom errors add more
+contact form
+edit layout - simplify
+mailing change pw typo
 
     <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />
