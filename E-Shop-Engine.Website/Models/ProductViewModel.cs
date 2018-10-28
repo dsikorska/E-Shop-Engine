@@ -28,5 +28,8 @@ namespace E_Shop_Engine.Website.Models
 
         [Display(Name = "Subcategory")]
         public string SubcategoryName { get; set; }
+
+        [Display(Name = "Availability")]
+        public int NumberInStock { get; set; }
     }
 }

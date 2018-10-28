@@ -63,6 +63,9 @@
     max-height: 300px;
 }
 
+#contactForm {
+    min-width: 300px;
+=======
 .notification {
     position: fixed;
     width: 320px;
