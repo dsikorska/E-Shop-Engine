@@ -60,7 +60,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
-            return View(new UserChangePasswordViewModel());
+            return View();
         }
 
         [Authorize]

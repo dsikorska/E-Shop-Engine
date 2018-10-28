@@ -27,7 +27,7 @@ namespace E_Shop_Engine.Website.Controllers
             _cartRepository = cartRepository;
             _userManager = userManager;
         }
-        //TODO redirect from account
+
         // GET: Order
         public ActionResult Index(int? page, string sortOrder, bool descending = true)
         {
@@ -55,8 +55,7 @@ namespace E_Shop_Engine.Website.Controllers
 
         public ActionResult Create()
         {
-            OrderViewModel model = new OrderViewModel();
-            return View(model);
+            return View();
         }
 
         [ValidateAntiForgeryToken]
