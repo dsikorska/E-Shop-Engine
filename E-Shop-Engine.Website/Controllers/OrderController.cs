@@ -10,6 +10,7 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -26,6 +27,7 @@ namespace E_Shop_Engine.Website.Controllers
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _userManager = userManager;
+            logger = LogManager.GetCurrentClassLogger();
         }
         //TODO redirect from account
         // GET: Order

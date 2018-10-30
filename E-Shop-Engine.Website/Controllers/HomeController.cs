@@ -6,11 +6,12 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Models;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;
         private readonly IProductRepository _productRepository;
@@ -21,6 +22,7 @@ namespace E_Shop_Engine.Website.Controllers
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
             _mailingRepository = mailingRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Home

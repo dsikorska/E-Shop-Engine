@@ -12,11 +12,12 @@ using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
     [ReturnUrl]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         //private IAuthenticationManager AuthManager
         //{
@@ -45,6 +46,7 @@ namespace E_Shop_Engine.Website.Controllers
             AuthManager = authManager;
             _addressRepository = addressRepository;
             _mailingRepository = mailingRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         [Authorize]

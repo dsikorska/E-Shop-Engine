@@ -9,6 +9,7 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -20,6 +21,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Product

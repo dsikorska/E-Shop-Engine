@@ -6,12 +6,20 @@ using System.Reflection;
 using System.Web.Mvc;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
     public class BaseController : Controller
     {
+        protected Logger logger;
+
+        public BaseController()
+        {
+            logger = LogManager.GetCurrentClassLogger();
+        }
+
         protected IPagedList<TDestination> IQueryableToPagedList<TSource, TDestination, TSort>(IQueryable<TSource> model, Expression<Func<TSource, TSort>> sortCondition, int? page, int pageSize = 25, bool descending = false)
         {
             int pageNumber = page ?? 1;
@@ -75,6 +83,22 @@ namespace E_Shop_Engine.Website.Controllers
             TempData["SortDescending"] = descending;
             ViewBag.SortOrder = sortOrder;
             ViewBag.SortDescending = descending;
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
+
+            if (filterContext.IsChildAction)
+            {
+                filterContext.Result = PartialView("_Error", new string[] { "We're sorry. Something unexpceted happend! Please try again later or contact us." });
+            }
+            else
+            {
+                filterContext.Result = View("_Error", new string[] { "We're sorry. Something unexpceted happend! Please try again later or contact us." });
+            }
         }
     }
 }
