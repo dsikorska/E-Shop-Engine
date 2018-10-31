@@ -1,6 +1,0 @@
-custom errors add more
-
-    <httpErrors errorMode="Custom" existingResponse="Replace">
-      <remove statusCode="404" />
-      <error statusCode="404" responseMode="ExecuteURL" path="/Error.html" />
-    </httpErrors>

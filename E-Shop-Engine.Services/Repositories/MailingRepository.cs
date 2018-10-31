@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -82,17 +81,8 @@ namespace E_Shop_Engine.Services.Repositories
 
         private async Task SendMail(MailMessage mail)
         {
-
             SmtpClient smtpClient = GetSmtpCLient();
-
-            try
-            {
-                await smtpClient.SendMailAsync(mail);
-            }
-            catch (Exception e)
-            {
-                //TODO
-            }
+            await smtpClient.SendMailAsync(mail);
         }
 
         private SmtpClient GetSmtpCLient()

@@ -13,7 +13,8 @@ namespace E_Shop_Engine.Services
             FileTarget target = new FileTarget("target2")
             {
                 FileName = "${basedir}/logs/app.log",
-                Layout = "${longdate} ${level:uppercase=true} ${logger} ${callsite} ${newline} ${message} ${newline} ${exception:format=toString,Data} ${newline}",
+                Layout = "${longdate} ${level:uppercase=true} ${logger} ${callsite} ${newline} ${aspnet-request-form:OutputFormat=JSON} ${newline} " +
+                "${aspnet-request:header=Referer} ${newline} ${message} ${newline} ${exception:format=toString,Data} ${newline}",
                 ArchiveNumbering = ArchiveNumberingMode.DateAndSequence,
                 ArchiveEvery = FileArchivePeriod.Day,
                 ArchiveAboveSize = 10 * 1024 * 1024

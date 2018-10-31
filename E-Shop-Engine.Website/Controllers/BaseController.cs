@@ -90,14 +90,15 @@ namespace E_Shop_Engine.Website.Controllers
             filterContext.ExceptionHandled = true;
 
             logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
+            string msg = "We're sorry. Something unexpected happend! Please try again later or contact with us.";
 
             if (filterContext.IsChildAction)
             {
-                filterContext.Result = PartialView("_Error", new string[] { "We're sorry. Something unexpceted happend! Please try again later or contact us." });
+                filterContext.Result = PartialView("_Error", new string[] { msg });
             }
             else
             {
-                filterContext.Result = View("_Error", new string[] { "We're sorry. Something unexpceted happend! Please try again later or contact us." });
+                filterContext.Result = View("_Error", new string[] { msg });
             }
         }
     }
