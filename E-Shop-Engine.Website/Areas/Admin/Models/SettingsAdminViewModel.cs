@@ -32,5 +32,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         [Display(Name = "Enable SSL?")]
         public bool? SMTPEnableSSL { get; set; }
+
+        [Display(Name = "DotPay PIN")]
+        public string DotPayPIN { get; set; }
+
+        [Display(Name = "DotPay Id")]
+        public string DotPayId { get; set; }
     }
 }

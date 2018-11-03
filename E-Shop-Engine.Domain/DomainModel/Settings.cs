@@ -12,5 +12,9 @@
         public string SMTPPassword { get; set; }
         public int SMTPPort { get; set; }
         public bool SMTPEnableSSL { get; set; }
+
+        public string DotPayPIN { get; set; }
+        public string DotPayId { get; set; }
+
     }
 }

@@ -14,7 +14,6 @@ namespace E_Shop_Engine.Domain.DomainModel
         public virtual OrderedCart OrderedCart { get; set; }
 
         public bool IsPaid { get; set; } = false;
-        public PaymentMethod PaymentMethod { get; set; }
         public OrderStatus OrderStatus { get; set; }
     }
 }

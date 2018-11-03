@@ -67,7 +67,6 @@
     <Compile Include="DomainModel\Settings.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
-    <Compile Include="Enumerables\PaymentMethod.cs" />
     <Compile Include="Interfaces\IAppDbContext.cs" />
     <Compile Include="Interfaces\ICartRepository.cs" />
     <Compile Include="Interfaces\IMailingRepository.cs" />

@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.OrderViewModel
+﻿@using E_Shop_Engine.Website.Extensions
+@model E_Shop_Engine.Website.Models.OrderViewModel
 
 @{
     ViewBag.Title = "New Order";
@@ -6,25 +7,27 @@
 
 <h1>New Order</h1>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
-    <hr />
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.PaymentMethod, new { @class = "input-group-text" })
-        </div>
-        @Html.EnumDropDownListFor(model => model.PaymentMethod, "Select payment method", new { @class = "form-control" })
-    </div>
-
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        <a class="btn btn-danger btn-lg text-white" href="/Cart/Details">Cancel</a>
-        <input type="submit" value="Process" class="btn btn-success btn-lg" />
-    </div>
-}
+<a href="javascript:GetUrl();" class="btn btn-outline-secondary" id="dotpayLink">
+    <img src="~/Content/dotpay_logo.jpg" class="card-img" />
+</a>
 
 @section Scripts {
+<script>
+    function GetUrl() {
+        $.ajax({
+            method: 'GET',
+            url: '@Url.Action("GetCheckSum", "Order")',
+            data: { totalValue: '@Model.TotalValue', id: '@Model.Id', name: '@Model.AppUser.Name', surname: '@Model.AppUser.Surname', email: '@Model.AppUser.Email' }
+        })
+            .done(function (callback) {
+                let na = 'https://ssl.dotpay.pl/t2/';
+                let url = 'https://ssl.dotpay.pl/test_payment/?id=@Html.Settings().DotPayId&amount=@Model.TotalValue&currency=@Html.Settings().Currency' +
+                    '&description=@Model.Id&chk=' + callback + '&imie=@Model.AppUser.Name&surname=@Model.AppUser.Surname&email=@Model.AppUser.Email';
+                window.location.href = url;
+            })
+    }
+
+    </script>
+
     @Scripts.Render("~/Bundles/validate")
 }

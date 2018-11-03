@@ -185,6 +185,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\default-img.jpg" />
+    <Content Include="Content\dotpay_logo.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="ErrorsPages\500.html" />
     <Content Include="Global.asax" />

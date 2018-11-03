@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -21,12 +23,14 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly AppUserManager _userManager;
+        private readonly ISettingsRepository _settingsRepository;
 
-        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager)
+        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager, ISettingsRepository settingsRepository)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _userManager = userManager;
+            _settingsRepository = settingsRepository;
             logger = LogManager.GetCurrentClassLogger();
         }
         //TODO redirect from account
@@ -58,6 +62,10 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+            model.AppUser = user;
+            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             return View(model);
         }
 
@@ -101,6 +109,36 @@ namespace E_Shop_Engine.Website.Controllers
             }
             ModelState.AddModelError("", "Order Not Found");
             return RedirectToAction("Index");
+        }
+
+        public string GetCheckSum(string totalValue, string id, string name, string surname, string email)
+        {
+            Settings settings = _settingsRepository.Get();
+            string sum = settings.DotPayPIN + settings.DotPayId + totalValue + settings.Currency + id + name + surname + email;
+            return GetSHA(sum);
+        }
+
+        private string GetSHA(string sum)
+        {
+            SHA256Managed sha256 = new SHA256Managed();
+            string resultString = null;
+
+            byte[] byteConcat = Encoding.UTF8.GetBytes(sum);
+            int byteNumber = Encoding.UTF8.GetByteCount(sum);
+
+            byte[] result = sha256.ComputeHash(byteConcat, 0, byteNumber);
+
+            foreach (byte a in result)
+            {
+                resultString += a.ToString("x2");
+            }
+
+            return resultString;
+        }
+
+        public void Done(string id)
+        {
+
         }
     }
 }
