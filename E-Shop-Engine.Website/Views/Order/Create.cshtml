@@ -17,7 +17,7 @@
         $.ajax({
             method: 'GET',
             url: '@Url.Action("GetCheckSum", "Order")',
-            data: { totalValue: '@Model.TotalValue', id: '@Model.Id', urlc: '@Url.Action("Done", "Order")', name: '@Model.AppUser.Name', surname: '@Model.AppUser.Surname', email: '@Model.AppUser.Email' }
+            data: { totalValue: '@Model.TotalValue', id: '@Model.Id', urlc: '@Url.Action("Done", "Order", null, Request.Url.Scheme)', name: '@Model.AppUser.Name', surname: '@Model.AppUser.Surname', email: '@Model.AppUser.Email' }
         })
             .done(function (callback) {
                 let na = 'https://ssl.dotpay.pl/t2/';
