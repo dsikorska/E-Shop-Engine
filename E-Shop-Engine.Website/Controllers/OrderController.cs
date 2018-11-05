@@ -111,10 +111,10 @@ namespace E_Shop_Engine.Website.Controllers
             return RedirectToAction("Index");
         }
 
-        public string GetCheckSum(string totalValue, string id, string name, string surname, string email)
+        public string GetCheckSum(string totalValue, string id, string urlc, string name, string surname, string email)
         {
             Settings settings = _settingsRepository.Get();
-            string sum = settings.DotPayPIN + settings.DotPayId + totalValue + settings.Currency + id + name + surname + email;
+            string sum = settings.DotPayPIN + settings.DotPayId + totalValue + settings.Currency + id + urlc + name + surname + email;
             return GetSHA(sum);
         }
 
@@ -136,6 +136,7 @@ namespace E_Shop_Engine.Website.Controllers
             return resultString;
         }
 
+        [HttpPost]
         public void Done(string id)
         {
 

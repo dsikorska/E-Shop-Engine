@@ -193,6 +193,10 @@
     <Compile Include="Migrations\201811032050258_Add dotpay settings.Designer.cs">
       <DependentUpon>201811032050258_Add dotpay settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811051008226_Update Order.cs" />
+    <Compile Include="Migrations\201811051008226_Update Order.Designer.cs">
+      <DependentUpon>201811051008226_Update Order.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -296,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811032050258_Add dotpay settings.resx">
       <DependentUpon>201811032050258_Add dotpay settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811051008226_Update Order.resx">
+      <DependentUpon>201811051008226_Update Order.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -17,12 +17,12 @@
         $.ajax({
             method: 'GET',
             url: '@Url.Action("GetCheckSum", "Order")',
-            data: { totalValue: '@Model.TotalValue', id: '@Model.Id', name: '@Model.AppUser.Name', surname: '@Model.AppUser.Surname', email: '@Model.AppUser.Email' }
+            data: { totalValue: '@Model.TotalValue', id: '@Model.Id', urlc: '@Url.Action("Done", "Order")', name: '@Model.AppUser.Name', surname: '@Model.AppUser.Surname', email: '@Model.AppUser.Email' }
         })
             .done(function (callback) {
                 let na = 'https://ssl.dotpay.pl/t2/';
                 let url = 'https://ssl.dotpay.pl/test_payment/?id=@Html.Settings().DotPayId&amount=@Model.TotalValue&currency=@Html.Settings().Currency' +
-                    '&description=@Model.Id&chk=' + callback + '&imie=@Model.AppUser.Name&surname=@Model.AppUser.Surname&email=@Model.AppUser.Email';
+                    '&description=@Model.Id&chk=' + callback + '&imie=@Model.AppUser.Name&surname=@Model.AppUser.Surname&email=@Model.AppUser.Email&URLC=@Url.Action("Done", "Order", null, Request.Url.Scheme)';
                 window.location.href = url;
             })
     }
