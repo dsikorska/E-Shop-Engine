@@ -193,9 +193,9 @@
     <Compile Include="Migrations\201811032050258_Add dotpay settings.Designer.cs">
       <DependentUpon>201811032050258_Add dotpay settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811051008226_Update Order.cs" />
-    <Compile Include="Migrations\201811051008226_Update Order.Designer.cs">
-      <DependentUpon>201811051008226_Update Order.cs</DependentUpon>
+    <Compile Include="Migrations\201811092129582_Update Order.cs" />
+    <Compile Include="Migrations\201811092129582_Update Order.Designer.cs">
+      <DependentUpon>201811092129582_Update Order.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
@@ -207,6 +207,7 @@
     </Compile>
     <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\MailingRepository.cs" />
+    <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
@@ -301,8 +302,8 @@
     <EmbeddedResource Include="Migrations\201811032050258_Add dotpay settings.resx">
       <DependentUpon>201811032050258_Add dotpay settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811051008226_Update Order.resx">
-      <DependentUpon>201811051008226_Update Order.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201811092129582_Update Order.resx">
+      <DependentUpon>201811092129582_Update Order.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -7,12 +7,14 @@ namespace E_Shop_Engine.Services.Migrations
     {
         public override void Up()
         {
-            DropColumn("dbo.Orders", "PaymentMethod");
+            AddColumn("dbo.Orders", "OrderNumber", c => c.String());
+            AddColumn("dbo.Orders", "TransactionNumber", c => c.String());
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Orders", "PaymentMethod", c => c.Int(nullable: false));
+            DropColumn("dbo.Orders", "TransactionNumber");
+            DropColumn("dbo.Orders", "OrderNumber");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace E_Shop_Engine.Services.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201811051008226_Update Order"; }
+            get { return "201811092129582_Update Order"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -109,37 +107,6 @@ namespace E_Shop_Engine.Website.Controllers
             }
             ModelState.AddModelError("", "Order Not Found");
             return RedirectToAction("Index");
-        }
-
-        public string GetCheckSum(string totalValue, string id, string urlc, string name, string surname, string email)
-        {
-            Settings settings = _settingsRepository.Get();
-            string sum = settings.DotPayPIN + settings.DotPayId + totalValue + settings.Currency + id + urlc + name + surname + email;
-            return GetSHA(sum);
-        }
-
-        private string GetSHA(string sum)
-        {
-            SHA256Managed sha256 = new SHA256Managed();
-            string resultString = null;
-
-            byte[] byteConcat = Encoding.UTF8.GetBytes(sum);
-            int byteNumber = Encoding.UTF8.GetByteCount(sum);
-
-            byte[] result = sha256.ComputeHash(byteConcat, 0, byteNumber);
-
-            foreach (byte a in result)
-            {
-                resultString += a.ToString("x2");
-            }
-
-            return resultString;
-        }
-
-        [HttpPost]
-        public void Done(string id)
-        {
-
         }
     }
 }

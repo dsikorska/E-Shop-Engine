@@ -7,27 +7,10 @@
 
 <h1>New Order</h1>
 
-<a href="javascript:GetUrl();" class="btn btn-outline-secondary" id="dotpayLink">
+<a href="@Url.Action("DotPayPayment", "Payment")" class="btn btn-outline-secondary" id="dotpayLink">
     <img src="~/Content/dotpay_logo.jpg" class="card-img" />
 </a>
 
 @section Scripts {
-<script>
-    function GetUrl() {
-        $.ajax({
-            method: 'GET',
-            url: '@Url.Action("GetCheckSum", "Order")',
-            data: { totalValue: '@Model.TotalValue', id: '@Model.Id', urlc: '@Url.Action("Done", "Order", null, Request.Url.Scheme)', name: '@Model.AppUser.Name', surname: '@Model.AppUser.Surname', email: '@Model.AppUser.Email' }
-        })
-            .done(function (callback) {
-                let na = 'https://ssl.dotpay.pl/t2/';
-                let url = 'https://ssl.dotpay.pl/test_payment/?id=@Html.Settings().DotPayId&amount=@Model.TotalValue&currency=@Html.Settings().Currency' +
-                    '&description=@Model.Id&chk=' + callback + '&imie=@Model.AppUser.Name&surname=@Model.AppUser.Surname&email=@Model.AppUser.Email&URLC=@Url.Action("Done", "Order", null, Request.Url.Scheme)';
-                window.location.href = url;
-            })
-    }
-
-    </script>
-
     @Scripts.Render("~/Bundles/validate")
 }
