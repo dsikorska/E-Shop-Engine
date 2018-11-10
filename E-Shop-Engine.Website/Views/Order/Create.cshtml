@@ -10,22 +10,3 @@
 <a href="@Url.Action("DotPayPayment", "Payment")" class="btn btn-outline-secondary" id="dotpayLink">
     <img src="~/Content/dotpay_logo.jpg" class="card-img" />
 </a>
-
-@section Scripts {
-    @Scripts.Render("~/Bundles/validate")
-
-    <script src="~/Scripts/custom/notify.js" type="text/javascript"></script>
-
-    <script>
-        function Success(result) {
-            Redirect(result);
-        }
-
-        function Failed(result) {
-            ReplaceContent(result.responseText);
-            SetNotify("notification-error", "Error", "Something unexpected happend!");
-            $('#notify').show();
-            HideNotify();
-        }
-    </script>
-}
