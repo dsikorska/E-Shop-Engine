@@ -1,10 +1,32 @@
 save enum as string in db
 custom errors add more
-contact form
-edit layout - simplify
-mailing change pw typo
 
-    <httpErrors errorMode="Custom" existingResponse="Replace">
+	public class TotalValuable : DbEntity
+    {
+        public virtual ICollection<CartOneLine> CartLines { get; set; }
+    }
+	
+	    public class CartOneLine : DbEntity
+    {
+        public virtual Product Product { get; set; }
+        public int Quantity { get; set; }
+    }
+	
+	Cart i OrderedCart : TotalValuable
+	CartLine i OrderedCartLine : CartOneLine
+	
+	    public static class ModelHelper
+    {
+        public static decimal GetTotalValue<T>(T model) where T : TotalValuable
+        {
+            return model.CartLines.Sum(x => x.Product.Price * x.Quantity);
+        }
+    }
+	
+	
+	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />
-      <error statusCode="404" responseMode="ExecuteURL" path="/Error.html" />
+      <error statusCode="404" responseMode="ExecuteURL" path="/ErrorsPages/404.html" />
+      <remove statusCode="500" />
+      <error statusCode="500" responseMode="ExecuteURL" path="/ErrorsPages/500.html" />
     </httpErrors>

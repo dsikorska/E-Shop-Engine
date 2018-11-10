@@ -66,6 +66,18 @@
         </div>
         @Html.TextBoxFor(model => model.SMTPPort, new { @class = "form-control" })
     </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.DotPayId, new { @class = "input-group-text" })
+        </div>
+        @Html.TextBoxFor(model => model.DotPayId, new { @class = "form-control" })
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.DotPayPIN, new { @class = "input-group-text" })
+        </div>
+        @Html.TextBoxFor(model => model.DotPayPIN, new { @class = "form-control" })
+    </div>
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
         <a class="btn btn-secondary btn-lg text-white" href="@ViewBag.returnUrl">Go back</a>
         <input type="submit" value="Save" class="btn btn-success btn-lg" />

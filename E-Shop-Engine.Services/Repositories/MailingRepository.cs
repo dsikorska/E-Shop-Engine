@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
@@ -18,14 +17,14 @@ namespace E_Shop_Engine.Services.Repositories
             _settings = context.Settings.FirstOrDefault();
         }
 
-        public async Task CustomMail(string sender, string senderName, string body)
+        public void CustomMail(string sender, string senderName, string body)
         {
             string subject = "Contact from " + senderName + " <" + senderName + ">";
             MailMessage mail = GetMessage(_settings.ContactEmailAddress, body, subject);
-            await SendMail(mail);
+            SendMail(mail);
         }
 
-        public async Task WelcomeMail(string mailTo)
+        public void WelcomeMail(string mailTo)
         {
             string body = Properties.Resources.OnlyTextTemplateMail
                 .Replace("#shopName#", _settings.ShopName)
@@ -35,10 +34,10 @@ namespace E_Shop_Engine.Services.Repositories
             string subject = "Welcome at " + _settings.ShopName;
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
-            await SendMail(mail);
+            SendMail(mail);
         }
 
-        public async Task ActivationMail(string mailTo, string url)
+        public void ActivationMail(string mailTo, string url)
         {
             string body = Properties.Resources.OneButtonTemplateMail
                 .Replace("#url#", url)
@@ -50,10 +49,10 @@ namespace E_Shop_Engine.Services.Repositories
             string subject = "Activate your account at " + _settings.ShopName;
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
-            await SendMail(mail);
+            SendMail(mail);
         }
 
-        public async Task ResetPasswordMail(string mailTo, string url)
+        public void ResetPasswordMail(string mailTo, string url)
         {
             string body = Properties.Resources.OneButtonTemplateMail.Replace("#url#", url)
                 .Replace("#shopName#", _settings.ShopName)
@@ -64,10 +63,10 @@ namespace E_Shop_Engine.Services.Repositories
             string subject = "Reset password at " + _settings.ShopName;
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
-            await SendMail(mail);
+            SendMail(mail);
         }
 
-        public async Task PasswordChangedMail(string mailTo)
+        public void PasswordChangedMail(string mailTo)
         {
             string body = Properties.Resources.OnlyTextTemplateMail
                 .Replace("#shopName#", _settings.ShopName)
@@ -77,21 +76,46 @@ namespace E_Shop_Engine.Services.Repositories
             string subject = "Password changed";
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
-            await SendMail(mail);
+            SendMail(mail);
         }
 
-        private async Task SendMail(MailMessage mail)
+        public void OrderChangedStatusMail(string mailTo, string orderNumber, string orderStatus, string title)
         {
+            string body = Properties.Resources.OnlyTextTemplateMail
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title#", title)
+                .Replace("#text#", "Your order " + orderNumber + " status updated: " + orderStatus);
 
+            string subject = title;
+            string to = mailTo;
+            MailMessage mail = GetMessage(mailTo, body, subject);
+            SendMail(mail);
+        }
+
+        public void PaymentFailedMail(string mailTo, string orderNumber)
+        {
+            string body = Properties.Resources.OnlyTextTemplateMail
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title#", "Order " + orderNumber + "on hold.")
+                .Replace("#text#", "Something went wrong while processing Your payment for order number " + orderNumber +
+                ". Your order is on hold. Please contact us at " + _settings.ContactEmailAddress);
+
+            string subject = "Order " + orderNumber + "on hold.";
+            string to = mailTo;
+            MailMessage mail = GetMessage(mailTo, body, subject);
+            SendMail(mail);
+        }
+
+        private void SendMail(MailMessage mail)
+        {
             SmtpClient smtpClient = GetSmtpCLient();
-
             try
             {
-                await smtpClient.SendMailAsync(mail);
+                smtpClient.Send(mail);
             }
             catch (Exception e)
             {
-                //TODO
+
             }
         }
 

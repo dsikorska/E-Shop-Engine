@@ -67,6 +67,10 @@
     min-width: 300px;
 }
 
+#dotpayLink {
+    max-width: 200px;
+}
+
 .notification {
     position: fixed;
     width: 320px;

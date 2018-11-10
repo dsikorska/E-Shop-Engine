@@ -3,7 +3,9 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using NLog;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
@@ -11,13 +13,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Settings")]
     [Route("{action}")]
     [ReturnUrl]
-    public class SettingsAdminController : Controller
+    public class SettingsAdminController : BaseController
     {
         private readonly ISettingsRepository _settingsRepository;
 
         public SettingsAdminController(ISettingsRepository settingsRepository)
         {
             _settingsRepository = settingsRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         public ActionResult Edit()

@@ -17,9 +17,6 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
                 .IsOptional()
                 .HasColumnType("datetime");
 
-            Property(o => o.PaymentMethod)
-                .IsRequired();
-
             Property(o => o.OrderStatus)
                 .IsRequired();
 

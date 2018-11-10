@@ -11,6 +11,7 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -21,12 +22,15 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly AppUserManager _userManager;
+        private readonly ISettingsRepository _settingsRepository;
 
-        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager)
+        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager, ISettingsRepository settingsRepository)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _userManager = userManager;
+            _settingsRepository = settingsRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Order
@@ -63,6 +67,10 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+            model.AppUser = user;
+            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             return View(model);
         }
 

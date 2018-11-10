@@ -7,11 +7,12 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Models;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IRepository<Category> _categoryRepository;
         private readonly IProductRepository _productRepository;
@@ -22,6 +23,7 @@ namespace E_Shop_Engine.Website.Controllers
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
             _mailingRepository = mailingRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Home
@@ -38,7 +40,7 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Contact(ContactViewModel model)
+        public ActionResult Contact(ContactViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +49,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             try
             {
-                await _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
+            _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
             }
             catch
             {

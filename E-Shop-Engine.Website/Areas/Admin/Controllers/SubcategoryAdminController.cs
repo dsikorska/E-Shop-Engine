@@ -8,6 +8,7 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -25,6 +26,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             _subcategoryRepository = subcategoryRepository;
             _categoryRepository = categoryRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Subcategory

@@ -6,6 +6,7 @@ namespace E_Shop_Engine.Domain.DomainModel
 {
     public class Order : DbEntity
     {
+        public string OrderNumber { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Finished { get; set; }
 
@@ -15,6 +16,8 @@ namespace E_Shop_Engine.Domain.DomainModel
 
         public bool IsPaid { get; set; } = false;
         public PaymentMethod PaymentMethod { get; set; }
+        public string TransactionNumber { get; set; }
+
         public OrderStatus OrderStatus { get; set; }
     }
 }

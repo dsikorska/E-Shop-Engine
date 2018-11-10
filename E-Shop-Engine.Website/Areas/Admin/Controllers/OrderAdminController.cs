@@ -7,6 +7,7 @@ using E_Shop_Engine.Services.Repositories;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -22,6 +23,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public OrderAdminController(Repository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Order

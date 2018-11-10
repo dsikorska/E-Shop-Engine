@@ -1,13 +1,13 @@
-﻿using System.Threading.Tasks;
-
-namespace E_Shop_Engine.Domain.Interfaces
+﻿namespace E_Shop_Engine.Domain.Interfaces
 {
     public interface IMailingRepository
     {
-        Task WelcomeMail(string mailTo);
-        Task ActivationMail(string mailTo, string url);
-        Task ResetPasswordMail(string mailTo, string url);
-        Task PasswordChangedMail(string mailTo);
-        Task CustomMail(string sender, string senderName, string body);
+        void WelcomeMail(string mailTo);
+        void ActivationMail(string mailTo, string url);
+        void ResetPasswordMail(string mailTo, string url);
+        void PasswordChangedMail(string mailTo);
+        void CustomMail(string sender, string senderName, string body);
+        void PaymentFailedMail(string mailTo, string orderNumber);
+        void OrderChangedStatusMail(string mailTo, string orderNumber, string orderStatus, string title);
     }
 }

@@ -19,7 +19,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public virtual OrderedCart OrderedCart { get; set; }
 
         public bool IsPaid { get; set; } = false;
-        public PaymentMethod PaymentMethod { get; set; }
 
         [Required]
         public OrderStatus OrderStatus { get; set; }

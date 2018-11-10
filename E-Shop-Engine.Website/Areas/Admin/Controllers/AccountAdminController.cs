@@ -9,6 +9,7 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
 using Microsoft.AspNet.Identity;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -32,6 +33,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public AccountAdminController(AppUserManager userManager)
         {
             UserManager = userManager;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Identity

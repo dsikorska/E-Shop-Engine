@@ -13,11 +13,12 @@ using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
     [ReturnUrl]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         //private IAuthenticationManager AuthManager
         //{
@@ -46,6 +47,7 @@ namespace E_Shop_Engine.Website.Controllers
             AuthManager = authManager;
             _addressRepository = addressRepository;
             _mailingRepository = mailingRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         [Authorize]
@@ -67,7 +69,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
-            return View(new UserChangePasswordViewModel());
+            return View();
         }
 
         [Authorize]
@@ -80,6 +82,7 @@ namespace E_Shop_Engine.Website.Controllers
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return PartialView(model);
             }
+
             if (model.NewPassword != model.NewPasswordCopy)
             {
                 ModelState.AddModelError("", "The new password and confirmation password does not match.");
@@ -113,7 +116,7 @@ namespace E_Shop_Engine.Website.Controllers
                 IdentityResult result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    await _mailingRepository.PasswordChangedMail(user.Email);
+                    _mailingRepository.PasswordChangedMail(user.Email);
                     NotifySetup("notification-success", "Success!", "Your password has been changed!");
                     return Json(new { url = Url.Action("Index") });
                 }
@@ -158,6 +161,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await UserManager.FindByIdAsync(userId);
+
             if (user != null)
             {
                 user.Email = model.Email;
@@ -165,6 +169,7 @@ namespace E_Shop_Engine.Website.Controllers
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
+                    return View(model);
                 }
 
                 if (validEmail.Succeeded)
@@ -174,6 +179,7 @@ namespace E_Shop_Engine.Website.Controllers
                     user.PhoneNumber = model.PhoneNumber;
                     user.UserName = model.Email;
                     IdentityResult result = await UserManager.UpdateAsync(user);
+
                     if (result.Succeeded)
                     {
                         NotifySetup("notification-success", "Success!", "Your profile informations updated!");
@@ -182,6 +188,7 @@ namespace E_Shop_Engine.Website.Controllers
                     else
                     {
                         AddErrorsFromResult(result);
+                        return View(model);
                     }
                 }
             }
@@ -229,7 +236,7 @@ namespace E_Shop_Engine.Website.Controllers
                     {
                         string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        await _mailingRepository.ActivationMail(user.Email, callbackUrl);
+                        _mailingRepository.ActivationMail(user.Email, callbackUrl);
                         Response.StatusCode = (int)HttpStatusCode.Forbidden;
                         return PartialView("_Error", new string[] { "You must have a confirmed email to log on. Check your email for activation link." });
                     }
@@ -292,8 +299,8 @@ namespace E_Shop_Engine.Website.Controllers
                 {
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await _mailingRepository.WelcomeMail(user.Email);
-                    await _mailingRepository.ActivationMail(user.Email, callbackUrl);
+                    _mailingRepository.WelcomeMail(user.Email);
+                    _mailingRepository.ActivationMail(user.Email, callbackUrl);
                     NotifySetup("notification-success", "Success!", "Profile created. Please check Your email to activate account.");
                     return Json(new { url = Url.Action("Index", "Home") });
                 }
@@ -339,7 +346,7 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 string callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: Request.Url.Scheme);
-                await _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
+                _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
                 return PartialView("ForgotPasswordConfirmation");
             }
             ModelState.AddModelError("", "User Not Found");
@@ -367,23 +374,27 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             AppUser user = await UserManager.FindByNameAsync(model.Email);
+
             if (user == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return PartialView(model);
             }
+
             IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.NewPassword);
+
             if (result.Succeeded)
             {
                 return PartialView("ResetPasswordConfirmation");
             }
+
             AddErrorsFromResult(result);
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return PartialView();
         }
 
         [Authorize]
-        public ActionResult Address()
+        public ActionResult AddressEdit()
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = UserManager.FindById(userId);
@@ -405,7 +416,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Address(AddressViewModel model, bool isOrder = false)
+        public ActionResult AddressEdit(AddressViewModel model, bool isOrder = false)
         {
             if (!ModelState.IsValid)
             {

@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="ConvertPostedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestWeb.cs" />
+    <Compile Include="SHA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

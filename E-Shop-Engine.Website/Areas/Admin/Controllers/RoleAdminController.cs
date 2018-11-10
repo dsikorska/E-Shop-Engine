@@ -7,9 +7,11 @@ using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
+using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using NLog;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 {
@@ -17,7 +19,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Role")]
     [Route("{action}")]
     [ReturnUrl]
-    public class RoleAdminController : Controller
+    public class RoleAdminController : BaseController
     {
         //private AppUserManager UserManager
         //{
@@ -42,6 +44,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             UserManager = userManager;
             //RoleManager = roleManager;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/RoleAdmin
