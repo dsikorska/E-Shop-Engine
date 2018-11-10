@@ -75,12 +75,14 @@
     <Compile Include="Interfaces\ICartRepository.cs" />
     <Compile Include="Interfaces\IMailingRepository.cs" />
     <Compile Include="Interfaces\IOrderRepository.cs" />
+    <Compile Include="Interfaces\IPaymentTransactionRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISettingsRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
-    <Compile Include="JsonModel\DotPayOperationDetails.cs" />
+    <Compile Include="TempModel\DotPayOperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TempModel\DotPayTransactionResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

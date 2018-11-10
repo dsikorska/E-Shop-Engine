@@ -208,6 +208,7 @@
     <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\MailingRepository.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
+    <Compile Include="Repositories\PaymentTransactionRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />

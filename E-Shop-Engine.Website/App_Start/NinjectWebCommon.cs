@@ -80,6 +80,7 @@ namespace E_Shop_Engine.Website.App_Start
             kernel.Bind<ISettingsRepository>().To<SettingsRepository>();
             kernel.Bind<IMailingRepository>().To<MailingRepository>().InRequestScope();
             kernel.Bind<IOrderRepository>().To<OrderRepository>().InRequestScope();
+            kernel.Bind<IPaymentTransactionRepository>().To<PaymentTransactionRepository>().InRequestScope();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace E_Shop_Engine.Domain.JsonModel
+namespace E_Shop_Engine.Domain.TempModel
 {
     public class DotPayOperationDetails
     {

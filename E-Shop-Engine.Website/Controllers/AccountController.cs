@@ -106,7 +106,7 @@ namespace E_Shop_Engine.Website.Controllers
                 IdentityResult result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    await _mailingRepository.PasswordChangedMail(user.Email);
+                    _mailingRepository.PasswordChangedMail(user.Email);
                     return RedirectToAction("Index");
                 }
                 else
@@ -215,7 +215,7 @@ namespace E_Shop_Engine.Website.Controllers
                     {
                         string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        await _mailingRepository.ActivationMail(user.Email, callbackUrl);
+                        _mailingRepository.ActivationMail(user.Email, callbackUrl);
                         return View("_Error", new string[] { "You must have a confirmed email to log on. Check your email for activation link." });
                     }
 
@@ -276,8 +276,8 @@ namespace E_Shop_Engine.Website.Controllers
                 {
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await _mailingRepository.WelcomeMail(user.Email);
-                    await _mailingRepository.ActivationMail(user.Email, callbackUrl);
+                    _mailingRepository.WelcomeMail(user.Email);
+                    _mailingRepository.ActivationMail(user.Email, callbackUrl);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -326,7 +326,7 @@ namespace E_Shop_Engine.Website.Controllers
 
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 string callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: Request.Url.Scheme);
-                await _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
+                _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
                 return View("ForgotPasswordConfirmation");
             }
             return View("ForgotPassword");

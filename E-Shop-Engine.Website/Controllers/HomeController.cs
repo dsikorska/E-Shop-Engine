@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -39,13 +38,13 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Contact(ContactViewModel model)
+        public ActionResult Contact(ContactViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            await _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
+            _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
             return RedirectToAction("Index");
         }
 
