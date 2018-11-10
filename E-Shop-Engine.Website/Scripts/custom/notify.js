@@ -6,7 +6,7 @@ function Redirect(result) {
     if (result.url) {
         window.location.href = result.url;
     } else {
-        ReplaceContent(result);
+        ReplaceContent(result.responseText);
     }
 }
 

@@ -35,10 +35,22 @@
             <dd>@Html.DisplayFor(model => model.IsPaid)</dd>
 
             <dt>@Html.DisplayNameFor(model => model.OrderStatus)</dt>
-            <dd>@Html.DisplayFor(model => model.OrderStatus)</dd>
+            <dd>
+                @{
+                    var orderStatus = Model.OrderStatus.GetDisplayName();
+                    orderStatus = orderStatus == null ? Model.OrderStatus.ToString() : orderStatus;
+                }
+                @Html.DisplayFor(model => orderStatus)
+            </dd>
 
             <dt>@Html.DisplayNameFor(model => model.PaymentMethod)</dt>
-            <dd>@Html.DisplayFor(model => model.PaymentMethod)</dd>
+            <dd>
+                @{
+                    var name = Model.PaymentMethod.GetDisplayName();
+                    name = name == null ? Model.PaymentMethod.ToString() : name;
+                        }
+                        @Html.DisplayFor(model => name)
+                    </dd>
         </dl>
     </div>
     <div class="w-74 table-responsive">

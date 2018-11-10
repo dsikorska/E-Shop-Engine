@@ -24,11 +24,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Required]
         public OrderStatus OrderStatus { get; set; }
 
-        public decimal TotalValue
+        public decimal? TotalValue
         {
             get
             {
-                return OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity);
+                return OrderedCart?.CartLines.Sum(x => x.Product.Price * x.Quantity);
             }
         }
     }

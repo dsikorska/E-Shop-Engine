@@ -1,14 +1,54 @@
-﻿@using E_Shop_Engine.Website.Extensions
+﻿@model E_Shop_Engine.Website.Models.ContactViewModel
 @{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "Contact Us";
 }
 
 <h1>Contact Us</h1>
 
-<form id="contactForm" action="https://formspree.io/@Html.Settings().ContactEmailAddress"
-      method="POST">
-    <input type="text" name="name" placeholder="Your name" class="d-block my-2 w-100 form-control" maxlength="100">
-    <input type="email" name="_replyto" placeholder="Your email" required class="d-block my-2 w-100 form-control" maxlength="100">
-    <textarea name="message" placeholder="Your message" required class="d-block my-2 w-100 form-control" maxlength="5000"></textarea>
-    <input type="submit" value="Send" class="btn btn-success d-block w-50 m-auto">
-</form>
+@using (Ajax.BeginForm(null, null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success", OnFailure = "Failed" }, new { id = "contactForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
+        </div>
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Email, new { @class = "input-group-text" })
+        </div>
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            @Html.LabelFor(model => model.Message, new { @class = "input-group-text" })
+        </div>
+        @Html.TextAreaFor(model => model.Message, new { @class = "form-control" })
+    </div>
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        <input type="submit" value="Send" class="btn btn-success d-block w-50 m-auto" />
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/validate")
+
+    <script src="~/Scripts/custom/notify.js" type="text/javascript"></script>
+
+    <script>
+        function Success(result) {
+            $('#notify').show();
+            Redirect(result);
+        }
+
+        function Failed(result) {
+            ReplaceContent(result.responseText);
+            SetNotify("notification-error", "Error", "Something unexpected happend!");
+            $('#notify').show();
+            HideNotify();
+        }
+    </script>
+}

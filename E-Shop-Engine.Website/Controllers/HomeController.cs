@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -13,11 +15,13 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Category> _categoryRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IMailingRepository _mailingRepository;
 
-        public HomeController(IRepository<Category> categoryRepository, IProductRepository productRepository)
+        public HomeController(IRepository<Category> categoryRepository, IProductRepository productRepository, IMailingRepository mailingRepository)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
+            _mailingRepository = mailingRepository;
         }
 
         // GET: Home
@@ -29,6 +33,30 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Contact()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> Contact(ContactViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                await _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
+            }
+            catch
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return PartialView(model);
+            }
+
+            NotifySetup("notification-success", "Success!", "Message sent!");
+            return Json(new { url = Url.Action("Index") });
         }
 
         // GET: Categories - for navbar
@@ -56,6 +84,13 @@ namespace E_Shop_Engine.Website.Controllers
             IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(pagedModel);
             IPagedList<ProductViewModel> viewModel = new StaticPagedList<ProductViewModel>(mappedModel, pagedModel.GetMetaData());
             return PartialView("_ProductsDeck", viewModel);
+        }
+
+        private void NotifySetup(string type, string title, string text)
+        {
+            TempData["notifyType"] = type;
+            TempData["notifyTitle"] = title;
+            TempData["notifyText"] = text;
         }
     }
 }
