@@ -299,9 +299,9 @@
     <Compile Include="Controllers\SubcategoryController.cs" />
     <Compile Include="CustomFilters\ReturnUrlAttribute.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
-    <Compile Include="Extensions\EnumHelpers.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
+    <Compile Include="Extensions\PagedListHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -368,7 +368,6 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
-
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

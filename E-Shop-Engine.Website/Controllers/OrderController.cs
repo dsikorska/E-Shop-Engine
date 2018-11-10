@@ -9,6 +9,7 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
 using NLog;
@@ -44,7 +45,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             IQueryable<Order> model = user.Orders.AsQueryable();
-            IEnumerable<OrderViewModel> mappedModel = SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
+            IEnumerable<OrderViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 10);

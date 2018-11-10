@@ -8,6 +8,7 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
 using Microsoft.AspNet.Identity;
 using NLog;
 using X.PagedList;
@@ -41,7 +42,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ReverseSorting(ref descending, sortOrder);
             IQueryable<AppUser> model = UserManager.Users;
-            IEnumerable<UserAdminViewModel> mappedModel = SortBy<AppUser, UserAdminViewModel>(model, "Email", sortOrder, descending);
+            IEnumerable<UserAdminViewModel> mappedModel = PagedListHelper.SortBy<AppUser, UserAdminViewModel>(model, "Email", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<UserAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
