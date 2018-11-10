@@ -1,4 +1,5 @@
-wysoka.home.ipsvc.eu:50304
+save enum as string in db
+custom errors add more
 
 	public class TotalValuable : DbEntity
     {

@@ -5,7 +5,7 @@
 
 <h1>Contact Us</h1>
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "contactForm" }))
+@using (Ajax.BeginForm(null, null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success", OnFailure = "Failed" }, new { id = "contactForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
@@ -31,4 +31,24 @@
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
         <input type="submit" value="Send" class="btn btn-success d-block w-50 m-auto" />
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/validate")
+
+    <script src="~/Scripts/custom/notify.js" type="text/javascript"></script>
+
+    <script>
+        function Success(result) {
+            $('#notify').show();
+            Redirect(result);
+        }
+
+        function Failed(result) {
+            ReplaceContent(result.responseText);
+            SetNotify("notification-error", "Error", "Something unexpected happend!");
+            $('#notify').show();
+            HideNotify();
+        }
+    </script>
 }
