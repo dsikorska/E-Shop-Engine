@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Data\EntitiesConfigurations\AddressEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CartEntityConfig.cs" />
@@ -201,6 +202,10 @@
     <Compile Include="Migrations\201811112053067_Add Payment prop at Order.Designer.cs">
       <DependentUpon>201811112053067_Add Payment prop at Order.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811112214582_Remove sensitive data from Settings.cs" />
+    <Compile Include="Migrations\201811112214582_Remove sensitive data from Settings.Designer.cs">
+      <DependentUpon>201811112214582_Remove sensitive data from Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -312,6 +317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811112053067_Add Payment prop at Order.resx">
       <DependentUpon>201811112053067_Add Payment prop at Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811112214582_Remove sensitive data from Settings.resx">
+      <DependentUpon>201811112214582_Remove sensitive data from Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

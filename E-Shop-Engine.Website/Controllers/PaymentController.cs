@@ -7,6 +7,7 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Enumerables;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Domain.TempModel;
+using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Utilities;
 using Microsoft.AspNet.Identity;
@@ -49,7 +50,7 @@ namespace E_Shop_Engine.Website.Controllers
             string surname = user.Surname;
             string email = user.Email;
 
-            string chk = string.Concat(settings.DotPayPIN, settings.DotPayId, totalValue.ToString(), settings.Currency, description, control, urlc, name, surname, email);
+            string chk = string.Concat(AppSettings.GetDotPayPIN(), settings.DotPayId, totalValue.ToString(), settings.Currency, description, control, urlc, name, surname, email);
             chk = SHA.GetSHA256Hash(chk);
 
             //string host = "https://ssl.dotpay.pl/t2/";
@@ -91,7 +92,7 @@ namespace E_Shop_Engine.Website.Controllers
             string dotPayIp = "195.150.9.37";
             if (dotPayIp == HttpContext.Request.UserHostAddress)
             {
-                string sum = string.Concat(settings.DotPayPIN, model.id.ToString(), model.operation_number, model.operation_type,
+                string sum = string.Concat(AppSettings.GetDotPayPIN(), model.id.ToString(), model.operation_number, model.operation_type,
                     model.operation_status, model.operation_amount, model.operation_currency, model.operation_original_amount,
                     model.operation_original_currency, model.operation_datetime, model.control, model.description, model.email, model.p_info,
                     model.p_email, model.channel);

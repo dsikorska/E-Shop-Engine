@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 using System.Net;
 
 namespace E_Shop_Engine.Utilities
@@ -8,7 +9,9 @@ namespace E_Shop_Engine.Utilities
         public static string GetOperationDetails(string operation_number)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://ssl.dotpay.pl/test_seller/api/v1/operations/" + operation_number + "/");
-            request.Credentials = new NetworkCredential("ladydeath@o2.pl", "Qwerty1!");
+            string login = ConfigurationManager.AppSettings["dotPayLogin"];
+            string pw = ConfigurationManager.AppSettings["dotPayPassword"];
+            request.Credentials = new NetworkCredential(login, pw);
             request.Host = "ssl.dotpay.pl";
             request.Accept = "application/json";
             request.ContentType = "application/json";

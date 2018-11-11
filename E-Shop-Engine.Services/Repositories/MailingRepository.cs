@@ -123,8 +123,8 @@ namespace E_Shop_Engine.Services.Repositories
         {
             NetworkCredential credentials = new NetworkCredential()
             {
-                Password = _settings.SMTPPassword,
-                UserName = _settings.SMTPUsername
+                Password = AppSettings.GetSmtpPassword(),
+                UserName = AppSettings.GetSmtpUsername()
             };
 
             return new SmtpClient(_settings.SMTP, _settings.SMTPPort)
