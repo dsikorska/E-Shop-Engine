@@ -1,10 +1,10 @@
 ﻿@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
 
 @{
-    ViewBag.Title = "Edit " + Model.Id;
+    ViewBag.Title = "Order " + Model.OrderNumber;
 }
 
-<h1>Edit @Model.Id</h1>
+<h1>Order @Model.OrderNumber</h1>
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
@@ -23,6 +23,13 @@
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
+                @Html.LabelFor(model => model.OrderNumber, new { @class = "input-group-text" })
+            </div>
+            @Html.EditorFor(model => model.OrderNumber, new { @class = "form-control" })
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 @Html.LabelFor(model => model.Created, new { @class = "input-group-text" })
             </div>
             @Html.EditorFor(model => model.Created, new { @class = "form-control" })
@@ -34,6 +41,20 @@
             </div>
             @Html.EditorFor(model => model.PaymentMethod, new { @class = "form-control" })
         </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                @Html.LabelFor(model => model.IsPaid, new { @class = "input-group-text" })
+            </div>
+            @Html.TextBoxFor(model => model.IsPaid, new { @class = "text-box single-line" })
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                @Html.LabelFor(model => model.TransactionNumber, new { @class = "input-group-text" })
+            </div>
+            @Html.EditorFor(model => model.TransactionNumber, new { @class = "form-control" })
+        </div>
     </fieldset>
 
     <div class="input-group mb-3">
@@ -43,16 +64,11 @@
         <input type="date" class="form-control single-line" name="Finished" id="Finished" />
     </div>
 
-    <div class="custom-control custom-checkbox form-control-lg w-100 text-center">
-        @Html.CheckBoxFor(model => model.IsPaid, new { @class = "custom-control-input" })
-        <label for="IsPaid" class="custom-control-label">Is Paid?</label>
-    </div>
-
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.OrderStatus, new { @class = "input-group-text" })
         </div>
-        @Html.EnumDropDownListFor(model => model.OrderStatus, "Select payment method", new { @class = "form-control" })
+        @Html.EnumDropDownListFor(model => model.OrderStatus, "Select order status", new { @class = "form-control" })
     </div>
 
     <div class="input-group mb-3 my-3 d-flex justify-content-around">

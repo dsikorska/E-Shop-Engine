@@ -51,7 +51,7 @@ namespace E_Shop_Engine.Website.Controllers
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await _userManager.FindByIdAsync(userId);
             CartViewModel model = Mapper.Map<Cart, CartViewModel>(user.Cart);
-            model.TotalValue = _cartRepository.ComputeTotalValue(user.Cart);
+            model.TotalValue = _cartRepository.GetTotalValue(user.Cart);
 
             return View(model);
         }

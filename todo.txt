@@ -1,6 +1,3 @@
-save enum as string in db
-custom errors add more
-
 	public class TotalValuable : DbEntity
     {
         public virtual ICollection<CartOneLine> CartLines { get; set; }

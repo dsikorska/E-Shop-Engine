@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
@@ -8,6 +7,7 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Enumerables;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Domain.TempModel;
+using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Utilities;
 using Microsoft.AspNet.Identity;
@@ -19,14 +19,16 @@ namespace E_Shop_Engine.Website.Controllers
     public class PaymentController : BaseController
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly ICartRepository _cartRepository;
         private static Settings settings;
         private readonly IMailingRepository _mailingRepository;
         private readonly IPaymentTransactionRepository _transactionRepository;
         private readonly AppUserManager _userManager;
 
-        public PaymentController(IOrderRepository orderRepository, ISettingsRepository settingsRepository, IMailingRepository mailingRepository, IPaymentTransactionRepository transactionRepository, AppUserManager userManager)
+        public PaymentController(IOrderRepository orderRepository, ICartRepository cartRepository, ISettingsRepository settingsRepository, IMailingRepository mailingRepository, IPaymentTransactionRepository transactionRepository, AppUserManager userManager)
         {
             _orderRepository = orderRepository;
+            _cartRepository = cartRepository;
             settings = settingsRepository.Get();
             _mailingRepository = mailingRepository;
             _transactionRepository = transactionRepository;
@@ -39,7 +41,7 @@ namespace E_Shop_Engine.Website.Controllers
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
             OrderedCart orderedCart = Mapper.Map<OrderedCart>(user.Cart);
-            decimal totalValue = user.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity);
+            decimal totalValue = _cartRepository.GetTotalValue(user.Cart);
             DateTime created = DateTime.UtcNow;
             string description = "Order number " + created.Ticks;
             string control = created.Ticks.ToString();
@@ -48,7 +50,7 @@ namespace E_Shop_Engine.Website.Controllers
             string surname = user.Surname;
             string email = user.Email;
 
-            string chk = string.Concat(settings.DotPayPIN, settings.DotPayId, totalValue.ToString(), settings.Currency, description, control, urlc, name, surname, email);
+            string chk = string.Concat(AppSettings.GetDotPayPIN(), settings.DotPayId, totalValue.ToString(), settings.Currency, description, control, urlc, name, surname, email);
             chk = SHA.GetSHA256Hash(chk);
 
             //string host = "https://ssl.dotpay.pl/t2/";
@@ -73,10 +75,12 @@ namespace E_Shop_Engine.Website.Controllers
                 OrderedCart = orderedCart,
                 OrderNumber = created.Ticks.ToString(),
                 OrderStatus = OrderStatus.WaitingForPayment,
-                PaymentMethod = PaymentMethod.Dotpay
+                PaymentMethod = PaymentMethod.Dotpay,
+                Payment = totalValue
             };
 
             _orderRepository.Create(newOrder);
+            _cartRepository.Clear(user.Cart);
             _mailingRepository.OrderChangedStatusMail(user.Email, newOrder.OrderNumber, newOrder.OrderStatus.ToString(), "Order confirmation " + newOrder.OrderNumber);
             return Redirect(redirectUrl);
         }
@@ -88,7 +92,7 @@ namespace E_Shop_Engine.Website.Controllers
             string dotPayIp = "195.150.9.37";
             if (dotPayIp == HttpContext.Request.UserHostAddress)
             {
-                string sum = string.Concat(settings.DotPayPIN, model.id.ToString(), model.operation_number, model.operation_type,
+                string sum = string.Concat(AppSettings.GetDotPayPIN(), model.id.ToString(), model.operation_number, model.operation_type,
                     model.operation_status, model.operation_amount, model.operation_currency, model.operation_original_amount,
                     model.operation_original_currency, model.operation_datetime, model.control, model.description, model.email, model.p_info,
                     model.p_email, model.channel);

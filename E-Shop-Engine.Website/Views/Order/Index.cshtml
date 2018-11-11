@@ -32,7 +32,7 @@
                         new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "TotalValue", descending = true },
+                    @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "Payment", descending = true },
                         new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
@@ -54,7 +54,7 @@
                         @item.TotalProducts
                     </td>
                     <td>
-                        @item.TotalValue @Html.Settings().Currency
+                        @item.Payment @Html.Settings().Currency
                     </td>
                     <td>
                         @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })

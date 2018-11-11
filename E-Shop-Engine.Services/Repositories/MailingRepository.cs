@@ -96,11 +96,11 @@ namespace E_Shop_Engine.Services.Repositories
         {
             string body = Properties.Resources.OnlyTextTemplateMail
                 .Replace("#shopName#", _settings.ShopName)
-                .Replace("#title#", "Order " + orderNumber + "on hold.")
+                .Replace("#title#", "Order " + orderNumber + " on hold.")
                 .Replace("#text#", "Something went wrong while processing Your payment for order number " + orderNumber +
                 ". Your order is on hold. Please contact us at " + _settings.ContactEmailAddress);
 
-            string subject = "Order " + orderNumber + "on hold.";
+            string subject = "Order " + orderNumber + " on hold.";
             string to = mailTo;
             MailMessage mail = GetMessage(mailTo, body, subject);
             SendMail(mail);
@@ -123,8 +123,8 @@ namespace E_Shop_Engine.Services.Repositories
         {
             NetworkCredential credentials = new NetworkCredential()
             {
-                Password = _settings.SMTPPassword,
-                UserName = _settings.SMTPUsername
+                Password = AppSettings.GetSmtpPassword(),
+                UserName = AppSettings.GetSmtpUsername()
             };
 
             return new SmtpClient(_settings.SMTP, _settings.SMTPPort)

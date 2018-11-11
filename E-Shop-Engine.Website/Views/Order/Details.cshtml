@@ -2,10 +2,10 @@
 @model E_Shop_Engine.Website.Models.OrderViewModel
 
 @{
-    ViewBag.Title = "Order Details";
+    ViewBag.Title = "Order " + Model.OrderNumber;
 }
 
-<h1>Order Details</h1>
+<h1>Order @Model.OrderNumber</h1>
 
 <div class="">
     <div class="w-100 text-center">
@@ -16,6 +16,10 @@
         <p>
             @Html.DisplayNameFor(model => model.Finished)
             @Html.DisplayFor(model => model.Finished)
+        </p>
+        <p>
+            @Html.DisplayNameFor(model => model.OrderStatus)
+            @Html.DisplayFor(model => model.OrderStatus)
         </p>
     </div>
     <div class="w-100 table-responsive">
@@ -56,7 +60,16 @@
                 }
             </tbody>
         </table>
-        <h3 class="float-right">Total value: @Model.TotalValue @Html.Settings().Currency</h3>
+        <h3 class="float-right">Payment: @Model.Payment @Html.Settings().Currency</h3>
+        <p>
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+            @Html.DisplayFor(model => model.PaymentMethod)
+            @Html.DisplayFor(model => model.TransactionNumber)
+        </p>
+        @if (Model.Payment != Model.TotalValue)
+        {
+            <h4 class="float-right my-2">Some purchased products may no longer be available.</h4>
+        }
     </div>
 </div>
 <p>
