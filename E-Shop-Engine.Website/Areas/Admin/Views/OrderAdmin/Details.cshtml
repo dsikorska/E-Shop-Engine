@@ -1,11 +1,12 @@
 ﻿@using E_Shop_Engine.Utilities;
+@using E_Shop_Engine.Website.Extensions;
 @model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
 
 @{
-    ViewBag.Title = "Order " + Model.Id + " Details";
+    ViewBag.Title = "Order " + Model.OrderNumber + " Details";
 }
 
-<h1>Order @Model.Id Details</h1>
+<h1>Order @Model.OrderNumber Details</h1>
 
 <p>
     <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
@@ -25,6 +26,9 @@
             <dd>@Html.DisplayFor(model => model.AppUser.Email)</dd>
         </dl>
         <dl>
+            <dt>@Html.DisplayNameFor(model => model.OrderNumber)</dt>
+            <dd>@Html.DisplayFor(model => model.OrderNumber)</dd>
+
             <dt>@Html.DisplayNameFor(model => model.Created)</dt>
             <dd>@Html.DisplayFor(model => model.Created)</dd>
 
@@ -48,9 +52,11 @@
                 @{
                     var name = Model.PaymentMethod.GetDisplayName();
                     name = name == null ? Model.PaymentMethod.ToString() : name;
-                        }
-                        @Html.DisplayFor(model => name)
-                    </dd>
+                }
+                @Html.DisplayFor(model => name)
+            </dd>
+            <dt>@Html.DisplayNameFor(model => model.TransactionNumber)</dt>
+            <dd>@Html.DisplayFor(model => model.TransactionNumber)</dd>
         </dl>
     </div>
     <div class="w-74 table-responsive">
@@ -103,7 +109,7 @@
                 }
             </tbody>
         </table>
-        <h3>Total value: @Model.TotalValue @Html.Settings().Currency</h3>
+        <h3>Total value: @Model.Payment @Html.Settings().Currency</h3>
     </div>
 </div>
 

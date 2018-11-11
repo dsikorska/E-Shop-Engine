@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
@@ -19,14 +18,16 @@ namespace E_Shop_Engine.Website.Controllers
     public class PaymentController : BaseController
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly ICartRepository _cartRepository;
         private static Settings settings;
         private readonly IMailingRepository _mailingRepository;
         private readonly IPaymentTransactionRepository _transactionRepository;
         private readonly AppUserManager _userManager;
 
-        public PaymentController(IOrderRepository orderRepository, ISettingsRepository settingsRepository, IMailingRepository mailingRepository, IPaymentTransactionRepository transactionRepository, AppUserManager userManager)
+        public PaymentController(IOrderRepository orderRepository, ICartRepository cartRepository, ISettingsRepository settingsRepository, IMailingRepository mailingRepository, IPaymentTransactionRepository transactionRepository, AppUserManager userManager)
         {
             _orderRepository = orderRepository;
+            _cartRepository = cartRepository;
             settings = settingsRepository.Get();
             _mailingRepository = mailingRepository;
             _transactionRepository = transactionRepository;
@@ -39,7 +40,7 @@ namespace E_Shop_Engine.Website.Controllers
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
             OrderedCart orderedCart = Mapper.Map<OrderedCart>(user.Cart);
-            decimal totalValue = user.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity);
+            decimal totalValue = _cartRepository.GetTotalValue(user.Cart);
             DateTime created = DateTime.UtcNow;
             string description = "Order number " + created.Ticks;
             string control = created.Ticks.ToString();
@@ -73,10 +74,12 @@ namespace E_Shop_Engine.Website.Controllers
                 OrderedCart = orderedCart,
                 OrderNumber = created.Ticks.ToString(),
                 OrderStatus = OrderStatus.WaitingForPayment,
-                PaymentMethod = PaymentMethod.Dotpay
+                PaymentMethod = PaymentMethod.Dotpay,
+                Payment = totalValue
             };
 
             _orderRepository.Create(newOrder);
+            _cartRepository.Clear(user.Cart);
             _mailingRepository.OrderChangedStatusMail(user.Email, newOrder.OrderNumber, newOrder.OrderStatus.ToString(), "Order confirmation " + newOrder.OrderNumber);
             return Redirect(redirectUrl);
         }

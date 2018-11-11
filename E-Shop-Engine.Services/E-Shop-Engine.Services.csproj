@@ -197,6 +197,10 @@
     <Compile Include="Migrations\201811092129582_Update Order.Designer.cs">
       <DependentUpon>201811092129582_Update Order.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811112053067_Add Payment prop at Order.cs" />
+    <Compile Include="Migrations\201811112053067_Add Payment prop at Order.Designer.cs">
+      <DependentUpon>201811112053067_Add Payment prop at Order.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -305,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811092129582_Update Order.resx">
       <DependentUpon>201811092129582_Update Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811112053067_Add Payment prop at Order.resx">
+      <DependentUpon>201811112053067_Add Payment prop at Order.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

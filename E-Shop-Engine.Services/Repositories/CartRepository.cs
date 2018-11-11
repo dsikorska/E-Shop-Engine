@@ -65,7 +65,7 @@ namespace E_Shop_Engine.Services.Repositories
             return cart.CartLines.Sum(x => x.Quantity);
         }
 
-        public decimal ComputeTotalValue(Cart cart)
+        public decimal GetTotalValue(Cart cart)
         {
             return cart.CartLines.Sum(s => s.Product.Price * s.Quantity);
         }

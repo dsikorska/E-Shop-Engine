@@ -35,5 +35,10 @@ namespace E_Shop_Engine.Services.Repositories
             SetOrderStatus(order, OrderStatus.Pending);
             Update(order);
         }
+
+        public decimal GetCurrentValue(Order order)
+        {
+            return order.OrderedCart.CartLines.Sum(x => x.Quantity * x.Product.Price);
+        }
     }
 }

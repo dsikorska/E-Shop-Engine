@@ -7,5 +7,6 @@ namespace E_Shop_Engine.Domain.Interfaces
         Order GetByOrderNumber(string orderNumber);
         void OrderPaymentSuccess(Order order, string transactionNumber);
         void OrderPaymentFailed(Order order);
+        decimal GetCurrentValue(Order order);
     }
 }

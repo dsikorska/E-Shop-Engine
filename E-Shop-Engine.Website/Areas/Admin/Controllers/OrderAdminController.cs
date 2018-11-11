@@ -69,7 +69,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             Order order = _orderRepository.GetById(model.Id);
             order.Finished = model.Finished;
-            order.IsPaid = model.IsPaid;
             order.OrderStatus = model.OrderStatus;
 
             _orderRepository.Update(Mapper.Map<Order>(order));

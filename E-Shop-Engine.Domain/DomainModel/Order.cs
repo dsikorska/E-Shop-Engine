@@ -13,6 +13,7 @@ namespace E_Shop_Engine.Domain.DomainModel
         public virtual AppUser AppUser { get; set; }
 
         public virtual OrderedCart OrderedCart { get; set; }
+        public decimal Payment { get; set; }
 
         public bool IsPaid { get; set; } = false;
         public PaymentMethod PaymentMethod { get; set; }
