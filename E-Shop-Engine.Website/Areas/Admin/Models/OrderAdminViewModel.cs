@@ -11,16 +11,28 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Order Number")]
+        public string OrderNumber { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Finished { get; set; }
 
+        [Display(Name = "User")]
         public virtual AppUser AppUser { get; set; }
 
+        [Display(Name = "Cart")]
         public virtual OrderedCart OrderedCart { get; set; }
+        public decimal Payment { get; set; }
 
+        [Display(Name = "Is Paid")]
         public bool IsPaid { get; set; } = false;
+
+        [Display(Name = "Payment Method")]
         public PaymentMethod PaymentMethod { get; set; }
 
+        [Display(Name = "Transaction Number")]
+        public string TransactionNumber { get; set; }
+
+        [Display(Name = "Order Status")]
         [Required]
         public OrderStatus OrderStatus { get; set; }
 

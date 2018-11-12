@@ -8,11 +8,12 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
+using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
     [ReturnUrl]
-    public class CartController : Controller
+    public class CartController : BaseController
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
@@ -23,6 +24,7 @@ namespace E_Shop_Engine.Website.Controllers
             _cartRepository = cartRepository;
             _productRepository = productRepository;
             _userManager = userManager;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         //private AppUserManager UserManager
@@ -49,7 +51,7 @@ namespace E_Shop_Engine.Website.Controllers
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = await _userManager.FindByIdAsync(userId);
             CartViewModel model = Mapper.Map<Cart, CartViewModel>(user.Cart);
-            model.TotalValue = _cartRepository.ComputeTotalValue(user.Cart);
+            model.TotalValue = _cartRepository.GetTotalValue(user.Cart);
 
             return View(model);
         }

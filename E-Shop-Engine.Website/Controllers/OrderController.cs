@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -8,8 +9,10 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
 using Microsoft.AspNet.Identity;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -20,12 +23,15 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly AppUserManager _userManager;
+        private readonly ISettingsRepository _settingsRepository;
 
-        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager)
+        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager, ISettingsRepository settingsRepository)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _userManager = userManager;
+            _settingsRepository = settingsRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Order
@@ -33,11 +39,13 @@ namespace E_Shop_Engine.Website.Controllers
         {
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
-
-            ReverseSorting(ref descending, sortOrder);
+            if (page == 1)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
 
             IQueryable<Order> model = user.Orders.AsQueryable();
-            IEnumerable<OrderViewModel> mappedModel = SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
+            IEnumerable<OrderViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 10);
@@ -50,12 +58,21 @@ namespace E_Shop_Engine.Website.Controllers
 
             SaveSortingState(sortOrder, descending);
 
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(viewModel);
+            }
             return View(viewModel);
         }
 
         public ActionResult Create()
         {
-            return View();
+            OrderViewModel model = new OrderViewModel();
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
+            model.AppUser = user;
+            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
+            return View(model);
         }
 
         [ValidateAntiForgeryToken]
@@ -64,7 +81,8 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return PartialView(model);
             }
             string userId = HttpContext.User.Identity.GetUserId();
             AppUser user = _userManager.FindById(userId);
@@ -74,13 +92,14 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (model.OrderedCart.CartLines.Count == 0)
             {
-                return View("_Error", new string[] { "Cannot order empty cart." });
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return PartialView("_Error", new string[] { "Cannot order empty cart." });
             }
 
             _orderRepository.Create(Mapper.Map<Order>(model));
             _cartRepository.Clear(user.Cart);
 
-            return Redirect("/Home/Index");
+            return Json(new { url = Url.Action("Index", "Home") });
         }
 
         public ActionResult Details(int id)

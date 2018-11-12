@@ -3,6 +3,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Models;
+using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
@@ -13,6 +14,7 @@ namespace E_Shop_Engine.Website.Controllers
         public CategoryController(IRepository<Category> categoryRepository)
         {
             _categoryRepository = categoryRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         [HttpGet]

@@ -8,6 +8,8 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -23,6 +25,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public CategoryAdminController(IRepository<Category> categoryRepository)
         {
             _categoryRepository = categoryRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Category
@@ -31,7 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ReverseSorting(ref descending, sortOrder);
             IQueryable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryAdminViewModel> mappedModel = SortBy<Category, CategoryAdminViewModel>(model, "Id", sortOrder, descending);
+            IEnumerable<CategoryAdminViewModel> mappedModel = PagedListHelper.SortBy<Category, CategoryAdminViewModel>(model, "Id", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<CategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);

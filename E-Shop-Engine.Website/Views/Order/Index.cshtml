@@ -6,24 +6,34 @@
 
 @{
     ViewBag.Title = "Your Orders";
-    Layout = null;
 }
 
-<div class=" table-responsive">
+@if (Model.PageNumber != 1)
+{
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        @Html.ActionLink("Go Back", "Index", "Account", null, new { @class = "btn btn-secondary" })
+    </div>
+}
+
+<div class="table-responsive">
     <table class="table table-striped table-hover table-light text-center">
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    <a href="@Request.Url.LocalPath?page=1&sortOrder=Created&descending=True">Created</a>
+                    @Ajax.ActionLink("Created", "Index", "Order", new { page = 1, sortOrder = "Created", descending = false },
+                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    <a href="@Request.Url.LocalPath?page=1&sortOrder=Finished&descending=True">Finished</a>
+                    @Ajax.ActionLink("Finished", "Index", "Order", new { page = 1, sortOrder = "Finished", descending = true },
+                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    <a href="@Request.Url.LocalPath?page=1&sortOrder=TotalProducts&descending=True">Total Products</a>
+                    @Ajax.ActionLink("Total Products", "Index", "Order", new { page = 1, sortOrder = "TotalProducts", descending = true },
+                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    <a href="@Request.Url.LocalPath?page=1&sortOrder=TotalValue&descending=True">Total Value</a>
+                    @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "Payment", descending = true },
+                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
                     Action
@@ -44,7 +54,7 @@
                         @item.TotalProducts
                     </td>
                     <td>
-                        @item.TotalValue @Html.Settings().Currency
+                        @item.Payment @Html.Settings().Currency
                     </td>
                     <td>
                         @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
@@ -69,3 +79,7 @@
     DisplayEllipsesWhenNotShowingAllPageNumbers = true,
     MaximumPageNumbersToDisplay = 10
 })
+
+@section Scripts {
+    @Scripts.Render("~/Bundles/ajax")
+}

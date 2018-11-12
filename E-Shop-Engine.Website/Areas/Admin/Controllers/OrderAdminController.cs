@@ -3,10 +3,12 @@ using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Services.Repositories;
+using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -17,11 +19,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [ReturnUrl]
     public class OrderAdminController : BaseController
     {
-        private readonly Repository<Order> _orderRepository;
+        private readonly IRepository<Order> _orderRepository;
+        private readonly IMailingRepository _mailingRepository;
 
-        public OrderAdminController(Repository<Order> orderRepository)
+        public OrderAdminController(IRepository<Order> orderRepository, IMailingRepository mailingRepository)
         {
             _orderRepository = orderRepository;
+            _mailingRepository = mailingRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Order
@@ -29,7 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ReverseSorting(ref descending, sortOrder);
             IQueryable<Order> model = _orderRepository.GetAll();
-            IEnumerable<OrderAdminViewModel> mappedModel = SortBy<Order, OrderAdminViewModel>(model, "Created", sortOrder, descending);
+            IEnumerable<OrderAdminViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderAdminViewModel>(model, "Created", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<OrderAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
@@ -66,10 +71,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             Order order = _orderRepository.GetById(model.Id);
             order.Finished = model.Finished;
-            order.IsPaid = model.IsPaid;
             order.OrderStatus = model.OrderStatus;
 
             _orderRepository.Update(Mapper.Map<Order>(order));
+            _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
 
             return RedirectToAction("Index");
         }

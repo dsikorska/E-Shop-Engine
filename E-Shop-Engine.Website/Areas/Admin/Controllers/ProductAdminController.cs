@@ -9,6 +9,8 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -28,6 +30,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _subcategoryRepository = subcategoryRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Product
@@ -36,7 +39,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ReverseSorting(ref descending, sortOrder);
             IQueryable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductAdminViewModel> mappedModel = SortBy<Product, ProductAdminViewModel>(model, "Name", sortOrder, descending);
+            IEnumerable<ProductAdminViewModel> mappedModel = PagedListHelper.SortBy<Product, ProductAdminViewModel>(model, "Name", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<ProductAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);

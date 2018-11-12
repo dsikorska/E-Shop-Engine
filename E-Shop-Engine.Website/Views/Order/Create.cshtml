@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.OrderViewModel
+﻿@using E_Shop_Engine.Website.Extensions
+@model E_Shop_Engine.Website.Models.OrderViewModel
 
 @{
     ViewBag.Title = "New Order";
@@ -6,25 +7,6 @@
 
 <h1>New Order</h1>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
-    <hr />
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.PaymentMethod, new { @class = "input-group-text" })
-        </div>
-        @Html.EnumDropDownListFor(model => model.PaymentMethod, "Select payment method", new { @class = "form-control" })
-    </div>
-
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        <a class="btn btn-danger btn-lg text-white" href="/Cart/Details">Cancel</a>
-        <input type="submit" value="Process" class="btn btn-success btn-lg" />
-    </div>
-}
-
-@section Scripts {
-    @Scripts.Render("~/Bundles/validate")
-}
+<a href="@Url.Action("DotPayPayment", "Payment")" class="btn btn-outline-secondary" id="dotpayLink">
+    <img src="~/Content/dotpay_logo.jpg" class="card-img" />
+</a>

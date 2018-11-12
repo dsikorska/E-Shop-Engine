@@ -8,7 +8,9 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.CustomFilters;
+using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
+using NLog;
 using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -20,6 +22,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Product
@@ -27,7 +30,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             int pageNumber = page ?? 1;
             IQueryable<Product> model = _productRepository.GetAll();
-            IPagedList<ProductViewModel> viewModel = IQueryableToPagedList<Product, ProductViewModel, DateTime?>(model, x => x.Edited, page, 25);
+            IPagedList<ProductViewModel> viewModel = PagedListHelper.IQueryableToPagedList<Product, ProductViewModel, DateTime?>(model, x => x.Edited, page, 25);
             return View("_ProductsDeck", viewModel);
         }
 
@@ -43,7 +46,7 @@ namespace E_Shop_Engine.Website.Controllers
                 ViewBag.SortDescending = descending;
             }
 
-            IEnumerable<ProductViewModel> sortedModel = SortBy(model.AsQueryable(), "Name", sortOrder, descending);
+            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(model.AsQueryable(), "Name", sortOrder, descending);
             int pageNumber = page ?? 1;
             IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(sortedModel, pageNumber, 25);
 
@@ -86,7 +89,7 @@ namespace E_Shop_Engine.Website.Controllers
                 sortCondition = x => x.CatalogNumber;
             }
 
-            IPagedList<ProductViewModel> viewModel = IQueryableToPagedList<Product, ProductViewModel, string>(model.AsQueryable(), sortCondition, pageNumber, 25);
+            IPagedList<ProductViewModel> viewModel = PagedListHelper.IQueryableToPagedList<Product, ProductViewModel, string>(model.AsQueryable(), sortCondition, pageNumber, 25);
 
             return View("_ProductsDeck", viewModel);
         }

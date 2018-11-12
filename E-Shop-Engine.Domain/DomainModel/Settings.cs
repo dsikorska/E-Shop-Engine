@@ -8,9 +8,11 @@
         public string ContactEmailAddress { get; set; }
         public string NotificationReplyEmail { get; set; }
         public string SMTP { get; set; }
-        public string SMTPUsername { get; set; }
-        public string SMTPPassword { get; set; }
+
         public int SMTPPort { get; set; }
         public bool SMTPEnableSSL { get; set; }
+
+        public string DotPayId { get; set; }
+
     }
 }

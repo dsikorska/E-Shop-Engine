@@ -1,0 +1,21 @@
+﻿@model E_Shop_Engine.Website.Models.UserEditViewModel
+
+@{
+    ViewBag.Title = "Profile Informations";
+}
+
+<div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
+    @Html.ActionLink("Edit", "Edit", "Account", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
+</div>
+
+<dl>
+    <dt>@Html.DisplayNameFor(model => model.Name) and @Html.DisplayNameFor(model => model.Surname)</dt>
+    <dd>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+    <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+</dl>

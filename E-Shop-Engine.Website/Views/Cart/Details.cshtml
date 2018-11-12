@@ -69,7 +69,7 @@
 </div>
 <hr />
 <h3>Total value: @Model.TotalValue @Html.Settings().Currency</h3>
-@Html.ActionLink("Order", "Address", "Account", new { isOrder = true }, new { @class = "btn btn-success btn-lg w-100" })
+@Html.ActionLink("Order", "AddressEdit", "Account", new { isOrder = true }, new { @class = "btn btn-success btn-lg w-100" })
 
 @section Scripts
 {
