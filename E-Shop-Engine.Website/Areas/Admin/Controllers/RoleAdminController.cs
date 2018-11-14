@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
@@ -10,7 +9,6 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using NLog;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -21,29 +19,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [ReturnUrl]
     public class RoleAdminController : BaseController
     {
-        //private AppUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-        //    }
-        //}
-
-        private AppRoleManager RoleManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppRoleManager>();
-            }
-        }
-
         private readonly AppUserManager UserManager;
-        //private readonly AppRoleManager RoleManager;
+        private readonly AppRoleManager RoleManager;
 
-        public RoleAdminController(AppUserManager userManager/*, AppRoleManager roleManager*/)
+        public RoleAdminController(AppUserManager userManager, AppRoleManager roleManager)
         {
             UserManager = userManager;
-            //RoleManager = roleManager;
+            RoleManager = roleManager;
             logger = LogManager.GetCurrentClassLogger();
         }
 

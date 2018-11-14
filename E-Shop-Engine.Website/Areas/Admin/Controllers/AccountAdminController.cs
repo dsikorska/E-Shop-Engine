@@ -21,14 +21,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [ReturnUrl]
     public class AccountAdminController : BaseController
     {
-        //private AppUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-        //    }
-        //}
-
         private readonly AppUserManager UserManager;
 
         public AccountAdminController(AppUserManager userManager)
