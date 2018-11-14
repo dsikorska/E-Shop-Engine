@@ -69,9 +69,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            CategoryAdminViewModel model = new CategoryAdminViewModel();
-
-            return View("Edit", model);
+            return View("Edit");
         }
 
         [HttpPost]

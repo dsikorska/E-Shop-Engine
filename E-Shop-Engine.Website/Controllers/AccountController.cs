@@ -20,22 +20,6 @@ namespace E_Shop_Engine.Website.Controllers
     [ReturnUrl]
     public class AccountController : BaseController
     {
-        //private IAuthenticationManager AuthManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().Authentication;
-        //    }
-        //}
-
-        //private AppUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-        //    }
-        //}
-
         private readonly AppUserManager UserManager;
         private readonly IAuthenticationManager AuthManager;
         private readonly IRepository<Address> _addressRepository;
@@ -245,7 +229,7 @@ namespace E_Shop_Engine.Website.Controllers
                     AuthManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignIn(new AuthenticationProperties
                     {
-                        IsPersistent = false
+                        IsPersistent = false,
                     }, ident);
                     return Json(new { url = "/" });
                 }

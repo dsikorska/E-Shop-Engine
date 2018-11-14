@@ -28,14 +28,14 @@ namespace E_Shop_Engine.Services.Migrations
                     Currency = "USD",
                     ShopName = "My Demo Shop",
                     ContactEmailAddress = "my@email.com",
-                    NotificationReplyEmail = "noreply@emil.com",
+                    NotificationReplyEmail = "noreply@email.com",
                     SMTPEnableSSL = false
                 };
 
                 context.Settings.Add(settings);
             }
 
-            AppUserManager userManager = new AppUserManager(new UserStore<AppUser>(), context);
+            AppUserManager userManager = new AppUserManager(new UserStore<AppUser>(context), null);
             AppRoleManager roleManager = new AppRoleManager(new RoleStore<AppRole>(context));
 
             string roleName = "Administrators";
@@ -58,6 +58,7 @@ namespace E_Shop_Engine.Services.Migrations
                     UserName = email,
                     Email = email,
                     Created = DateTime.UtcNow,
+                    EmailConfirmed = true,
                     Cart = new Cart()
                     {
                         CartLines = new Collection<CartLine>()

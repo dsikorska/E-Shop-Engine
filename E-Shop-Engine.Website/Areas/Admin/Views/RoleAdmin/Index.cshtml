@@ -42,8 +42,7 @@
                             else
                             {
                                 <p>
-                                    @string.Join(", ", role.Users.Select(x =>
-                             Html.GetUserName(x.UserId)))
+                                    @string.Join(", ", role.Users.Select(x => Html.GetUserName(x.UserId)))
                                 </p>
                             }
                         </td>

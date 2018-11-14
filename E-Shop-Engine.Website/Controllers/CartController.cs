@@ -27,14 +27,6 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        //private AppUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-        //    }
-        //}
-
         [Authorize]
         public ActionResult CountItems()
         {
