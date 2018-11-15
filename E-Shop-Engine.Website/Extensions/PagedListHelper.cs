@@ -55,9 +55,19 @@ namespace E_Shop_Engine.Website.Extensions
             }
 
             PropertyInfo sortBy = typeof(T).GetProperty(sortOrder);
-            IEnumerable<T> result = descending ? model.AsEnumerable().OrderByDescending(x => sortBy.GetValue(x, null)) : model.AsEnumerable().OrderBy(x => sortBy.GetValue(x, null));
 
-            return result;
+            if (sortBy == null)
+            {
+                sortBy = typeof(T).GetProperty(defaultSortOrder);
+            }
+
+            if (sortBy != null)
+            {
+                IEnumerable<T> result = descending ? model.AsEnumerable().OrderByDescending(x => sortBy.GetValue(x, null)) : model.AsEnumerable().OrderBy(x => sortBy.GetValue(x, null));
+                return result;
+            }
+
+            return Enumerable.Empty<T>();
         }
     }
 }

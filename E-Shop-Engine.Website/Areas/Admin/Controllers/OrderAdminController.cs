@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -19,10 +21,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [ReturnUrl]
     public class OrderAdminController : BaseController
     {
-        private readonly IRepository<Order> _orderRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IMailingRepository _mailingRepository;
 
-        public OrderAdminController(IRepository<Order> orderRepository, IMailingRepository mailingRepository)
+        public OrderAdminController(IOrderRepository orderRepository, IMailingRepository mailingRepository)
         {
             _orderRepository = orderRepository;
             _mailingRepository = mailingRepository;
@@ -77,6 +79,31 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Search(string text, int? page)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                TempData["search"] = text;
+            }
+            else if (TempData.ContainsKey("search"))
+            {
+                text = TempData["search"].ToString();
+                TempData.Keep("search");
+            }
+
+            int pageNumber = page ?? 1;
+            Expression<Func<Order, string>> sortCondition = x => x.OrderNumber;
+
+            IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(text);
+            IEnumerable<Order> resultTransactionNumber = _orderRepository.FindByTransactionNumber(text);
+            IEnumerable<Order> model = resultOrderNumber.Union(resultTransactionNumber);
+
+            IPagedList<OrderAdminViewModel> viewModel = PagedListHelper.IQueryableToPagedList<Order, OrderAdminViewModel, string>(model.AsQueryable(), sortCondition, pageNumber, 3, true);
+
+            return View("Index", viewModel);
         }
     }
 }

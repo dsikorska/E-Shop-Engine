@@ -20,7 +20,7 @@ namespace E_Shop_Engine.Website.Controllers
             filterContext.ExceptionHandled = true;
 
             logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
-            string msg = "We're sorry. Something unexpected happend! Please try again later or contact with us.";
+            string msg = "We're sorry. Something unexpected happend! Please try again later or contact us.";
 
             if (filterContext.IsChildAction)
             {

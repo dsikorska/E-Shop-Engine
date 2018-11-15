@@ -7,5 +7,3 @@ sortowanie i szukanie w admin
       <remove statusCode="500" />
       <error statusCode="500" responseMode="ExecuteURL" path="/ErrorsPages/500.html" />
     </httpErrors>
-	
-	An entity object cannot be referenced by multiple instances of IEntityChangeTracker.
