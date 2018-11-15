@@ -10,7 +10,6 @@ using E_Shop_Engine.Domain.TempModel;
 using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Utilities;
-using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using NLog;
 
@@ -38,8 +37,7 @@ namespace E_Shop_Engine.Website.Controllers
 
         public ActionResult DotPayPayment()
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             OrderedCart orderedCart = Mapper.Map<OrderedCart>(user.Cart);
             decimal totalValue = _cartRepository.GetTotalValue(user.Cart);
             DateTime created = DateTime.UtcNow;

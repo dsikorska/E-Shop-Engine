@@ -43,8 +43,7 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         public ActionResult Details()
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = UserManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
 
             return PartialView(model);
@@ -74,8 +73,7 @@ namespace E_Shop_Engine.Website.Controllers
                 return PartialView(model);
             }
 
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = await UserManager.FindByIdAsync(userId);
+            AppUser user = GetCurrentUser();
 
             bool correctPass = await UserManager.CheckPasswordAsync(user, model.OldPassword);
             if (!correctPass)
@@ -118,10 +116,9 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> Edit()
+        public ActionResult Edit()
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = await UserManager.FindByIdAsync(userId);
+            AppUser user = GetCurrentUser();
             UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
 
             if (user != null)
@@ -143,8 +140,7 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 return PartialView(model);
             }
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = await UserManager.FindByIdAsync(userId);
+            AppUser user = GetCurrentUser();
 
             if (user != null)
             {

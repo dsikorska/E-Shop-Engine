@@ -24,15 +24,17 @@ namespace E_Shop_Engine.Website.App_Start
         {
             ContainerBuilder builder = new ContainerBuilder();
 
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().As<IAppDbContext>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => app.GetDataProtectionProvider()).InstancePerRequest();
-            builder.RegisterType<AppUserStore>().As<IUserStore<AppUser>>().InstancePerRequest();
+            //builder.RegisterType<AppUserStore>().As<IUserStore<AppUser>>().InstancePerRequest();
             builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppRoleManager>().AsSelf().InstancePerRequest();
             builder.Register(c => new RoleStore<AppRole>(c.Resolve<AppDbContext>())).As<IRoleStore<AppRole, string>>().InstancePerRequest();
+            builder.Register(c => new AppUserStore(c.Resolve<IAppDbContext>())).As<IUserStore<AppUser>>().InstancePerRequest();
 
             builder.RegisterGeneric(typeof(Repository<>)).As((typeof(IRepository<>))).InstancePerRequest();
             builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerRequest();

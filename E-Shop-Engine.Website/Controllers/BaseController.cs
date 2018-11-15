@@ -1,4 +1,7 @@
 ﻿using System.Web.Mvc;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Services.Data.Identity;
+using Microsoft.AspNet.Identity;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -27,6 +30,14 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 filterContext.Result = View("_Error", new string[] { msg });
             }
+        }
+
+        protected AppUser GetCurrentUser()
+        {
+            AppUserManager userManager = DependencyResolver.Current.GetService<AppUserManager>();
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = userManager.FindById(userId);
+            return user;
         }
 
         protected void ReverseSorting(ref bool descending, string sortOrder)

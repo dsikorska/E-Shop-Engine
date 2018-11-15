@@ -11,7 +11,6 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
-using Microsoft.AspNet.Identity;
 using NLog;
 using X.PagedList;
 
@@ -37,8 +36,7 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: Order
         public ActionResult Index(int? page, string sortOrder, bool descending = true)
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             if (page == 1)
             {
                 ReverseSorting(ref descending, sortOrder);
@@ -68,8 +66,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             model.AppUser = user;
             model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             return View(model);
@@ -84,8 +81,7 @@ namespace E_Shop_Engine.Website.Controllers
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return PartialView(model);
             }
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             model.Created = DateTime.UtcNow;
             model.AppUser = user;
@@ -106,8 +102,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             Order model = _orderRepository.GetById(id);
 
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
 
             if (user.Orders.Contains(model))
             {

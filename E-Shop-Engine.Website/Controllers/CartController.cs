@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
@@ -7,7 +6,6 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
-using Microsoft.AspNet.Identity;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -30,18 +28,16 @@ namespace E_Shop_Engine.Website.Controllers
         [Authorize]
         public ActionResult CountItems()
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             int model = _cartRepository.CountItems(user.Cart);
 
             return PartialView("_Cart", model);
         }
 
         [Authorize]
-        public async Task<ActionResult> Details()
+        public ActionResult Details()
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = await _userManager.FindByIdAsync(userId);
+            AppUser user = GetCurrentUser();
             CartViewModel model = Mapper.Map<Cart, CartViewModel>(user.Cart);
             model.TotalValue = _cartRepository.GetTotalValue(user.Cart);
 
@@ -54,8 +50,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult AddItem(int id, int quantity = 1)
         {
             Product product = _productRepository.GetById(id);
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
 
             if (product.NumberInStock > 0)
             {
@@ -76,8 +71,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult RemoveItem(int id, int quantity = 1)
         {
             Product product = _productRepository.GetById(id);
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
 
             product.NumberInStock += quantity;
             _cartRepository.RemoveItem(user.Cart, product, quantity);
@@ -91,8 +85,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult RemoveLine(int id, int quantity)
         {
             Product product = _productRepository.GetById(id);
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
 
             product.NumberInStock += quantity;
             _cartRepository.RemoveLine(user.Cart, product);
