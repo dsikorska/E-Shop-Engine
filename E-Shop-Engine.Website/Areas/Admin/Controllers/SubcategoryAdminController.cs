@@ -32,19 +32,35 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Subcategory
         [HttpGet]
-        public ActionResult Index(int? page, string sortOrder, bool descending = false)
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
+            ManageSearchingTermStatus(ref search);
 
-            IQueryable<Subcategory> model = _subcategoryRepository.GetAll();
-            IEnumerable<SubcategoryAdminViewModel> mappedModel = PagedListHelper.SortBy<Subcategory, SubcategoryAdminViewModel>(model, "CategoryID", sortOrder, descending);
+            IEnumerable<Subcategory> model = GetSearchingResult(search);
+
+            if (model.Count() == 0)
+            {
+                model = _subcategoryRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+
+            IEnumerable<SubcategoryAdminViewModel> mappedModel = PagedListHelper.SortBy<Subcategory, SubcategoryAdminViewModel>(model.AsQueryable(), "CategoryID", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<SubcategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
+        }
+
+        private IEnumerable<Subcategory> GetSearchingResult(string search)
+        {
+            return _subcategoryRepository.GetAll().Where(x => x.Name.Contains(search)).ToList();
         }
 
         [HttpGet]

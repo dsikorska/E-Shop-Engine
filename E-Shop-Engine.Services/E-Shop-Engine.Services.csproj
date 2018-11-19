@@ -136,6 +136,7 @@
     <Compile Include="Data\Identity\AppSignInManager.cs" />
     <Compile Include="Data\Identity\AppUserManager.cs" />
     <Compile Include="Data\Identity\AppUserStore.cs" />
+    <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Migrations\201808072054560_Init.cs" />
     <Compile Include="Migrations\201808072054560_Init.Designer.cs">
       <DependentUpon>201808072054560_Init.cs</DependentUpon>

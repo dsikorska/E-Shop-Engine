@@ -14,15 +14,22 @@
     @Html.ActionLink("Create new category", "Create", null, new { @class = "btn btn-success" })
 </p>
 
+@using (Html.BeginForm("Index", "CategoryAdmin", FormMethod.Get, new { @class = "form-inline my-2" }))
+{
+    <input class="form-control mr-sm-2 w-75" type="search" placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+    @Html.ActionLink("Reset", "Index", new { page = 1, sortOrder = "Name", search = "*", descending = false }, new { @class = "btn btn-secondary mx-1 my-2" })
+}
+
 <div class=" table-responsive">
     <table class="table table-striped table-hover table-light text-center">
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    @Html.ActionLink("Name", "Index", new { page = 1, sortOrder = "Name", descending = false })
+                    @Html.ActionLink("Name", "Index", new { page = 1, sortOrder = "Name", descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Description", "Index", new { page = 1, sortOrder = "Description", descending = false })
+                    @Html.ActionLink("Description", "Index", new { page = 1, sortOrder = "Description", descending = false, reversable = true })
                 </th>
                 <th scope="col">
                     Action

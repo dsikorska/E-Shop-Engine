@@ -12,10 +12,11 @@
 
 <h1>Orders</h1>
 
-@using (Html.BeginForm("Search", "OrderAdmin", FormMethod.Get, new { @class = "form-inline my-2" }))
+@using (Html.BeginForm("Index", "OrderAdmin", FormMethod.Get, new { @class = "form-inline my-2" }))
 {
-    <input class="form-control mr-sm-2 w-75" type="search" placeholder="Search" aria-label="Search" name="text">
+    <input class="form-control mr-sm-2 w-75" type="search" placeholder="Search" aria-label="Search" name="search">
     <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+    @Html.ActionLink("Reset", "Index", new { page = 1, sortOrder = "OrderNumber", search = "*", descending = false }, new { @class = "btn btn-secondary mx-1 my-2" })
 }
 
 <div class=" table-responsive">
@@ -23,22 +24,22 @@
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    @Html.ActionLink("Id", "Index", new { page = 1, sortOrder = "Id", descending = false })
+                    @Html.ActionLink("Id", "Index", new { page = 1, sortOrder = "Id", search = ViewBag.Search, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Order Number", "Index", new { page = 1, sortOrder = "OrderNumber", descending = false })
+                    @Html.ActionLink("Order Number", "Index", new { page = 1, sortOrder = "OrderNumber", search = ViewBag.Search, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Transaction Number", "Index", new { page = 1, sortOrder = "TransactionNumber", descending = false })
+                    @Html.ActionLink("Transaction Number", "Index", new { page = 1, sortOrder = "TransactionNumber", search = ViewBag.Search, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Is Paid?", "Index", new { page = 1, sortOrder = "IsPaid", descending = true })
+                    @Html.ActionLink("Is Paid?", "Index", new { page = 1, sortOrder = "IsPaid", search = ViewBag.Search, descending = true, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Status", "Index", new { page = 1, sortOrder = "OrderStatus", descending = false })
+                    @Html.ActionLink("Status", "Index", new { page = 1, sortOrder = "OrderStatus", search = ViewBag.Search, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Value", "Index", new { page = 1, sortOrder = "Payment", descending = true })
+                    @Html.ActionLink("Value", "Index", new { page = 1, sortOrder = "Payment", search = ViewBag.Search, descending = true, reversable = true })
                 </th>
                 <th scope="col">
                     Action
@@ -48,34 +49,34 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TransactionNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsPaid)
-                </td>
-                <td>
-                    @{
-                        var name = item.OrderStatus.GetDisplayName();
-                        name = name == null ? item.OrderStatus.ToString() : name;
-                    }
-                    @Html.DisplayFor(modelItem => name)
-                </td>
-                <td>
-                    @item.Payment @Html.Settings().Currency
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mb-1" })
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsPaid)
+                    </td>
+                    <td>
+                        @{
+                            var name = item.OrderStatus.GetDisplayName();
+                            name = name == null ? item.OrderStatus.ToString() : name;
+                        }
+                        @Html.DisplayFor(modelItem => name)
+                    </td>
+                    <td>
+                        @item.Payment @Html.Settings().Currency
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mb-1" })
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

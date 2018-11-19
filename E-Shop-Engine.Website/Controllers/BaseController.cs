@@ -50,13 +50,31 @@ namespace E_Shop_Engine.Website.Controllers
                 descending = !descending;
             }
         }
-
-        protected void SaveSortingState(string sortOrder, bool descending)
+        //TODO 
+        protected void SaveSortingState(string sortOrder, bool descending, string searchTerm = "")
         {
             TempData["SortOrder"] = sortOrder;
             TempData["SortDescending"] = descending;
             ViewBag.SortOrder = sortOrder;
             ViewBag.SortDescending = descending;
+            ViewBag.Search = searchTerm;
+        }
+
+        protected void ManageSearchingTermStatus(ref string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                TempData["Search"] = search;
+            }
+            else if (search == "*")
+            {
+
+            }
+            else if (TempData.ContainsKey("Search"))
+            {
+                search = TempData["Search"].ToString();
+                TempData.Keep("Search");
+            }
         }
     }
 }

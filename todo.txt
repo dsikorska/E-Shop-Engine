@@ -1,5 +1,8 @@
 cascade delete appuser -> cart
 sortowanie i szukanie w admin	
+send test email
+confirmation on delete
+on site change reset viewbags
 	
 	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />

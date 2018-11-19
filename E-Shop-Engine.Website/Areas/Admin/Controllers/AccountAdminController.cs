@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Extensions;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -30,18 +31,39 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Identity
-        public ActionResult Index(int? page, string sortOrder, bool descending = false)
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
-            IQueryable<AppUser> model = UserManager.Users;
-            IEnumerable<UserAdminViewModel> mappedModel = PagedListHelper.SortBy<AppUser, UserAdminViewModel>(model, "Email", sortOrder, descending);
+            ManageSearchingTermStatus(ref search);
+
+            IEnumerable<AppUser> model = GetSearchingResult(search);
+
+            if (model.Count() == 0)
+            {
+                model = UserManager.Users;
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+
+            IEnumerable<UserAdminViewModel> mappedModel = PagedListHelper.SortBy<AppUser, UserAdminViewModel>(model.AsQueryable(), "Created", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<UserAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
+        }
+
+        private IEnumerable<AppUser> GetSearchingResult(string search)
+        {
+            IEnumerable<AppUser> resultEmail = UserManager.FindUsersByEmail(search);
+            IEnumerable<AppUser> resultName = UserManager.FindUsersByName(search);
+            IEnumerable<AppUser> resultSurname = UserManager.FindUsersBySurname(search);
+            IEnumerable<AppUser> result = resultEmail.Union(resultName).Union(resultSurname).ToList();
+            return result;
         }
 
         public async Task<ActionResult> Details(string id)

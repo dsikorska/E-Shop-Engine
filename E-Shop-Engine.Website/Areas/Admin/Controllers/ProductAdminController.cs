@@ -35,18 +35,36 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Product
         [HttpGet]
-        public ActionResult Index(int? page, string sortOrder, bool descending = false)
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
-            IQueryable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductAdminViewModel> mappedModel = PagedListHelper.SortBy<Product, ProductAdminViewModel>(model, "Name", sortOrder, descending);
+            ManageSearchingTermStatus(ref search);
+
+            IEnumerable<Product> model = GetSearchingResult(search);
+
+            if (model.Count() == 0)
+            {
+                model = _productRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+            IEnumerable<ProductAdminViewModel> mappedModel = PagedListHelper.SortBy<Product, ProductAdminViewModel>(model.AsQueryable(), "Name", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<ProductAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
+        }
+
+        private IEnumerable<Product> GetSearchingResult(string search)
+        {
+            IEnumerable<Product> resultName = _productRepository.GetProductsByName(search);
+            IEnumerable<Product> resultCatalogNum = _productRepository.GetProductsByCatalogNumber(search);
+            return resultName.Union(resultCatalogNum).ToList();
         }
 
         [HttpGet]

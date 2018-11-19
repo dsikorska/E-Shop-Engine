@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -32,16 +30,28 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order
-        public ActionResult Index(int? page, string sortOrder, bool descending = true)
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
-            IQueryable<Order> model = _orderRepository.GetAll();
-            IEnumerable<OrderAdminViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderAdminViewModel>(model, "Created", sortOrder, descending);
+            ManageSearchingTermStatus(ref search);
+
+            IEnumerable<Order> model = GetSearchingResult(search);
+
+            if (model.Count() == 0)
+            {
+                model = _orderRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+
+            IEnumerable<OrderAdminViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderAdminViewModel>(model.AsQueryable(), "Created", sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<OrderAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
         }
@@ -81,29 +91,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public ActionResult Search(string text, int? page)
+        private IEnumerable<Order> GetSearchingResult(string search)
         {
-            if (!string.IsNullOrEmpty(text))
-            {
-                TempData["search"] = text;
-            }
-            else if (TempData.ContainsKey("search"))
-            {
-                text = TempData["search"].ToString();
-                TempData.Keep("search");
-            }
-
-            int pageNumber = page ?? 1;
-            Expression<Func<Order, string>> sortCondition = x => x.OrderNumber;
-
-            IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(text);
-            IEnumerable<Order> resultTransactionNumber = _orderRepository.FindByTransactionNumber(text);
-            IEnumerable<Order> model = resultOrderNumber.Union(resultTransactionNumber);
-
-            IPagedList<OrderAdminViewModel> viewModel = PagedListHelper.IQueryableToPagedList<Order, OrderAdminViewModel, string>(model.AsQueryable(), sortCondition, pageNumber, 3, true);
-
-            return View("Index", viewModel);
+            IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(search);
+            IEnumerable<Order> resultTransactionNumber = _orderRepository.FindByTransactionNumber(search);
+            IEnumerable<Order> model = resultOrderNumber.Union(resultTransactionNumber).ToList();
+            return model;
         }
     }
 }
