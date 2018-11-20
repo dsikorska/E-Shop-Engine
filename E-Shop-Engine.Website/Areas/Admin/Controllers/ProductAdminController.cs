@@ -50,10 +50,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 ReverseSorting(ref descending, sortOrder);
             }
-            IEnumerable<ProductAdminViewModel> mappedModel = PagedListHelper.SortBy<Product, ProductAdminViewModel>(model.AsQueryable(), "Name", sortOrder, descending);
+            IEnumerable<ProductAdminViewModel> mappedModel = Mapper.Map<IEnumerable<ProductAdminViewModel>>(model);
+            IEnumerable<ProductAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<ProductAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+            IPagedList<ProductAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
             SaveSortingState(sortOrder, descending, search);
 
@@ -64,7 +65,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             IEnumerable<Product> resultName = _productRepository.GetProductsByName(search);
             IEnumerable<Product> resultCatalogNum = _productRepository.GetProductsByCatalogNumber(search);
-            return resultName.Union(resultCatalogNum).ToList();
+            IEnumerable<Product> result = resultName.Union(resultCatalogNum).ToList();
+            return result;
         }
 
         [HttpGet]

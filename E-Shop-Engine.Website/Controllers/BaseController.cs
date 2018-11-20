@@ -50,8 +50,8 @@ namespace E_Shop_Engine.Website.Controllers
                 descending = !descending;
             }
         }
-        //TODO 
-        protected void SaveSortingState(string sortOrder, bool descending, string searchTerm = "")
+
+        protected void SaveSortingState(string sortOrder, bool descending, string searchTerm = null)
         {
             TempData["SortOrder"] = sortOrder;
             TempData["SortDescending"] = descending;

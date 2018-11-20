@@ -2,6 +2,7 @@ cascade delete appuser -> cart
 send test email
 confirmation on delete
 on site change reset viewbags
+check orders tab at main
 	
 	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />

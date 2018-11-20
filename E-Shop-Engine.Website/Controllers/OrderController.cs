@@ -34,19 +34,20 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: Order
-        public ActionResult Index(int? page, string sortOrder, bool descending = true)
+        public ActionResult Index(int? page, string sortOrder, bool descending = true, bool reversable = false)
         {
             AppUser user = GetCurrentUser();
-            if (page == 1)
+            if (reversable)
             {
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IQueryable<Order> model = user.Orders.AsQueryable();
-            IEnumerable<OrderViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
+            IEnumerable<Order> model = user.Orders;
+            IEnumerable<OrderViewModel> mappedModel = Mapper.Map<IEnumerable<OrderViewModel>>(model);
+            IEnumerable<OrderViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 10);
+            IPagedList<OrderViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
             viewModel = viewModel.Select(x =>
             {

@@ -5,6 +5,20 @@
 @using E_Shop_Engine.Website.Models;
 @model IPagedList<ProductViewModel>
 
+<div class="dropdown text-right my-2">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort By
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Price&descending=true">Price descending</a>
+        <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Price&descending=false">Price</a>
+        <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Name&descending=true">Name descending</a>
+        <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Name&descending=false">Name</a>
+        <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=CatalogNumber&descending=true">Catalog Number descending</a>
+        <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=CatalogNumber&descending=false">Catalog Number</a>
+    </div>
+</div>
+
 <div class="card-columns">
     @foreach (var product in Model)
     {

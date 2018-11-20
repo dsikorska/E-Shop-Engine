@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -25,15 +24,6 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Product
-        public ActionResult Index(int? page)
-        {
-            int pageNumber = page ?? 1;
-            IQueryable<Product> model = _productRepository.GetAll();
-            IPagedList<ProductViewModel> viewModel = PagedListHelper.IQueryableToPagedList<Product, ProductViewModel, DateTime?>(model, x => x.Edited, page, 25);
-            return View("_ProductsDeck", viewModel);
-        }
-
         public PartialViewResult ProductsToPagedList(IEnumerable<ProductViewModel> model, int? page)
         {
             string sortOrder = null;
@@ -46,9 +36,9 @@ namespace E_Shop_Engine.Website.Controllers
                 ViewBag.SortDescending = descending;
             }
 
-            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(model.AsQueryable(), "Name", sortOrder, descending);
+            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(model, x => x.Name, sortOrder, descending);
             int pageNumber = page ?? 1;
-            IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(sortedModel, pageNumber, 25);
+            IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(sortedModel, pageNumber, 9);
 
             return PartialView("_ProductsDeck", viewModel);
         }
@@ -65,33 +55,34 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string text, int? page)
+        public ActionResult Search(int? page, string sortOrder, string search, bool descending = true)
         {
-            if (!string.IsNullOrEmpty(text))
-            {
-                TempData["search"] = text;
-            }
-            else
-            {
-                text = TempData["search"].ToString();
-                TempData.Keep("search");
-            }
+            ManageSearchingTermStatus(ref search);
 
-            int pageNumber = page ?? 1;
-            IEnumerable<Product> model = null;
-            Expression<Func<Product, string>> sortCondition = x => x.Name;
-
-            model = _productRepository.GetProductsByName(text).ToList();
+            IEnumerable<Product> model = GetSearchingResult(search);
 
             if (model.Count() == 0)
             {
-                model = _productRepository.GetProductsByCatalogNumber(text);
-                sortCondition = x => x.CatalogNumber;
+                model = _productRepository.GetAll();
             }
 
-            IPagedList<ProductViewModel> viewModel = PagedListHelper.IQueryableToPagedList<Product, ProductViewModel, string>(model.AsQueryable(), sortCondition, pageNumber, 25);
+            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(model);
+            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<ProductViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 9);
+
+            SaveSortingState(sortOrder, descending, search);
 
             return View("_ProductsDeck", viewModel);
+        }
+
+        private IEnumerable<Product> GetSearchingResult(string search)
+        {
+            IEnumerable<Product> resultName = _productRepository.GetProductsByName(search);
+            IEnumerable<Product> resultCatalogNum = _productRepository.GetProductsByCatalogNumber(search);
+            IEnumerable<Product> result = resultName.Union(resultCatalogNum).ToList();
+            return result;
         }
 
         [HttpGet]

@@ -46,10 +46,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IEnumerable<CategoryAdminViewModel> mappedModel = PagedListHelper.SortBy<Category, CategoryAdminViewModel>(model.AsQueryable(), "Id", sortOrder, descending);
+            IEnumerable<CategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<CategoryAdminViewModel>>(model);
+            IEnumerable<CategoryAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<CategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+            IPagedList<CategoryAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
             SaveSortingState(sortOrder, descending, search);
 

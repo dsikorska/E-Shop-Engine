@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
 using NLog;
 using X.PagedList;
@@ -49,7 +49,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             try
             {
-            _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
+                _mailingRepository.CustomMail(model.Email, model.Name, model.Message);
             }
             catch
             {
@@ -78,13 +78,18 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult GetSpecialOffersInDeck(int? page)
+        public PartialViewResult GetSpecialOffersInDeck(int? page, string sortOrder, bool descending = true)
         {
-            int pageNumber = page ?? 1;
             IQueryable<Product> model = _productRepository.GetAllShowingInDeck();
-            IPagedList<Product> pagedModel = model.OrderBy(x => x.Edited).ToPagedList(pageNumber, 25);
-            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(pagedModel);
-            IPagedList<ProductViewModel> viewModel = new StaticPagedList<ProductViewModel>(mappedModel, pagedModel.GetMetaData());
+
+            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(model);
+            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+
+            int pageNumber = page ?? 1;
+            IPagedList<ProductViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 9);
+
+            SaveSortingState(sortOrder, descending);
+
             return PartialView("_ProductsDeck", viewModel);
         }
 

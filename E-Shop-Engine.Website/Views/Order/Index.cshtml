@@ -20,20 +20,20 @@
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    @Ajax.ActionLink("Created", "Index", "Order", new { page = 1, sortOrder = "Created", descending = false },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Created", "Index", "Order", new { page = 1, sortOrder = "Created", descending = false, reversable = true },
+                        new AjaxOptions() { UpdateTargetId = "content", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    @Ajax.ActionLink("Finished", "Index", "Order", new { page = 1, sortOrder = "Finished", descending = true },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Finished", "Index", "Order", new { page = 1, sortOrder = "Finished", descending = true, reversable = true },
+                        new AjaxOptions() { UpdateTargetId = "content", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    @Ajax.ActionLink("Total Products", "Index", "Order", new { page = 1, sortOrder = "TotalProducts", descending = true },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Total Products", "Index", "Order", new { page = 1, sortOrder = "TotalProducts", descending = true, reversable = true },
+                        new AjaxOptions() { UpdateTargetId = "content", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
-                    @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "Payment", descending = true },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "Payment", descending = true, reversable = true },
+                        new AjaxOptions() { UpdateTargetId = "content", InsertionMode = InsertionMode.Replace })
                 </th>
                 <th scope="col">
                     Action
