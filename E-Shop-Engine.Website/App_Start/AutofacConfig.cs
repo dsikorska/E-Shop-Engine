@@ -38,6 +38,8 @@ namespace E_Shop_Engine.Website.App_Start
 
             builder.RegisterGeneric(typeof(Repository<>)).As((typeof(IRepository<>))).InstancePerRequest();
             builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerRequest();
+            builder.RegisterType<CategoryRepository>().As<ICategoryRepository>().InstancePerRequest();
+            builder.RegisterType<SubategoryRepository>().As<ISubcategoryRepository>().InstancePerRequest();
             builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerRequest();
             builder.RegisterType<CartRepository>().As<ICartRepository>().InstancePerRequest();
             builder.RegisterType<SettingsRepository>().As<ISettingsRepository>();

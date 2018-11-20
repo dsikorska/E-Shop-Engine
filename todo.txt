@@ -1,5 +1,4 @@
 cascade delete appuser -> cart
-sortowanie i szukanie w admin	
 send test email
 confirmation on delete
 on site change reset viewbags

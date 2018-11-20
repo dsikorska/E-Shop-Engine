@@ -20,9 +20,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [ReturnUrl]
     public class CategoryAdminController : BaseController
     {
-        private readonly IRepository<Category> _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryAdminController(IRepository<Category> categoryRepository)
+        public CategoryAdminController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
             logger = LogManager.GetCurrentClassLogger();
@@ -34,7 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ManageSearchingTermStatus(ref search);
 
-            IEnumerable<Category> model = GetSearchingResult(search);
+            IEnumerable<Category> model = _categoryRepository.GetCategoriesByName(search);
 
             if (model.Count() == 0)
             {
@@ -54,11 +54,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
-        }
-
-        private IEnumerable<Category> GetSearchingResult(string search)
-        {
-            return _categoryRepository.GetAll().Where(x => x.Name.Contains(search)).ToList();
         }
 
         [HttpGet]

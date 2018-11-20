@@ -20,10 +20,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [ReturnUrl]
     public class SubcategoryAdminController : BaseController
     {
-        private readonly IRepository<Subcategory> _subcategoryRepository;
+        private readonly ISubcategoryRepository _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
 
-        public SubcategoryAdminController(IRepository<Subcategory> subcategoryRepository, IRepository<Category> categoryRepository)
+        public SubcategoryAdminController(ISubcategoryRepository subcategoryRepository, IRepository<Category> categoryRepository)
         {
             _subcategoryRepository = subcategoryRepository;
             _categoryRepository = categoryRepository;
@@ -36,7 +36,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             ManageSearchingTermStatus(ref search);
 
-            IEnumerable<Subcategory> model = GetSearchingResult(search);
+            IEnumerable<Subcategory> model = _subcategoryRepository.GetSubcategoriesByName(search);
 
             if (model.Count() == 0)
             {
@@ -56,11 +56,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
-        }
-
-        private IEnumerable<Subcategory> GetSearchingResult(string search)
-        {
-            return _subcategoryRepository.GetAll().Where(x => x.Name.Contains(search)).ToList();
         }
 
         [HttpGet]
