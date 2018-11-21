@@ -1,7 +1,6 @@
 cascade delete appuser -> cart
 cartline -> product
 on site change reset viewbags
-admin: redirect to index on error
 	
 	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />
