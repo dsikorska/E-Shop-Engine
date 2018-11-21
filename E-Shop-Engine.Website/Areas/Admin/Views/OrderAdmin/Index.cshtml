@@ -4,6 +4,7 @@
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Common;
 @using E_Shop_Engine.Website.Areas.Admin.Models;
+@using E_Shop_Engine.Website.Models.Custom;
 @model IPagedList<OrderAdminViewModel>
 
 @{
@@ -24,22 +25,22 @@
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    @Html.ActionLink("Id", "Index", new { page = 1, sortOrder = "Id", search = ViewBag.Search, descending = false, reversable = true })
+                    @Html.ActionLink("Id", "Index", new { page = 1, sortOrder = "Id", search = SortingManager.SearchTerm, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Order Number", "Index", new { page = 1, sortOrder = "OrderNumber", search = ViewBag.Search, descending = false, reversable = true })
+                    @Html.ActionLink("Order Number", "Index", new { page = 1, sortOrder = "OrderNumber", search = SortingManager.SearchTerm, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Transaction Number", "Index", new { page = 1, sortOrder = "TransactionNumber", search = ViewBag.Search, descending = false, reversable = true })
+                    @Html.ActionLink("Transaction Number", "Index", new { page = 1, sortOrder = "TransactionNumber", search = SortingManager.SearchTerm, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Is Paid?", "Index", new { page = 1, sortOrder = "IsPaid", search = ViewBag.Search, descending = true, reversable = true })
+                    @Html.ActionLink("Is Paid?", "Index", new { page = 1, sortOrder = "IsPaid", search = SortingManager.SearchTerm, descending = true, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Status", "Index", new { page = 1, sortOrder = "OrderStatus", search = ViewBag.Search, descending = false, reversable = true })
+                    @Html.ActionLink("Status", "Index", new { page = 1, sortOrder = "OrderStatus", search = SortingManager.SearchTerm, descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Value", "Index", new { page = 1, sortOrder = "Payment", search = ViewBag.Search, descending = true, reversable = true })
+                    @Html.ActionLink("Value", "Index", new { page = 1, sortOrder = "Payment", search = SortingManager.SearchTerm, descending = true, reversable = true })
                 </th>
                 <th scope="col">
                     Action
@@ -82,7 +83,7 @@
     </table>
 </div>
 
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.SortDescending); }, new PagedListRenderOptions
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + SortingManager.SortOrder + "&descending=" + SortingManager.IsSortDescending); }, new PagedListRenderOptions
 {
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" },

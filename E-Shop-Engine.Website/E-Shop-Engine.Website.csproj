@@ -309,9 +309,12 @@
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ContactViewModel.cs" />
+    <Compile Include="Models\Custom\NotifyManager.cs" />
+    <Compile Include="Models\Custom\SortingManager.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />
+    <Compile Include="Models\Custom\UrlManager.cs" />
     <Compile Include="Models\UserChangePasswordViewModel.cs" />
     <Compile Include="Models\UserEditViewModel.cs" />
     <Compile Include="Models\UserLoginViewModel.cs" />

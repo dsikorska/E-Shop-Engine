@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using E_Shop_Engine.Utilities;
+using E_Shop_Engine.Website.Models.Custom;
 
 namespace E_Shop_Engine.Website.CustomFilters
 {
@@ -16,14 +16,10 @@ namespace E_Shop_Engine.Website.CustomFilters
 
             if (UrlManager.PreviousUrl != null && UrlManager.PreviousUrl != requestUrl)
             {
-                filterContext.Controller.TempData.Remove("SortOrder");
-                filterContext.Controller.TempData.Remove("SortDescending");
-                filterContext.Controller.ViewBag.SortOrder = null;
-                filterContext.Controller.ViewBag.SortDescending = null;
-                filterContext.Controller.ViewBag.Search = null;
+                SortingManager.ResetSorting();
             }
 
-            UrlManager.PreviousUrl = filterContext.HttpContext.Request.Url.LocalPath;
+            UrlManager.SetPreviousUrl(requestUrl);
         }
     }
 }

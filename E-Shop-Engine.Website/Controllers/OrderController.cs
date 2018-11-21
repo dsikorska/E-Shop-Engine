@@ -34,6 +34,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: Order
+        [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, bool descending = true, bool reversable = false)
         {
             AppUser user = GetCurrentUser();

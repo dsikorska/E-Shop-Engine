@@ -3,6 +3,7 @@
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Common;
 @using E_Shop_Engine.Website.Areas.Admin.Models;
+@using E_Shop_Engine.Website.Models.Custom;
 @model IPagedList<ProductAdminViewModel>
 
 @{
@@ -75,7 +76,7 @@
     </table>
 </div>
 
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.SortDescending); }, new PagedListRenderOptions
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + SortingManager.SortOrder + "&descending=" + SortingManager.IsSortDescending); }, new PagedListRenderOptions
 {
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" },

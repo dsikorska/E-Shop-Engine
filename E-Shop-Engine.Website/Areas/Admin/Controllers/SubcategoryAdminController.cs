@@ -32,6 +32,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
         // GET: Admin/Subcategory
         [HttpGet]
+        [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
             ManageSearchingTermStatus(ref search);

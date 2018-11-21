@@ -11,6 +11,7 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
+using E_Shop_Engine.Website.Models.Custom;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using NLog;
@@ -99,7 +100,7 @@ namespace E_Shop_Engine.Website.Controllers
                 if (result.Succeeded)
                 {
                     _mailingRepository.PasswordChangedMail(user.Email);
-                    NotifySetup("notification-success", "Success!", "Your password has been changed!");
+                    NotifyManager.Set("notification-success", "Success!", "Your password has been changed!");
                     return Json(new { url = Url.Action("Index") });
                 }
                 else
@@ -162,7 +163,7 @@ namespace E_Shop_Engine.Website.Controllers
 
                     if (result.Succeeded)
                     {
-                        NotifySetup("notification-success", "Success!", "Your profile informations updated!");
+                        NotifyManager.Set("notification-success", "Success!", "Your profile informations updated!");
                         return Json(new { url = Url.Action("Index") });
                     }
                     else
@@ -178,13 +179,6 @@ namespace E_Shop_Engine.Website.Controllers
             }
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return PartialView(model);
-        }
-
-        private void NotifySetup(string type, string title, string text)
-        {
-            TempData["notifyType"] = type;
-            TempData["notifyTitle"] = title;
-            TempData["notifyText"] = text;
         }
 
         [AllowAnonymous]
@@ -281,7 +275,7 @@ namespace E_Shop_Engine.Website.Controllers
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     _mailingRepository.WelcomeMail(user.Email);
                     _mailingRepository.ActivationMail(user.Email, callbackUrl);
-                    NotifySetup("notification-success", "Success!", "Profile created. Please check Your email to activate account.");
+                    NotifyManager.Set("notification-success", "Success!", "Profile created. Please check Your email to activate account.");
                     return Json(new { url = Url.Action("Index", "Home") });
                 }
                 else
@@ -434,7 +428,7 @@ namespace E_Shop_Engine.Website.Controllers
                 _addressRepository.Update(address);
             }
 
-            NotifySetup("notification-success", "Success!", "Your address informations updated!");
+            NotifyManager.Set("notification-success", "Success!", "Your address informations updated!");
 
             if (isOrder)
             {

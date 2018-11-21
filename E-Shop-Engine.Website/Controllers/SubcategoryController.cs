@@ -24,7 +24,6 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 SaveSortingState(sortOrder, descending);
             }
-            TempData.Keep();
             Subcategory subcategory = _subcategoryRepository.GetById(id);
             SubcategoryViewModel model = Mapper.Map<SubcategoryViewModel>(subcategory);
 

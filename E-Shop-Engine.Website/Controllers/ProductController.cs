@@ -9,6 +9,7 @@ using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
+using E_Shop_Engine.Website.Models.Custom;
 using NLog;
 using X.PagedList;
 
@@ -24,16 +25,16 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        [ResetDataDictionaries]
         public PartialViewResult ProductsToPagedList(IEnumerable<ProductViewModel> model, int? page)
         {
             string sortOrder = null;
             bool descending = false;
-            if (TempData.ContainsKey("SortOrder") && TempData["SortOrder"] != null)
+            if (SortingManager.SortOrder != null)
             {
-                sortOrder = TempData["SortOrder"].ToString();
-                descending = (bool)TempData["SortDescending"];
-                ViewBag.SortOrder = sortOrder;
-                ViewBag.SortDescending = descending;
+                sortOrder = SortingManager.SortOrder;
+                descending = SortingManager.IsSortDescending;
+                SortingManager.SetSorting(sortOrder, descending);
             }
 
             IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(model, x => x.Name, sortOrder, descending);
@@ -55,6 +56,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
+        [ResetDataDictionaries]
         public ActionResult Search(int? page, string sortOrder, string search, bool descending = true)
         {
             ManageSearchingTermStatus(ref search);

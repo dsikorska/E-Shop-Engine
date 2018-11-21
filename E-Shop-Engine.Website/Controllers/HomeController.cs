@@ -5,8 +5,10 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
+using E_Shop_Engine.Website.Models.Custom;
 using NLog;
 using X.PagedList;
 
@@ -57,7 +59,7 @@ namespace E_Shop_Engine.Website.Controllers
                 return PartialView(model);
             }
 
-            NotifySetup("notification-success", "Success!", "Message sent!");
+            NotifyManager.Set("notification-success", "Success!", "Message sent!");
             return Json(new { url = Url.Action("Index") });
         }
 
@@ -78,6 +80,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [HttpGet]
+        [ResetDataDictionaries]
         public PartialViewResult GetSpecialOffersInDeck(int? page, string sortOrder, bool descending = true)
         {
             IQueryable<Product> model = _productRepository.GetAllShowingInDeck();
@@ -91,13 +94,6 @@ namespace E_Shop_Engine.Website.Controllers
             SaveSortingState(sortOrder, descending);
 
             return PartialView("_ProductsDeck", viewModel);
-        }
-
-        private void NotifySetup(string type, string title, string text)
-        {
-            TempData["notifyType"] = type;
-            TempData["notifyTitle"] = title;
-            TempData["notifyText"] = text;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Website.Models.Custom;
 using Microsoft.AspNet.Identity;
 using NLog;
 
@@ -42,10 +43,9 @@ namespace E_Shop_Engine.Website.Controllers
 
         protected void ReverseSorting(ref bool descending, string sortOrder)
         {
-            if (TempData.ContainsKey("SortOrder") &&
-                TempData["SortOrder"] != null &&
-                sortOrder == TempData["SortOrder"].ToString() &&
-                descending == (bool)TempData["SortDescending"])
+            if (SortingManager.SortOrder != null &&
+                sortOrder == SortingManager.SortOrder &&
+                descending == SortingManager.IsSortDescending)
             {
                 descending = !descending;
             }
@@ -53,27 +53,22 @@ namespace E_Shop_Engine.Website.Controllers
 
         protected void SaveSortingState(string sortOrder, bool descending, string searchTerm = null)
         {
-            TempData["SortOrder"] = sortOrder;
-            TempData["SortDescending"] = descending;
-            ViewBag.SortOrder = sortOrder;
-            ViewBag.SortDescending = descending;
-            ViewBag.Search = searchTerm;
+            SortingManager.SetSorting(sortOrder, descending, searchTerm);
         }
 
         protected void ManageSearchingTermStatus(ref string search)
         {
             if (!string.IsNullOrEmpty(search))
             {
-                TempData["Search"] = search;
+                SortingManager.SetSearchingTerm(search);
             }
             else if (search == "*")
             {
 
             }
-            else if (TempData.ContainsKey("Search"))
+            else if (SortingManager.SearchTerm != null)
             {
-                search = TempData["Search"].ToString();
-                TempData.Keep("Search");
+                search = SortingManager.SearchTerm; ;
             }
         }
     }
