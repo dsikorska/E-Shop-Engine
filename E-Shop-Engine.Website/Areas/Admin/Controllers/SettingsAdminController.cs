@@ -16,10 +16,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     public class SettingsAdminController : BaseController
     {
         private readonly ISettingsRepository _settingsRepository;
+        private readonly IMailingRepository _mailingRepository;
 
-        public SettingsAdminController(ISettingsRepository settingsRepository)
+        public SettingsAdminController(ISettingsRepository settingsRepository, IMailingRepository mailingRepository)
         {
             _settingsRepository = settingsRepository;
+            _mailingRepository = mailingRepository;
             logger = LogManager.GetCurrentClassLogger();
         }
 
@@ -39,6 +41,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View(model);
             }
 
+            _mailingRepository.TestMail();
             _settingsRepository.Update(Mapper.Map<Settings>(model));
             return Redirect("/Admin/Order/Index");
         }

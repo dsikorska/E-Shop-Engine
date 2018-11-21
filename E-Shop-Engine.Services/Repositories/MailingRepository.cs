@@ -106,6 +106,19 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        public void TestMail()
+        {
+            string body = Properties.Resources.OnlyTextTemplateMail
+                .Replace("#text#", "This is test message. Your SMTP settings are ok.")
+                .Replace("#shopName#", _settings.ShopName)
+                .Replace("#title#", "Test message");
+
+            string subject = "Test message";
+            string to = _settings.ContactEmailAddress;
+            MailMessage mail = GetMessage(to, body, subject);
+            SendMail(mail);
+        }
+
         private void SendMail(MailMessage mail)
         {
             SmtpClient smtpClient = GetSmtpCLient();
