@@ -295,6 +295,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SubcategoryController.cs" />
+    <Compile Include="CustomFilters\ResetDataDictionariesAttribute.cs" />
     <Compile Include="CustomFilters\ReturnUrlAttribute.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />

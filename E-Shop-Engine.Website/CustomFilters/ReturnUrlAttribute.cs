@@ -6,13 +6,13 @@ namespace E_Shop_Engine.Website.CustomFilters
     {
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            //
+            // Do nothing
         }
 
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            string url = filterContext.HttpContext.Request.UrlReferrer?.PathAndQuery;
-            filterContext.Controller.ViewBag.returnUrl = url ?? "/";
+            string requestUrl = filterContext.HttpContext.Request.UrlReferrer?.PathAndQuery;
+            filterContext.Controller.ViewBag.returnUrl = requestUrl ?? "/";
         }
     }
 }

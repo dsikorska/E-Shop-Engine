@@ -1,6 +1,6 @@
 cascade delete appuser -> cart
 cartline -> product
-on site change reset viewbags
+viewbags replace with static class
 	
 	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />
