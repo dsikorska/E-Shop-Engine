@@ -58,7 +58,7 @@
                             @using (Html.BeginForm("RemoveLine", "Cart", new { id = item.Product.Id, quantity = item.Quantity }, FormMethod.Post, new { @class = "d-inline" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <button class="btn btn-danger btn-sm mb-1" type="submit">Delete</button>
+                                <button class="btn btn-danger btn-sm mb-1" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
                             }
                         </td>
                     </tr>

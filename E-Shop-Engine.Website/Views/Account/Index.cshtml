@@ -10,11 +10,11 @@
 
         @Ajax.ActionLink("Address", "AddressDetails", "Account", null,
             new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
-            new { @class = "nav-item nav-link", id = "nav-orders-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
+            new { @class = "nav-item nav-link", id = "nav-address-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
             
         @Ajax.ActionLink("Orders", "Index", "Order", null,
-            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
-            new { @class = "nav-item nav-link", id = "nav-address-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
+            new AjaxOptions() { UpdateTargetId = "content", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link", id = "nav-orders-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
