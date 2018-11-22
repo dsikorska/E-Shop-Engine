@@ -46,7 +46,7 @@ namespace E_Shop_Engine.Services.Repositories
                 .DefaultIfEmpty()
                 .FirstOrDefault();
 
-            if (line != null)
+            if (line != null && line.Quantity > 0)
             {
                 line.Quantity -= quantity;
             }
