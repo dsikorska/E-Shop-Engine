@@ -33,7 +33,7 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Order
+        // GET: /Order
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, bool descending = true, bool reversable = false)
         {
@@ -65,6 +65,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(viewModel);
         }
 
+        // GET: /Order/Create
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
@@ -74,6 +75,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        // POST: /Order/Create
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Create(OrderViewModel model)
@@ -100,6 +102,7 @@ namespace E_Shop_Engine.Website.Controllers
             return Json(new { url = Url.Action("Index", "Home") });
         }
 
+        // GET: /Order/Details?id
         public ActionResult Details(int id)
         {
             Order model = _orderRepository.GetById(id);

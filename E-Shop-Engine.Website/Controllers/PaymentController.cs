@@ -35,6 +35,8 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        // GET: /Payment/DotPayPayment
+        [Authorize]
         public ActionResult DotPayPayment()
         {
             AppUser user = GetCurrentUser();
@@ -83,6 +85,7 @@ namespace E_Shop_Engine.Website.Controllers
             return Redirect(redirectUrl);
         }
 
+        // POST: /Payment/DotPayConfirmation
         [HttpPost]
         public HttpStatusCode DotPayConfirmation(DotPayTransactionResponse model)
         {

@@ -83,7 +83,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // POST: Admin/Account/Delete?id
-        [ChildActionOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrators")]
@@ -109,7 +108,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Account/Edit?id
-        [ChildActionOnly]
         [Authorize(Roles = "Administrators")]
         public async Task<ActionResult> Edit(string id)
         {
@@ -126,7 +124,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // POST: Admin/Account/Edit
-        [ChildActionOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrators")]

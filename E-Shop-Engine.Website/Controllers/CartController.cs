@@ -25,6 +25,7 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        // GET: /Cart/CountItems
         [Authorize]
         public ActionResult CountItems()
         {
@@ -34,6 +35,7 @@ namespace E_Shop_Engine.Website.Controllers
             return PartialView("_Cart", model);
         }
 
+        // GET: /Cart/Details
         [Authorize]
         public ActionResult Details()
         {
@@ -44,6 +46,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        // POST: /Cart/AddItem?id=&quantity=1
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -65,6 +68,7 @@ namespace E_Shop_Engine.Website.Controllers
             return Redirect(ViewBag.returnUrl);
         }
 
+        // POST: /Cart/RemoveItem?id=&quantity=1
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -79,6 +83,7 @@ namespace E_Shop_Engine.Website.Controllers
             return Redirect(ViewBag.returnUrl);
         }
 
+        // POST: /Cart/RemoveLine?id&quantity
         [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]

@@ -25,6 +25,7 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        // GET: /Product/ProductsToPagedList
         [ResetDataDictionaries]
         public PartialViewResult ProductsToPagedList(IEnumerable<ProductViewModel> model, int? page)
         {
@@ -44,7 +45,7 @@ namespace E_Shop_Engine.Website.Controllers
             return PartialView("_ProductsDeck", viewModel);
         }
 
-        [HttpGet]
+        // GET: /{id}/{name}
         [ReturnUrl]
         public ViewResult Details(int id)
         {
@@ -55,7 +56,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
+        // GET: /Product/Search/
         [ResetDataDictionaries]
         public ActionResult Search(int? page, string sortOrder, string search, bool descending = true)
         {
@@ -79,6 +80,7 @@ namespace E_Shop_Engine.Website.Controllers
             return View("_ProductsDeck", viewModel);
         }
 
+        [NonAction]
         private IEnumerable<Product> GetSearchingResult(string search)
         {
             IEnumerable<Product> resultName = _productRepository.GetProductsByName(search);
@@ -87,7 +89,7 @@ namespace E_Shop_Engine.Website.Controllers
             return result;
         }
 
-        [HttpGet]
+        // GET: /Product/GetImage?id
         public FileContentResult GetImage(int id)
         {
 

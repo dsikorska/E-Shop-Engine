@@ -45,7 +45,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Role/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public async Task<ActionResult> Create([Required]string name)
         {
             if (ModelState.IsValid)
@@ -64,7 +63,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Role/Edit?id
-        [ChildActionOnly]
         public async Task<ActionResult> Edit(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
@@ -84,7 +82,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Role/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public async Task<ActionResult> Edit(RoleModificationViewModel model)
         {
             IdentityResult result;
@@ -114,7 +111,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Role/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public async Task<ActionResult> Delete(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);

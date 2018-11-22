@@ -27,7 +27,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Settings/Edit
-        [ChildActionOnly]
         public ActionResult Edit()
         {
             Settings model = _settingsRepository.Get();
@@ -38,7 +37,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Settings/Edit
         [ValidateAntiForgeryToken]
         [HttpPost]
-        [ChildActionOnly]
         public ActionResult Edit(SettingsAdminViewModel model)
         {
             if (!ModelState.IsValid)

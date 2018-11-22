@@ -69,7 +69,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order/Edit?id
-        [ChildActionOnly]
         public ViewResult Edit(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -81,7 +80,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Order/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public ActionResult Edit(OrderAdminViewModel model)
         {
             if (!ModelState.IsValid)

@@ -72,7 +72,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product/Edit?id
-        [ChildActionOnly]
         public ViewResult Edit(int id)
         {
             Product product = _productRepository.GetById(id);
@@ -85,7 +84,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Product/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public ActionResult Edit(ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -99,7 +97,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product/Create
-        [ChildActionOnly]
         public ViewResult Create()
         {
             ProductAdminViewModel model = new ProductAdminViewModel
@@ -113,7 +110,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -157,7 +153,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Product/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public ActionResult Delete(int id)
         {
             _productRepository.Delete(id);

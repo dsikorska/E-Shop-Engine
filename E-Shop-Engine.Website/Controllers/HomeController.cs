@@ -28,17 +28,19 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Home
+        // GET: /
         public ActionResult Index()
         {
             return View();
         }
 
+        // GET: /Home/Contact
         public ActionResult Contact()
         {
             return View();
         }
 
+        // POST: /Home/Contact
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -63,7 +65,7 @@ namespace E_Shop_Engine.Website.Controllers
             return Json(new { url = Url.Action("Index") });
         }
 
-        // GET: Categories - for navbar
+        // GET: /Home/NavList
         public PartialViewResult NavList()
         {
             IQueryable<Category> model = _categoryRepository.GetAll();
@@ -71,7 +73,7 @@ namespace E_Shop_Engine.Website.Controllers
             return PartialView("_Categories", viewModel);
         }
 
-        [HttpGet]
+        // GET: /Home/GetSpecialOffers
         public PartialViewResult GetSpecialOffers()
         {
             IQueryable<Product> model = _productRepository.GetAllSpecialOffers();
@@ -79,7 +81,7 @@ namespace E_Shop_Engine.Website.Controllers
             return PartialView("SpecialOffers", viewModel);
         }
 
-        [HttpGet]
+        // GET: /Home/GetSpecialOffersInDeck
         [ResetDataDictionaries]
         public PartialViewResult GetSpecialOffersInDeck(int? page, string sortOrder, bool descending = true)
         {

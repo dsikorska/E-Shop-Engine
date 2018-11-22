@@ -61,7 +61,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory/Edit?id
-        [ChildActionOnly]
         public ViewResult Edit(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);
@@ -74,7 +73,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Subcategory/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public ActionResult Edit(SubcategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -87,7 +85,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory/Create
-        [ChildActionOnly]
         public ViewResult Create()
         {
             SubcategoryAdminViewModel model = new SubcategoryAdminViewModel
@@ -101,7 +98,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Subcategory/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ChildActionOnly]
         public ActionResult Create(SubcategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -124,7 +120,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // POST: Admin/Subcategory/Delete?id
         [ValidateAntiForgeryToken]
         [HttpPost]
-        [ChildActionOnly]
         public ActionResult Delete(int id)
         {
             try

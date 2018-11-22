@@ -33,6 +33,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
         }
 
+        [NonAction]
         protected AppUser GetCurrentUser()
         {
             AppUserManager userManager = DependencyResolver.Current.GetService<AppUserManager>();
@@ -41,6 +42,7 @@ namespace E_Shop_Engine.Website.Controllers
             return user;
         }
 
+        [NonAction]
         protected void ReverseSorting(ref bool descending, string sortOrder)
         {
             if (SortingManager.SortOrder != null &&
@@ -51,11 +53,13 @@ namespace E_Shop_Engine.Website.Controllers
             }
         }
 
+        [NonAction]
         protected void SaveSortingState(string sortOrder, bool descending, string searchTerm = null)
         {
             SortingManager.SetSorting(sortOrder, descending, searchTerm);
         }
 
+        [NonAction]
         protected void ManageSearchingTermStatus(ref string search)
         {
             if (!string.IsNullOrEmpty(search))
