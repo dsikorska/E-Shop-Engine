@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -73,33 +71,6 @@ namespace E_Shop_Engine.Website.Controllers
             model.AppUser = user;
             model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             return View(model);
-        }
-
-        // POST: /Order/Create
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult Create(OrderViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
-            }
-            AppUser user = GetCurrentUser();
-            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
-            model.Created = DateTime.UtcNow;
-            model.AppUser = user;
-
-            if (model.OrderedCart.CartLines.Count == 0)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView("_Error", new string[] { "Cannot order empty cart." });
-            }
-
-            _orderRepository.Create(Mapper.Map<Order>(model));
-            _cartRepository.Clear(user.Cart);
-
-            return Json(new { url = Url.Action("Index", "Home") });
         }
 
         // GET: /Order/Details?id

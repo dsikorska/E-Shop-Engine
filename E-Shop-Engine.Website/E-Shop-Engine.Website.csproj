@@ -379,7 +379,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Payment\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\E-Shop-Engine.Domain\E-Shop-Engine.Domain.csproj">
