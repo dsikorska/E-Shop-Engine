@@ -44,6 +44,7 @@ namespace E_Shop_Engine.Website.App_Start
             builder.RegisterType<CartRepository>().As<ICartRepository>().InstancePerRequest();
             builder.RegisterType<SettingsRepository>().As<ISettingsRepository>();
             builder.RegisterType<MailingRepository>().As<IMailingRepository>().InstancePerRequest();
+            builder.RegisterType<PaymentTransactionRepository>().As<IPaymentTransactionRepository>().InstancePerRequest();
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
