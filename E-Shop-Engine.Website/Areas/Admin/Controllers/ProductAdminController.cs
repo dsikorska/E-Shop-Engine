@@ -19,6 +19,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Product")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class ProductAdminController : BaseController
     {
         private IProductRepository _productRepository;
@@ -34,7 +35,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product
-        [HttpGet]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
@@ -62,6 +62,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        [NonAction]
         private IEnumerable<Product> GetSearchingResult(string search)
         {
             IEnumerable<Product> resultName = _productRepository.GetProductsByName(search);
@@ -70,7 +71,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return result;
         }
 
-        [HttpGet]
+        // GET: Admin/Product/Edit?id
+        [ChildActionOnly]
         public ViewResult Edit(int id)
         {
             Product product = _productRepository.GetById(id);
@@ -80,8 +82,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Product/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Edit(ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -94,7 +98,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Product/Create
+        [ChildActionOnly]
         public ViewResult Create()
         {
             ProductAdminViewModel model = new ProductAdminViewModel
@@ -105,8 +110,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View("Edit", model);
         }
 
+        // POST: Admin/Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -122,6 +129,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Admin/Product/GetSubcategories?id
         public JsonResult GetSubcategories(int id)
         {
             ICollection<Subcategory> subcategories = _categoryRepository.GetById(id)?.Subcategories;
@@ -135,7 +143,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        // GET: Admin/Product/Details?id
         public ActionResult Details(int id)
         {
             Product product = _productRepository.GetById(id);
@@ -146,8 +154,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Product/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Delete(int id)
         {
             _productRepository.Delete(id);
@@ -155,7 +165,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Product/GetImage?id
         public FileContentResult GetImage(int id)
         {
             Product product = _productRepository.GetById(id);

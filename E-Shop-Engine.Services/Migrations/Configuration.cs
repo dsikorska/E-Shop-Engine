@@ -48,6 +48,11 @@ namespace E_Shop_Engine.Services.Migrations
                 roleManager.Create(new AppRole(roleName));
             }
 
+            if (!roleManager.RoleExists("Staff"))
+            {
+                roleManager.Create(new AppRole("Staff"));
+            }
+
             AppUser user = userManager.FindByEmail(email);
             if (user == null)
             {

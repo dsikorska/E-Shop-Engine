@@ -20,17 +20,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Account")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class AccountAdminController : BaseController
     {
-        private readonly AppUserManager UserManager;
+        private readonly AppUserManager _userManager;
 
         public AccountAdminController(AppUserManager userManager)
         {
-            UserManager = userManager;
+            _userManager = userManager;
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Admin/Identity
+        // GET: Admin/Account/
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
@@ -40,7 +41,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             if (model.Count() == 0)
             {
-                model = UserManager.Users;
+                model = _userManager.Users;
             }
 
             if (reversable)
@@ -59,18 +60,20 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        [NonAction]
         private IEnumerable<AppUser> GetSearchingResult(string search)
         {
-            IEnumerable<AppUser> resultEmail = UserManager.FindUsersByEmail(search);
-            IEnumerable<AppUser> resultName = UserManager.FindUsersByName(search);
-            IEnumerable<AppUser> resultSurname = UserManager.FindUsersBySurname(search);
+            IEnumerable<AppUser> resultEmail = _userManager.FindUsersByEmail(search);
+            IEnumerable<AppUser> resultName = _userManager.FindUsersByName(search);
+            IEnumerable<AppUser> resultSurname = _userManager.FindUsersBySurname(search);
             IEnumerable<AppUser> result = resultEmail.Union(resultName).Union(resultSurname).ToList();
             return result;
         }
 
+        // GET: Admin/Account/Details?id
         public async Task<ActionResult> Details(string id)
         {
-            AppUser user = await UserManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 UserAdminViewModel viewModel = Mapper.Map<UserAdminViewModel>(user);
@@ -79,14 +82,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return Redirect("Index");
         }
 
+        // POST: Admin/Account/Delete?id
+        [ChildActionOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrators")]
         public async Task<ActionResult> Delete(string id)
         {
-            AppUser user = await UserManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                IdentityResult result = await UserManager.DeleteAsync(user);
+                IdentityResult result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -102,9 +108,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
         }
 
+        // GET: Admin/Account/Edit?id
+        [ChildActionOnly]
+        [Authorize(Roles = "Administrators")]
         public async Task<ActionResult> Edit(string id)
         {
-            AppUser user = await UserManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
             UserAdminViewModel model = Mapper.Map<UserAdminViewModel>(user);
             if (user != null)
             {
@@ -116,15 +125,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
         }
 
+        // POST: Admin/Account/Edit
+        [ChildActionOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrators")]
         public async Task<ActionResult> Edit(UserAdminViewModel model)
         {
-            AppUser user = await UserManager.FindByIdAsync(model.Id);
+            AppUser user = await _userManager.FindByIdAsync(model.Id);
             if (user != null)
             {
                 user.Email = model.Email;
-                IdentityResult validEmail = await UserManager.UserValidator.ValidateAsync(user);
+                IdentityResult validEmail = await _userManager.UserValidator.ValidateAsync(user);
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
@@ -136,7 +148,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                     user.Surname = model.Surname;
                     user.PhoneNumber = model.PhoneNumber;
                     user.UserName = model.Email;
-                    IdentityResult result = await UserManager.UpdateAsync(user);
+                    IdentityResult result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");
@@ -154,6 +166,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        [NonAction]
         private void AddErrorsFromResult(IdentityResult result)
         {
             foreach (string error in result.Errors)

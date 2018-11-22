@@ -18,6 +18,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Category")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class CategoryAdminController : BaseController
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -29,7 +30,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Category
-        [HttpGet]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = false, bool reversable = false)
         {
@@ -58,7 +58,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
+        // GET: Admin/Category?id
+        [ChildActionOnly]
         public ViewResult Edit(int id)
         {
             Category category = _categoryRepository.GetById(id);
@@ -67,8 +68,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Category/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Edit(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -80,14 +83,17 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Category/Create
+        [ChildActionOnly]
         public ViewResult Create()
         {
             return View("Edit");
         }
 
+        // Post: Admin/Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Create(CategoryAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -98,7 +104,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Category/Details?id
         public ActionResult Details(int id)
         {
             Category category = _categoryRepository.GetById(id);
@@ -107,8 +113,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Category/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Delete(int id)
         {
             try

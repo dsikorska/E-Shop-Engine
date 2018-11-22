@@ -58,7 +58,7 @@
                     </li>
                 }
                 <li class="nav-item active">
-                    @if (HttpContext.Current.User.IsInRole("Administrators"))
+                    @if (HttpContext.Current.User.IsInRole("Administrators") || HttpContext.Current.User.IsInRole("Staff"))
                     {
                         @Html.ActionLink("Admin Panel", "Index", "OrderAdmin", new { area = "Admin" }, new { @class = "nav-link text-white btn btn-primary" })
                     }

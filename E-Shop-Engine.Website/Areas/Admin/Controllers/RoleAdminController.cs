@@ -17,6 +17,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Role")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators")]
     public class RoleAdminController : BaseController
     {
         private readonly AppUserManager UserManager;
@@ -29,7 +30,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Admin/RoleAdmin
+        // GET: Admin/Role
         public ActionResult Index()
         {
             IQueryable<AppRole> model = RoleManager.Roles;
@@ -41,8 +42,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View();
         }
 
+        // POST: Admin/Role/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public async Task<ActionResult> Create([Required]string name)
         {
             if (ModelState.IsValid)
@@ -60,6 +63,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(name);
         }
 
+        // GET: Admin/Role/Edit?id
+        [ChildActionOnly]
         public async Task<ActionResult> Edit(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
@@ -76,8 +81,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Role/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public async Task<ActionResult> Edit(RoleModificationViewModel model)
         {
             IdentityResult result;
@@ -104,8 +111,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View("_Error", new string[] { "Role Not Found" });
         }
 
+        // POST: Admin/Role/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public async Task<ActionResult> Delete(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
@@ -127,6 +136,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
         }
 
+        [NonAction]
         private void AddErrorsFromResult(IdentityResult result)
         {
             foreach (string error in result.Errors)

@@ -17,6 +17,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Order")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class OrderAdminController : BaseController
     {
         private readonly IOrderRepository _orderRepository;
@@ -58,6 +59,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        // GET: Admin/Order/Details?id
         public ActionResult Details(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -66,6 +68,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // GET: Admin/Order/Edit?id
+        [ChildActionOnly]
         public ViewResult Edit(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -74,8 +78,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Order/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ChildActionOnly]
         public ActionResult Edit(OrderAdminViewModel model)
         {
             if (!ModelState.IsValid)
@@ -93,6 +99,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [NonAction]
         private IEnumerable<Order> GetSearchingResult(string search)
         {
             IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(search);

@@ -13,6 +13,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Settings")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators")]
     public class SettingsAdminController : BaseController
     {
         private readonly ISettingsRepository _settingsRepository;
@@ -25,6 +26,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        // GET: Admin/Settings/Edit
+        [ChildActionOnly]
         public ActionResult Edit()
         {
             Settings model = _settingsRepository.Get();
@@ -32,8 +35,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        // POST: Admin/Settings/Edit
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [ChildActionOnly]
         public ActionResult Edit(SettingsAdminViewModel model)
         {
             if (!ModelState.IsValid)

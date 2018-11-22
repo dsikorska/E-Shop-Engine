@@ -186,7 +186,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("_Error", new string[] { "You are already logged in." });
+                return View("_Error", new string[] { "Access denied." });
             }
 
             return View();
