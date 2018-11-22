@@ -2,84 +2,94 @@
 @using X.PagedList;
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Common;
+@using E_Shop_Engine.Website.Models.Custom;
 @model IPagedList<E_Shop_Engine.Website.Models.OrderViewModel>
 
 @{
     ViewBag.Title = "Your Orders";
 }
 
-@if (Model.PageNumber != 1)
-{
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "Index", "Account", null, new { @class = "btn btn-secondary" })
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        @Ajax.ActionLink("Profile Informations", "Details", "Account", null,
+            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link", id = "nav-personal-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
+
+        @Ajax.ActionLink("Address", "AddressDetails", "Account", null,
+            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link", id = "nav-address-tab", data_toggle = "tab", role = "tab", aria_selected = "false" })
+
+        @Ajax.ActionLink("Orders", "Index", "Order", null,
+            new AjaxOptions() { UpdateTargetId = "content", InsertionMode = InsertionMode.Replace },
+            new { @class = "nav-item nav-link active show", id = "nav-orders-tab", data_toggle = "tab", role = "tab", aria_selected = "true" })
     </div>
-}
-
-<div class="table-responsive">
-    <table class="table table-striped table-hover table-light text-center">
-        <thead class="table-primary">
-            <tr>
-                <th scope="col">
-                    @Ajax.ActionLink("Created", "Index", "Order", new { page = 1, sortOrder = "Created", descending = false },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
-                </th>
-                <th scope="col">
-                    @Ajax.ActionLink("Finished", "Index", "Order", new { page = 1, sortOrder = "Finished", descending = true },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
-                </th>
-                <th scope="col">
-                    @Ajax.ActionLink("Total Products", "Index", "Order", new { page = 1, sortOrder = "TotalProducts", descending = true },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
-                </th>
-                <th scope="col">
-                    @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "Payment", descending = true },
-                        new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
-                </th>
-                <th scope="col">
-                    Action
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-light text-center">
+            <thead class="table-primary">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Created)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Finished)
-                    </td>
-                    <td>
-                        @item.TotalProducts
-                    </td>
-                    <td>
-                        @item.Payment @Html.Settings().Currency
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
-                    </td>
+                    <th scope="col">
+                        @Ajax.ActionLink("Created", "Index", "Order", new { page = 1, sortOrder = "Created", descending = false, reversable = true },
+                            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    </th>
+                    <th scope="col">
+                        @Ajax.ActionLink("Finished", "Index", "Order", new { page = 1, sortOrder = "Finished", descending = true, reversable = true },
+                            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    </th>
+                    <th scope="col">
+                        @Ajax.ActionLink("Total Products", "Index", "Order", new { page = 1, sortOrder = "TotalProducts", descending = true, reversable = true },
+                            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    </th>
+                    <th scope="col">
+                        @Ajax.ActionLink("Total Value", "Index", "Order", new { page = 1, sortOrder = "Payment", descending = true, reversable = true },
+                            new AjaxOptions() { UpdateTargetId = "nav-tabContent", InsertionMode = InsertionMode.Replace })
+                    </th>
+                    <th scope="col">
+                        Action
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Finished)
+                        </td>
+                        <td>
+                            @item.TotalProducts
+                        </td>
+                        <td>
+                            @item.Payment @Html.Settings().Currency
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Order", new { id = item.Id }, new { @class = "btn btn-info btn-sm mb-1" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + SortingManager.SortOrder + "&descending=" + SortingManager.IsSortDescending); }, new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination justify-content-center" },
+        LinkToFirstPageFormat = "<<",
+        LinkToPreviousPageFormat = "<",
+        LinkToNextPageFormat = ">",
+        LinkToLastPageFormat = ">>",
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+        MaximumPageNumbersToDisplay = 10
+    })
 </div>
-
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.SortDescending); }, new PagedListRenderOptions
-{
-    LiElementClasses = new string[] { "page-item" },
-    PageClasses = new string[] { "page-link" },
-    UlElementClasses = new string[] { "pagination justify-content-center" },
-    LinkToFirstPageFormat = "<<",
-    LinkToPreviousPageFormat = "<",
-    LinkToNextPageFormat = ">",
-    LinkToLastPageFormat = ">>",
-    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-    DisplayLinkToLastPage = PagedListDisplayMode.Always,
-    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-    MaximumPageNumbersToDisplay = 10
-})
-
 @section Scripts {
     @Scripts.Render("~/Bundles/ajax")
 }

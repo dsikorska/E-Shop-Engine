@@ -17,12 +17,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Order")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class OrderAdminController : BaseController
     {
-        private readonly IRepository<Order> _orderRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IMailingRepository _mailingRepository;
 
-        public OrderAdminController(IRepository<Order> orderRepository, IMailingRepository mailingRepository)
+        public OrderAdminController(IOrderRepository orderRepository, IMailingRepository mailingRepository)
         {
             _orderRepository = orderRepository;
             _mailingRepository = mailingRepository;
@@ -30,20 +31,35 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order
-        public ActionResult Index(int? page, string sortOrder, bool descending = true)
+        [ResetDataDictionaries]
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
-            IQueryable<Order> model = _orderRepository.GetAll();
-            IEnumerable<OrderAdminViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderAdminViewModel>(model, "Created", sortOrder, descending);
+            ManageSearchingTermStatus(ref search);
+
+            IEnumerable<Order> model = GetSearchingResult(search);
+
+            if (model.Count() == 0)
+            {
+                model = _orderRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+
+            IEnumerable<OrderAdminViewModel> mappedModel = Mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
+            IEnumerable<OrderAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<OrderAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+            IPagedList<OrderAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
         }
 
+        // GET: Admin/Order/Details?id
         public ActionResult Details(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -52,6 +68,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // GET: Admin/Order/Edit?id
         public ViewResult Edit(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -60,6 +77,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Order/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OrderAdminViewModel model)
@@ -77,6 +95,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
 
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        private IEnumerable<Order> GetSearchingResult(string search)
+        {
+            IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(search);
+            IEnumerable<Order> resultTransactionNumber = _orderRepository.FindByTransactionNumber(search);
+            IEnumerable<Order> model = resultOrderNumber.Union(resultTransactionNumber).ToList();
+            return model;
         }
     }
 }

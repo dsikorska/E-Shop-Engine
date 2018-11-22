@@ -11,7 +11,6 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
-using Microsoft.AspNet.Identity;
 using NLog;
 using X.PagedList;
 
@@ -34,21 +33,22 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Order
-        public ActionResult Index(int? page, string sortOrder, bool descending = true)
+        // GET: /Order
+        [ResetDataDictionaries]
+        public ActionResult Index(int? page, string sortOrder, bool descending = true, bool reversable = false)
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
-            if (page == 1)
+            AppUser user = GetCurrentUser();
+            if (reversable)
             {
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IQueryable<Order> model = user.Orders.AsQueryable();
-            IEnumerable<OrderViewModel> mappedModel = PagedListHelper.SortBy<Order, OrderViewModel>(model, "Created", sortOrder, descending);
+            IEnumerable<Order> model = user.Orders;
+            IEnumerable<OrderViewModel> mappedModel = Mapper.Map<IEnumerable<OrderViewModel>>(model);
+            IEnumerable<OrderViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<OrderViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 10);
+            IPagedList<OrderViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 5);
 
             viewModel = viewModel.Select(x =>
             {
@@ -65,16 +65,17 @@ namespace E_Shop_Engine.Website.Controllers
             return View(viewModel);
         }
 
+        // GET: /Order/Create
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             model.AppUser = user;
             model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             return View(model);
         }
 
+        // POST: /Order/Create
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Create(OrderViewModel model)
@@ -84,8 +85,7 @@ namespace E_Shop_Engine.Website.Controllers
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return PartialView(model);
             }
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
             model.Created = DateTime.UtcNow;
             model.AppUser = user;
@@ -102,12 +102,12 @@ namespace E_Shop_Engine.Website.Controllers
             return Json(new { url = Url.Action("Index", "Home") });
         }
 
+        // GET: /Order/Details?id
         public ActionResult Details(int id)
         {
             Order model = _orderRepository.GetById(id);
 
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
 
             if (user.Orders.Contains(model))
             {

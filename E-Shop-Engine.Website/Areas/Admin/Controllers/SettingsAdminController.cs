@@ -13,16 +13,20 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Settings")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators")]
     public class SettingsAdminController : BaseController
     {
         private readonly ISettingsRepository _settingsRepository;
+        private readonly IMailingRepository _mailingRepository;
 
-        public SettingsAdminController(ISettingsRepository settingsRepository)
+        public SettingsAdminController(ISettingsRepository settingsRepository, IMailingRepository mailingRepository)
         {
             _settingsRepository = settingsRepository;
+            _mailingRepository = mailingRepository;
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        // GET: Admin/Settings/Edit
         public ActionResult Edit()
         {
             Settings model = _settingsRepository.Get();
@@ -30,6 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        // POST: Admin/Settings/Edit
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Edit(SettingsAdminViewModel model)
@@ -39,6 +44,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View(model);
             }
 
+            _mailingRepository.TestMail();
             _settingsRepository.Update(Mapper.Map<Settings>(model));
             return Redirect("/Admin/Order/Index");
         }

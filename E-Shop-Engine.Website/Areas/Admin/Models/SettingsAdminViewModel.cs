@@ -20,21 +20,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         [Display(Name = "SMTP Server")]
         public string SMTP { get; set; }
 
-        [Display(Name = "SMTP Username")]
-        public string SMTPUsername { get; set; }
-
-        [Required(AllowEmptyStrings = false)]
-        [Display(Name = "SMTP Password")]
-        public string SMTPPassword { get; set; }
-
         [Display(Name = "SMTP Port")]
         public string SMTPPort { get; set; }
 
         [Display(Name = "Enable SSL?")]
         public bool? SMTPEnableSSL { get; set; }
-
-        [Display(Name = "DotPay PIN")]
-        public string DotPayPIN { get; set; }
 
         [Display(Name = "DotPay Id")]
         public string DotPayId { get; set; }

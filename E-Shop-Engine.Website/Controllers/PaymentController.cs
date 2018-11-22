@@ -10,7 +10,6 @@ using E_Shop_Engine.Domain.TempModel;
 using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Utilities;
-using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using NLog;
 
@@ -36,10 +35,11 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
+        // GET: /Payment/DotPayPayment
+        [Authorize]
         public ActionResult DotPayPayment()
         {
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = _userManager.FindById(userId);
+            AppUser user = GetCurrentUser();
             OrderedCart orderedCart = Mapper.Map<OrderedCart>(user.Cart);
             decimal totalValue = _cartRepository.GetTotalValue(user.Cart);
             DateTime created = DateTime.UtcNow;
@@ -85,6 +85,7 @@ namespace E_Shop_Engine.Website.Controllers
             return Redirect(redirectUrl);
         }
 
+        // POST: /Payment/DotPayConfirmation
         [HttpPost]
         public HttpStatusCode DotPayConfirmation(DotPayTransactionResponse model)
         {

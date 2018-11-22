@@ -50,18 +50,6 @@
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            @Html.LabelFor(model => model.SMTPUsername, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.SMTPUsername, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.SMTPPassword, new { @class = "input-group-text" })
-        </div>
-        @Html.PasswordFor(model => model.SMTPPassword, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
             @Html.LabelFor(model => model.SMTPPort, new { @class = "input-group-text" })
         </div>
         @Html.TextBoxFor(model => model.SMTPPort, new { @class = "form-control" })
@@ -72,16 +60,11 @@
         </div>
         @Html.TextBoxFor(model => model.DotPayId, new { @class = "form-control" })
     </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.DotPayPIN, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.DotPayPIN, new { @class = "form-control" })
-    </div>
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
         <a class="btn btn-secondary btn-lg text-white" href="@ViewBag.returnUrl">Go back</a>
         <input type="submit" value="Save" class="btn btn-success btn-lg" />
     </div>
+    <small>You will receive email on save, if your SMTP is set properly. Please check your "Contact Email Address".</small>
 }
 
 @section Scripts {

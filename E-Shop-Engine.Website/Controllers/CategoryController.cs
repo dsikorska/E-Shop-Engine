@@ -17,14 +17,13 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        [HttpGet]
+        // GET: /Category/{name}/{id}
         public ViewResult Details(int id, string sortOrder, bool descending = false)
         {
             if (!string.IsNullOrEmpty(sortOrder))
             {
                 SaveSortingState(sortOrder, descending);
             }
-            TempData.Keep();
             Category category = _categoryRepository.GetById(id);
             CategoryViewModel model = Mapper.Map<CategoryViewModel>(category);
             return View(model);

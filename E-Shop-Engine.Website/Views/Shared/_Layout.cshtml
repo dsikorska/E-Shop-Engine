@@ -1,4 +1,5 @@
 ﻿@using E_Shop_Engine.Website.Extensions
+@using E_Shop_Engine.Website.Models.Custom;
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,9 +25,9 @@
 <body>
     <!-- Start Modal -->
     <div class="notification" id="notify" tabindex="-1" role="dialog">
-        <div id="notifyType" class="@TempData["notifyType"]" role="document">
-            <h4 class="notification-title" id="notifyTitle">@TempData["notifyTitle"]</h4>
-            <div class="notification-text" id="notifyText">@TempData["notifyText"]</div>
+        <div id="notifyType" class="@NotifyManager.Type" role="document">
+            <h4 class="notification-title" id="notifyTitle">@NotifyManager.Title</h4>
+            <div class="notification-text" id="notifyText">@NotifyManager.Text</div>
             <span class="notification-dismiss">x</span>
         </div>
     </div>
@@ -42,46 +43,46 @@
 
             @using (Html.BeginForm("Search", "Product", FormMethod.Get, new { @class = "form-inline w-auto m-auto" }))
             {
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="text">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
             }
 
-                <ul class="navbar-nav">
+            <ul class="navbar-nav">
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item active">
+                        @Html.Action("CountItems", "Cart")
+                    </li>
+                    <li class="nav-item active">
+                        @Html.ActionLink("Your Account", "Index", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
+                    </li>
+                }
+                <li class="nav-item active">
+                    @if (HttpContext.Current.User.IsInRole("Administrators") || HttpContext.Current.User.IsInRole("Staff"))
+                    {
+                        @Html.ActionLink("Admin Panel", "Index", "OrderAdmin", new { area = "Admin" }, new { @class = "nav-link text-white btn btn-primary" })
+                    }
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link text-white btn btn-primary" })
+                </li>
+                <li class="nav-item active">
+                    @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Sign In", "Create", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
+                    }
+                </li>
+                <li class="nav-item active">
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item active">
-                            @Html.Action("CountItems", "Cart")
-                        </li>
-                        <li class="nav-item active">
-                            @Html.ActionLink("Your Account", "Index", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
-                        </li>
+                        @Html.ActionLink("Log Out", "Logout", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
                     }
-                    <li class="nav-item active">
-                        @if (HttpContext.Current.User.IsInRole("Administrators"))
-                        {
-                            @Html.ActionLink("Admin Panel", "Index", "OrderAdmin", new { area = "Admin" }, new { @class = "nav-link text-white btn btn-primary" })
-                        }
-                    </li>
-                    <li class="nav-item active">
-                        @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link text-white btn btn-primary" })
-                    </li>
-                    <li class="nav-item active">
-                        @if (!HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            @Html.ActionLink("Sign In", "Create", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
-                        }
-                    </li>
-                    <li class="nav-item active">
-                        @if (HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            @Html.ActionLink("Log Out", "Logout", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
-                        }
-                    </li>
-                </ul>
+                    else
+                    {
+                        @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "nav-link text-white btn btn-primary" })
+                    }
+                </li>
+            </ul>
         </div>
     </nav>
     <div class="container-fluid pl-0">

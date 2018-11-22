@@ -1,4 +1,8 @@
 ﻿using System.Web.Mvc;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Website.Models.Custom;
+using Microsoft.AspNet.Identity;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -17,7 +21,7 @@ namespace E_Shop_Engine.Website.Controllers
             filterContext.ExceptionHandled = true;
 
             logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
-            string msg = "We're sorry. Something unexpected happend! Please try again later or contact with us.";
+            string msg = "We're sorry. Something unexpected happend! Please try again later or contact us.";
 
             if (filterContext.IsChildAction)
             {
@@ -29,23 +33,47 @@ namespace E_Shop_Engine.Website.Controllers
             }
         }
 
+        [NonAction]
+        protected AppUser GetCurrentUser()
+        {
+            AppUserManager userManager = DependencyResolver.Current.GetService<AppUserManager>();
+            string userId = HttpContext.User.Identity.GetUserId();
+            AppUser user = userManager.FindById(userId);
+            return user;
+        }
+
+        [NonAction]
         protected void ReverseSorting(ref bool descending, string sortOrder)
         {
-            if (TempData.ContainsKey("SortOrder") &&
-                TempData["SortOrder"] != null &&
-                sortOrder == TempData["SortOrder"].ToString() &&
-                descending == (bool)TempData["SortDescending"])
+            if (SortingManager.SortOrder != null &&
+                sortOrder == SortingManager.SortOrder &&
+                descending == SortingManager.IsSortDescending)
             {
                 descending = !descending;
             }
         }
 
-        protected void SaveSortingState(string sortOrder, bool descending)
+        [NonAction]
+        protected void SaveSortingState(string sortOrder, bool descending, string searchTerm = null)
         {
-            TempData["SortOrder"] = sortOrder;
-            TempData["SortDescending"] = descending;
-            ViewBag.SortOrder = sortOrder;
-            ViewBag.SortDescending = descending;
+            SortingManager.SetSorting(sortOrder, descending, searchTerm);
+        }
+
+        [NonAction]
+        protected void ManageSearchingTermStatus(ref string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                SortingManager.SetSearchingTerm(search);
+            }
+            else if (search == "*")
+            {
+
+            }
+            else if (SortingManager.SearchTerm != null)
+            {
+                search = SortingManager.SearchTerm; ;
+            }
         }
     }
 }

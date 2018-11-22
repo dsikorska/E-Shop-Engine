@@ -11,18 +11,5 @@
         @Html.ActionLink("Go to " + Model.CategoryName, "Details", "Category", new { id = Model.CategoryId, name = Model.CategoryName }, new { @class = "btn btn-primary m-2" })
     </div>
 
-    <div class="dropdown text-right">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort By
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Price&descending=true">Price descending</a>
-            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Price&descending=false">Price</a>
-            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Name&descending=true">Name descending</a>
-            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=Name&descending=false">Name</a>
-            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=CatalogNumber&descending=true">Catalog Number descending</a>
-            <a class="dropdown-item" href="@Request.Url.LocalPath?page=1&sortOrder=CatalogNumber&descending=false">Catalog Number</a>
-        </div>
-    </div>
     @Html.Action("ProductsToPagedList", "Product", new { model = Model.Products })
 </div>

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Services.Data.Identity;
@@ -10,7 +9,6 @@ using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using NLog;
 
 namespace E_Shop_Engine.Website.Areas.Admin.Controllers
@@ -19,35 +17,20 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Role")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators")]
     public class RoleAdminController : BaseController
     {
-        //private AppUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-        //    }
-        //}
-
-        private AppRoleManager RoleManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppRoleManager>();
-            }
-        }
-
         private readonly AppUserManager UserManager;
-        //private readonly AppRoleManager RoleManager;
+        private readonly AppRoleManager RoleManager;
 
-        public RoleAdminController(AppUserManager userManager/*, AppRoleManager roleManager*/)
+        public RoleAdminController(AppUserManager userManager, AppRoleManager roleManager)
         {
             UserManager = userManager;
-            //RoleManager = roleManager;
+            RoleManager = roleManager;
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        // GET: Admin/RoleAdmin
+        // GET: Admin/Role
         public ActionResult Index()
         {
             IQueryable<AppRole> model = RoleManager.Roles;
@@ -59,6 +42,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View();
         }
 
+        // POST: Admin/Role/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Required]string name)
@@ -78,6 +62,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(name);
         }
 
+        // GET: Admin/Role/Edit?id
         public async Task<ActionResult> Edit(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
@@ -94,6 +79,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Role/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(RoleModificationViewModel model)
@@ -122,6 +108,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View("_Error", new string[] { "Role Not Found" });
         }
 
+        // POST: Admin/Role/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
@@ -145,6 +132,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
         }
 
+        [NonAction]
         private void AddErrorsFromResult(IdentityResult result)
         {
             foreach (string error in result.Errors)

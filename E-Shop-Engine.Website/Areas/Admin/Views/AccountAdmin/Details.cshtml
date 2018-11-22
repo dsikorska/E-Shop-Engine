@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.UserAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.UserAdminViewModel
 
 @{
     ViewBag.Title = "User Details - " + Model.Name + Model.Surname;
@@ -11,13 +12,87 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
 </p>
 
-<dl>
-    <dt>@Html.DisplayNameFor(model => model.Name) @Html.DisplayNameFor(model => model.Surname)</dt>
-    <dd>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname)</dd>
+<div class="d-flex flex-nowrap">
+    <div class="w-auto mr-2 border-right border-primary">
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Name) @Html.DisplayNameFor(model => model.Surname)</dt>
+            <dd>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname)</dd>
 
-    <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-    <dd>@Html.DisplayFor(model => model.Email)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd>@Html.DisplayFor(model => model.Email)</dd>
 
-    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
-</dl>
+            <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+            <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Created)</dt>
+            <dd>@Html.DisplayFor(model => model.Created)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Address.Street)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.Street)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Address.Line1) / @Html.DisplayNameFor(model => model.Address.Line2)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.Line1) / @Html.DisplayFor(model => model.Address.Line2)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Address.ZipCode) and @Html.DisplayNameFor(model => model.Address.City)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.ZipCode) @Html.DisplayFor(model => model.Address.City)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Address.State)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.State)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Address.Country)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.Country)</dd>
+        </dl>
+    </div>
+    <div class="w-74 table-responsive">
+        <table class="table table-striped table-hover table-light text-center">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">
+                        ID
+                    </th>
+                    <th scope="col">
+                        Number
+                    </th>
+                    <th scope="col">
+                        Is Paid?
+                    </th>
+                    <th scope="col">
+                        Status
+                    </th>
+                    <th scope="col">
+                        Value
+                    </th>
+                    <th scope="col">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsPaid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderStatus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Payment) @Html.Settings().Currency
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "OrderAdmin", new { id = item.ID }, new { @class = "btn btn-info btn-sm mb-1" })
+                            @Html.ActionLink("Edit", "Edit", "OrderAdmin", new { id = item.ID }, new { @class = "btn btn-primary btn-sm mb-1" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

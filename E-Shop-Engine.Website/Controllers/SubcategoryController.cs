@@ -17,14 +17,13 @@ namespace E_Shop_Engine.Website.Controllers
             logger = LogManager.GetCurrentClassLogger();
         }
 
-        [HttpGet]
+        // GET: /Category/{mainName}/{subcategoryName}/{subcategoryId}
         public ViewResult Details(int id, string sortOrder, bool descending = false)
         {
             if (!string.IsNullOrEmpty(sortOrder))
             {
                 SaveSortingState(sortOrder, descending);
             }
-            TempData.Keep();
             Subcategory subcategory = _subcategoryRepository.GetById(id);
             SubcategoryViewModel model = Mapper.Map<SubcategoryViewModel>(subcategory);
 

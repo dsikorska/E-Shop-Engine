@@ -9,5 +9,6 @@
         void CustomMail(string sender, string senderName, string body);
         void PaymentFailedMail(string mailTo, string orderNumber);
         void OrderChangedStatusMail(string mailTo, string orderNumber, string orderStatus, string title);
+        void TestMail();
     }
 }

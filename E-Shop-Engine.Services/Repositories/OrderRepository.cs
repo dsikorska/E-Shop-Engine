@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Enumerables;
 using E_Shop_Engine.Domain.Interfaces;
@@ -12,9 +13,24 @@ namespace E_Shop_Engine.Services.Repositories
             _dbSet = _context.Orders;
         }
 
-        public Order GetByOrderNumber(string orderNumber)
+        public Order GetByOrderNumber(string number)
         {
-            return _dbSet.Where(x => x.OrderNumber == orderNumber).FirstOrDefault();
+            return _dbSet.Where(x => x.OrderNumber == number).FirstOrDefault();
+        }
+
+        public Order GetByTransactionNumber(string number)
+        {
+            return _dbSet.Where(x => x.TransactionNumber == number).FirstOrDefault();
+        }
+
+        public IEnumerable<Order> FindByOrderNumber(string number)
+        {
+            return _dbSet.Where(x => x.OrderNumber.Contains(number)).Select(x => x);
+        }
+
+        public IEnumerable<Order> FindByTransactionNumber(string number)
+        {
+            return _dbSet.Where(x => x.TransactionNumber.Contains(number)).Select(x => x);
         }
 
         private void SetOrderStatus(Order order, OrderStatus status)

@@ -28,6 +28,7 @@ namespace E_Shop_Engine.Services.Repositories
                 {
                     Product = product,
                     Quantity = quantity,
+                    Cart_Id = cart.ID
                 };
                 cart.CartLines.Add(line);
             }
@@ -45,7 +46,7 @@ namespace E_Shop_Engine.Services.Repositories
                 .DefaultIfEmpty()
                 .FirstOrDefault();
 
-            if (line != null)
+            if (line != null && line.Quantity > 0)
             {
                 line.Quantity -= quantity;
             }

@@ -18,12 +18,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class SubcategoryAdminController : BaseController
     {
-        private readonly IRepository<Subcategory> _subcategoryRepository;
+        private readonly ISubcategoryRepository _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
 
-        public SubcategoryAdminController(IRepository<Subcategory> subcategoryRepository, IRepository<Category> categoryRepository)
+        public SubcategoryAdminController(ISubcategoryRepository subcategoryRepository, IRepository<Category> categoryRepository)
         {
             _subcategoryRepository = subcategoryRepository;
             _categoryRepository = categoryRepository;
@@ -31,23 +32,35 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory
-        [HttpGet]
-        public ActionResult Index(int? page, string sortOrder, bool descending = false)
+        [ResetDataDictionaries]
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
+            ManageSearchingTermStatus(ref search);
 
-            IQueryable<Subcategory> model = _subcategoryRepository.GetAll();
-            IEnumerable<SubcategoryAdminViewModel> mappedModel = PagedListHelper.SortBy<Subcategory, SubcategoryAdminViewModel>(model, "CategoryID", sortOrder, descending);
+            IEnumerable<Subcategory> model = _subcategoryRepository.GetSubcategoriesByName(search);
+
+            if (model.Count() == 0)
+            {
+                model = _subcategoryRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+
+            IEnumerable<SubcategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<SubcategoryAdminViewModel>>(model);
+            IEnumerable<SubcategoryAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.CategoryID, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<SubcategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+            IPagedList<SubcategoryAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
         }
 
-        [HttpGet]
+        // GET: Admin/Subcategory/Edit?id
         public ViewResult Edit(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);
@@ -57,6 +70,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Subcategory/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(SubcategoryAdminViewModel model)
@@ -70,7 +84,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Subcategory/Create
         public ViewResult Create()
         {
             SubcategoryAdminViewModel model = new SubcategoryAdminViewModel
@@ -81,6 +95,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View("Edit", model);
         }
 
+        // POST: Admin/Subcategory/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(SubcategoryAdminViewModel model)
@@ -93,7 +108,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Subcategory/Details?id
         public ActionResult Details(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);
@@ -102,6 +117,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Subcategory/Delete?id
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Delete(int id)

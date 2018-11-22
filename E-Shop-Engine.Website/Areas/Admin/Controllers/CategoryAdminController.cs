@@ -18,33 +18,47 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Category")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class CategoryAdminController : BaseController
     {
-        private readonly IRepository<Category> _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryAdminController(IRepository<Category> categoryRepository)
+        public CategoryAdminController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
             logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Category
-        [HttpGet]
-        public ActionResult Index(int? page, string sortOrder, bool descending = false)
+        [ResetDataDictionaries]
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = false, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
-            IQueryable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryAdminViewModel> mappedModel = PagedListHelper.SortBy<Category, CategoryAdminViewModel>(model, "Id", sortOrder, descending);
+            ManageSearchingTermStatus(ref search);
+
+            IEnumerable<Category> model = _categoryRepository.GetCategoriesByName(search);
+
+            if (model.Count() == 0)
+            {
+                model = _categoryRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+
+            IEnumerable<CategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<CategoryAdminViewModel>>(model);
+            IEnumerable<CategoryAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<CategoryAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+            IPagedList<CategoryAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
         }
 
-        [HttpGet]
+        // GET: Admin/Category?id
         public ViewResult Edit(int id)
         {
             Category category = _categoryRepository.GetById(id);
@@ -53,6 +67,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Category/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CategoryAdminViewModel model)
@@ -66,14 +81,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Category/Create
         public ViewResult Create()
         {
-            CategoryAdminViewModel model = new CategoryAdminViewModel();
-
-            return View("Edit", model);
+            return View("Edit");
         }
 
+        // Post: Admin/Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CategoryAdminViewModel model)
@@ -86,7 +100,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Category/Details?id
         public ActionResult Details(int id)
         {
             Category category = _categoryRepository.GetById(id);
@@ -95,6 +109,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Category/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)

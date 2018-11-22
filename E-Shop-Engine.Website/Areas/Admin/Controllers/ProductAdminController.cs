@@ -19,6 +19,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Product")]
     [Route("{action}")]
     [ReturnUrl]
+    [Authorize(Roles = "Administrators, Staff")]
     public class ProductAdminController : BaseController
     {
         private IProductRepository _productRepository;
@@ -34,22 +35,43 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product
-        [HttpGet]
-        public ActionResult Index(int? page, string sortOrder, bool descending = false)
+        [ResetDataDictionaries]
+        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
-            ReverseSorting(ref descending, sortOrder);
-            IQueryable<Product> model = _productRepository.GetAll();
-            IEnumerable<ProductAdminViewModel> mappedModel = PagedListHelper.SortBy<Product, ProductAdminViewModel>(model, "Name", sortOrder, descending);
+            ManageSearchingTermStatus(ref search);
+
+            IEnumerable<Product> model = GetSearchingResult(search);
+
+            if (model.Count() == 0)
+            {
+                model = _productRepository.GetAll();
+            }
+
+            if (reversable)
+            {
+                ReverseSorting(ref descending, sortOrder);
+            }
+            IEnumerable<ProductAdminViewModel> mappedModel = Mapper.Map<IEnumerable<ProductAdminViewModel>>(model);
+            IEnumerable<ProductAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
-            IPagedList<ProductAdminViewModel> viewModel = mappedModel.ToPagedList(pageNumber, 25);
+            IPagedList<ProductAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending);
+            SaveSortingState(sortOrder, descending, search);
 
             return View(viewModel);
         }
 
-        [HttpGet]
+        [NonAction]
+        private IEnumerable<Product> GetSearchingResult(string search)
+        {
+            IEnumerable<Product> resultName = _productRepository.GetProductsByName(search);
+            IEnumerable<Product> resultCatalogNum = _productRepository.GetProductsByCatalogNumber(search);
+            IEnumerable<Product> result = resultName.Union(resultCatalogNum).ToList();
+            return result;
+        }
+
+        // GET: Admin/Product/Edit?id
         public ViewResult Edit(int id)
         {
             Product product = _productRepository.GetById(id);
@@ -59,6 +81,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Product/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductAdminViewModel model)
@@ -73,7 +96,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Product/Create
         public ViewResult Create()
         {
             ProductAdminViewModel model = new ProductAdminViewModel
@@ -84,6 +107,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View("Edit", model);
         }
 
+        // POST: Admin/Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Exclude = "ImageMimeType")] ProductAdminViewModel model)
@@ -101,6 +125,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Admin/Product/GetSubcategories?id
         public JsonResult GetSubcategories(int id)
         {
             ICollection<Subcategory> subcategories = _categoryRepository.GetById(id)?.Subcategories;
@@ -114,7 +139,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        // GET: Admin/Product/Details?id
         public ActionResult Details(int id)
         {
             Product product = _productRepository.GetById(id);
@@ -125,6 +150,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return View(model);
         }
 
+        // POST: Admin/Product/Delete?id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
@@ -134,7 +160,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        // GET: Admin/Product/GetImage?id
         public FileContentResult GetImage(int id)
         {
             Product product = _productRepository.GetById(id);

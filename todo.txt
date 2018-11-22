@@ -1,25 +1,5 @@
-	public class TotalValuable : DbEntity
-    {
-        public virtual ICollection<CartOneLine> CartLines { get; set; }
-    }
-	
-	    public class CartOneLine : DbEntity
-    {
-        public virtual Product Product { get; set; }
-        public int Quantity { get; set; }
-    }
-	
-	Cart i OrderedCart : TotalValuable
-	CartLine i OrderedCartLine : CartOneLine
-	
-	    public static class ModelHelper
-    {
-        public static decimal GetTotalValue<T>(T model) where T : TotalValuable
-        {
-            return model.CartLines.Sum(x => x.Product.Price * x.Quantity);
-        }
-    }
-	
+cascade delete appuser -> cart
+cartline -> product
 	
 	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />

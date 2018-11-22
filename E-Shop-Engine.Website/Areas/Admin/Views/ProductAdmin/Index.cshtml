@@ -3,6 +3,7 @@
 @using X.PagedList.Mvc;
 @using X.PagedList.Mvc.Common;
 @using E_Shop_Engine.Website.Areas.Admin.Models;
+@using E_Shop_Engine.Website.Models.Custom;
 @model IPagedList<ProductAdminViewModel>
 
 @{
@@ -15,21 +16,28 @@
     @Html.ActionLink("Create new product", "Create", null, new { @class = "btn btn-success" })
 </p>
 
+@using (Html.BeginForm("Index", "ProductAdmin", FormMethod.Get, new { @class = "form-inline my-2" }))
+{
+    <input class="form-control mr-sm-2 w-75" type="search" placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+    @Html.ActionLink("Reset", "Index", new { page = 1, sortOrder = "Name", search = "*", descending = false }, new { @class = "btn btn-secondary mx-1 my-2" })
+}
+
 <div class="table-responsive">
     <table class="table table-striped table-hover table-light text-center">
         <thead class="table-primary">
             <tr>
                 <th scope="col">
-                    @Html.ActionLink("Catalog Number", "Index", new { page = 1, sortOrder = "CatalogNumber", descending = true })
+                    @Html.ActionLink("Catalog Number", "Index", new { page = 1, sortOrder = "CatalogNumber", descending = true, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Name", "Index", new { page = 1, sortOrder = "Name", descending = false })
+                    @Html.ActionLink("Name", "Index", new { page = 1, sortOrder = "Name", descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Number In Stock", "Index", new { page = 1, sortOrder = "NumberInStock", descending = false })
+                    @Html.ActionLink("Number In Stock", "Index", new { page = 1, sortOrder = "NumberInStock", descending = false, reversable = true })
                 </th>
                 <th scope="col">
-                    @Html.ActionLink("Price", "Index", new { page = 1, sortOrder = "Price", descending = true })
+                    @Html.ActionLink("Price", "Index", new { page = 1, sortOrder = "Price", descending = true, reversable = true })
                 </th>
                 <th scope="col">
                     Action
@@ -59,7 +67,7 @@
                         {
                             @Html.AntiForgeryToken()
                             @Html.Hidden("id", item.Id)
-                            <input type="submit" value="Delete" class="btn btn-danger btn-sm mb-1" />
+                            <input type="submit" value="Delete" class="btn btn-danger btn-sm mb-1 js" onclick="return confirm('Are you sure?')" />
                         }
                     </td>
                 </tr>
@@ -68,7 +76,7 @@
     </table>
 </div>
 
-@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + ViewBag.SortOrder + "&descending=" + ViewBag.SortDescending); }, new PagedListRenderOptions
+@Html.PagedListPager((IPagedList)Model, page => { return (Request.Url.LocalPath + "?page=" + page + "&sortOrder=" + SortingManager.SortOrder + "&descending=" + SortingManager.IsSortDescending); }, new PagedListRenderOptions
 {
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" },
