@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -273,7 +274,10 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 AppUser user = Mapper.Map<AppUser>(model);
                 user.Created = DateTime.UtcNow;
-                _cartRepository.NewCart(user);
+                user.Carts = new Collection<Cart>
+                {
+                    new Cart(user)
+                };
 
                 IdentityResult result = new IdentityResult();
                 result = await _userManager.CreateAsync(user, model.Password);

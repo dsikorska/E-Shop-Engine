@@ -1,6 +1,7 @@
 namespace E_Shop_Engine.Services.Migrations
 {
     using System;
+    using System.Collections.ObjectModel;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using E_Shop_Engine.Domain.DomainModel;
@@ -65,7 +66,10 @@ namespace E_Shop_Engine.Services.Migrations
                     EmailConfirmed = true
                 };
 
-                newUser.Carts.Add(new Cart(newUser));
+                newUser.Carts = new Collection<Cart>
+                {
+                    new Cart(newUser)
+                };
 
                 IdentityResult result = userManager.Create(newUser, password);
                 user = userManager.Find(email, password);
