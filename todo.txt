@@ -1,5 +1,4 @@
 cascade delete appuser -> cart
-cartline -> product
 	
 	    <httpErrors errorMode="Custom" existingResponse="Replace">
       <remove statusCode="404" />

@@ -91,6 +91,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                user.Carts?.ToString();
+                user.Orders?.ToList();
+                user.Address?.ToString();
+
                 IdentityResult result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {

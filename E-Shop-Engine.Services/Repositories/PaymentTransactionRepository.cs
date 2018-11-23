@@ -18,14 +18,14 @@ namespace E_Shop_Engine.Services.Repositories
         public bool ValidateSameCurrencyTransaction(string transactionValue, string transactionCurrency, string control, Order order)
         {
             return order.OrderNumber == control &&
-                    order.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity).ToString() == transactionValue &&
+                    order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity).ToString() == transactionValue &&
                     settings.Currency == transactionCurrency;
         }
 
         public bool ValidateDataSavedAtExternalServer(Order order, DotPayOperationDetails externalData)
         {
             return externalData.Control == order.OrderNumber &&
-                    externalData.OriginalAmount == order.OrderedCart.CartLines.Sum(x => x.Product.Price * x.Quantity) &&
+                    externalData.OriginalAmount == order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity) &&
                     externalData.OriginalCurrency == settings.Currency &&
                     externalData.OperationStatus == "completed" &&
                     externalData.OperationType == "payment";

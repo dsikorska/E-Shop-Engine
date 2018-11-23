@@ -54,7 +54,7 @@ namespace E_Shop_Engine.Services.Repositories
 
         public decimal GetCurrentValue(Order order)
         {
-            return order.OrderedCart.CartLines.Sum(x => x.Quantity * x.Product.Price);
+            return order.Cart.CartLines.Sum(x => x.Quantity * x.Product.Price);
         }
     }
 }

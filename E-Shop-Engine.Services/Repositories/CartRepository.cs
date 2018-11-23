@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 
 namespace E_Shop_Engine.Services.Repositories
@@ -71,10 +72,21 @@ namespace E_Shop_Engine.Services.Repositories
             return cart.CartLines.Sum(s => s.Product.Price * s.Quantity);
         }
 
-        public void Clear(Cart cart)
+        public void NewCart(AppUser user)
         {
-            cart.CartLines.Clear();
-            Update(cart);
+            user.Carts.Add(new Cart(user));
+            Save();
+        }
+
+        public void SetCartOrdered(Cart cart)
+        {
+            cart.IsOrdered = true;
+            Save();
+        }
+
+        public Cart GetCurrentCart(AppUser user)
+        {
+            return user.Carts.Select(x => x).Where(x => x.IsOrdered == false).FirstOrDefault();
         }
     }
 }

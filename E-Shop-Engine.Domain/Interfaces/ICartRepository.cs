@@ -1,4 +1,5 @@
 ﻿using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 
 namespace E_Shop_Engine.Domain.Interfaces
 {
@@ -9,6 +10,8 @@ namespace E_Shop_Engine.Domain.Interfaces
         void RemoveLine(Cart cart, Product product);
         decimal GetTotalValue(Cart cart);
         int CountItems(Cart cart);
-        void Clear(Cart cart);
+        void NewCart(AppUser user);
+        void SetCartOrdered(Cart cart);
+        Cart GetCurrentCart(AppUser user);
     }
 }

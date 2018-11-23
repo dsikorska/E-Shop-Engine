@@ -20,7 +20,7 @@ namespace E_Shop_Engine.Website.Models
         public virtual AppUser AppUser { get; set; }
 
         [Display(Name = "Cart")]
-        public virtual OrderedCart OrderedCart { get; set; }
+        public virtual Cart Cart { get; set; }
         public decimal Payment { get; set; }
 
         [Display(Name = "Is Paid")]
@@ -39,7 +39,7 @@ namespace E_Shop_Engine.Website.Models
         {
             get
             {
-                return OrderedCart?.CartLines.Sum(x => x.Product.Price * x.Quantity);
+                return Cart?.CartLines.Sum(x => x.Product.Price * x.Quantity);
             }
         }
 
@@ -47,7 +47,7 @@ namespace E_Shop_Engine.Website.Models
         {
             get
             {
-                return OrderedCart?.CartLines.Sum(x => x.Quantity);
+                return Cart?.CartLines.Sum(x => x.Quantity);
             }
         }
     }
