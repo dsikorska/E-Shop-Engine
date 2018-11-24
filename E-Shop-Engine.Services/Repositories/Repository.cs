@@ -17,12 +17,20 @@ namespace E_Shop_Engine.Services.Repositories
             _dbSet = _context.Set<T>();
         }
 
+        /// <summary>
+        /// Create new entity.
+        /// </summary>
+        /// <param name="entity">New entity.</param>
         public virtual void Create(T entity)
         {
             _context.Set<T>().Add(entity);
             Save();
         }
 
+        /// <summary>
+        /// Delete entity that id matches.
+        /// </summary>
+        /// <param name="id">Search by this id.</param>
         public virtual void Delete(int id)
         {
             T entity = _dbSet.Find(id);
@@ -30,27 +38,46 @@ namespace E_Shop_Engine.Services.Repositories
             Save();
         }
 
+        /// <summary>
+        /// Get all entities from table.
+        /// </summary>
+        /// <returns>Entities from table.</returns>
         public virtual IQueryable<T> GetAll()
         {
             return _dbSet;
         }
 
+        /// <summary>
+        /// Get entity that id matches.
+        /// </summary>
+        /// <param name="id">Search by this id.</param>
+        /// <returns>Entity that id matches searching.</returns>
         public virtual T GetById(int id)
         {
             return _dbSet.Find(id);
         }
 
+        /// <summary>
+        /// Update specified entity.
+        /// </summary>
+        /// <param name="entity">Entity.</param>
         public virtual void Update(T entity)
         {
             _context.Entry<T>(entity).State = EntityState.Modified;
             Save();
         }
 
+        /// <summary>
+        /// Save changes at database.
+        /// </summary>
         public virtual void Save()
         {
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Dispose the object.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

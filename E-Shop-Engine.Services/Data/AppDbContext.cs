@@ -26,13 +26,7 @@ namespace E_Shop_Engine.Services.Data
 
         public AppDbContext() : base("ShopEngineDb")
         {
-            //Database.SetInitializer(new AppDbContextInit());
-            //this.Configuration.LazyLoadingEnabled = false;
-        }
 
-        public static AppDbContext Create()
-        {
-            return new AppDbContext();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

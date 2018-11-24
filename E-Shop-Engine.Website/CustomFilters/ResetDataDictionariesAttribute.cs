@@ -10,6 +10,7 @@ namespace E_Shop_Engine.Website.CustomFilters
             //Do nothing
         }
 
+        // Reset Sorting properties when local path is changed.
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string requestUrl = filterContext.HttpContext.Request.Url.LocalPath;

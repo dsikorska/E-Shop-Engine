@@ -1,8 +1,0 @@
-cascade delete appuser -> cart
-	
-	    <httpErrors errorMode="Custom" existingResponse="Replace">
-      <remove statusCode="404" />
-      <error statusCode="404" responseMode="ExecuteURL" path="/ErrorsPages/404.html" />
-      <remove statusCode="500" />
-      <error statusCode="500" responseMode="ExecuteURL" path="/ErrorsPages/500.html" />
-    </httpErrors>
