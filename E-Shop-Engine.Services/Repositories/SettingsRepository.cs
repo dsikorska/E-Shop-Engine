@@ -17,11 +17,19 @@ namespace E_Shop_Engine.Services.Repositories
             _dbSet = _context.Settings;
         }
 
+        /// <summary>
+        /// Get instance of Settings.
+        /// </summary>
+        /// <returns>Settings.</returns>
         public Settings Get()
         {
             return _dbSet.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Update Settings.
+        /// </summary>
+        /// <param name="entity">Entity.</param>
         public void Update(Settings entity)
         {
             _context.Entry<Settings>(entity).State = EntityState.Modified;

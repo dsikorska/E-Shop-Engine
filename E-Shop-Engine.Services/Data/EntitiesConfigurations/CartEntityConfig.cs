@@ -8,6 +8,11 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
         public CartEntityConfig()
         {
             HasKey(c => c.ID);
+
+            HasRequired(c => c.AppUser)
+                .WithMany(c => c.Carts)
+                .Map(c => c.MapKey("AppUser_Id"))
+                .WillCascadeOnDelete(true);
         }
     }
 }

@@ -4,7 +4,16 @@ namespace E_Shop_Engine.Domain.Interfaces
 {
     public interface ISettingsRepository
     {
+        /// <summary>
+        /// Get instance of Settings.
+        /// </summary>
+        /// <returns>Settings.</returns>
         Settings Get();
+
+        /// <summary>
+        /// Update Settings.
+        /// </summary>
+        /// <param name="entity">Entity.</param>
         void Update(Settings entity);
     }
 }

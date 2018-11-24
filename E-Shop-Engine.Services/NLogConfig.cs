@@ -6,6 +6,9 @@ namespace E_Shop_Engine.Services
 {
     public static class NLogConfig
     {
+        /// <summary>
+        /// Set configuration for logging service.
+        /// </summary>
         public static void RegisterConfig()
         {
             LoggingConfiguration config = new LoggingConfiguration();

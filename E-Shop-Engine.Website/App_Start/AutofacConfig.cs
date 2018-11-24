@@ -24,7 +24,7 @@ namespace E_Shop_Engine.Website.App_Start
         {
             ContainerBuilder builder = new ContainerBuilder();
 
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
+            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().As<IAppDbContext>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppSignInManager>().AsSelf().InstancePerRequest();

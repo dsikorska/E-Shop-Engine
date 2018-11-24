@@ -22,11 +22,13 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
 
             HasRequired(c => c.AppUser)
                 .WithOptional()
-                .Map(c => c.MapKey("AppUser_Id"));
+                .Map(c => c.MapKey("AppUser_Id"))
+                .WillCascadeOnDelete(true);
 
-            HasRequired(c => c.OrderedCart)
-                .WithRequiredPrincipal(c => c.Order)
-                .Map(c => c.MapKey("Order_Id"));
+            HasRequired(c => c.Cart)
+                .WithOptional(c => c.Order)
+                .Map(c => c.MapKey("Cart_Id"))
+                .WillCascadeOnDelete(true);
         }
     }
 }

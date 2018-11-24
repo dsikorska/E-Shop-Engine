@@ -4,6 +4,7 @@ using System.Web.Mvc;
 
 namespace E_Shop_Engine.Website.CustomModelBinders
 {
+    // Add this model binder to use "." or "," as separator.
     public class DecimalModelBinder : DefaultModelBinder
     {
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)

@@ -5,6 +5,11 @@ namespace E_Shop_Engine.Utilities
 {
     public static class SHA
     {
+        /// <summary>
+        /// Get SHA256 hash.
+        /// </summary>
+        /// <param name="sum">Calculate hash from this value.</param>
+        /// <returns>SHA256 hash.</returns>
         public static string GetSHA256Hash(string sum)
         {
             SHA256Managed sha256 = new SHA256Managed();

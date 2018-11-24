@@ -9,6 +9,7 @@ namespace E_Shop_Engine.Website.CustomFilters
             // Do nothing
         }
 
+        // Set requested url as return url.
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string requestUrl = filterContext.HttpContext.Request.UrlReferrer?.PathAndQuery;

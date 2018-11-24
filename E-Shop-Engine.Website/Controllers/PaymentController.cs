@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
-using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Enumerables;
@@ -40,8 +39,8 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult DotPayPayment()
         {
             AppUser user = GetCurrentUser();
-            OrderedCart orderedCart = Mapper.Map<OrderedCart>(user.Cart);
-            decimal totalValue = _cartRepository.GetTotalValue(user.Cart);
+            Cart cart = _cartRepository.GetCurrentCart(user);
+            decimal totalValue = _cartRepository.GetTotalValue(cart);
             DateTime created = DateTime.UtcNow;
             string description = "Order number " + created.Ticks;
             string control = created.Ticks.ToString();
@@ -72,7 +71,7 @@ namespace E_Shop_Engine.Website.Controllers
                 AppUser = user,
                 Created = created,
                 IsPaid = false,
-                OrderedCart = orderedCart,
+                Cart = cart,
                 OrderNumber = created.Ticks.ToString(),
                 OrderStatus = OrderStatus.WaitingForPayment,
                 PaymentMethod = PaymentMethod.Dotpay,
@@ -80,7 +79,8 @@ namespace E_Shop_Engine.Website.Controllers
             };
 
             _orderRepository.Create(newOrder);
-            _cartRepository.Clear(user.Cart);
+            _cartRepository.SetCartOrdered(cart);
+            _cartRepository.NewCart(user);
             _mailingRepository.OrderChangedStatusMail(user.Email, newOrder.OrderNumber, newOrder.OrderStatus.ToString(), "Order confirmation " + newOrder.OrderNumber);
             return Redirect(redirectUrl);
         }

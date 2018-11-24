@@ -25,13 +25,15 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IAuthenticationManager _authManager;
         private readonly IRepository<Address> _addressRepository;
         private readonly IMailingRepository _mailingRepository;
+        private readonly ICartRepository _cartRepository;
 
-        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository, IMailingRepository mailingRepository)
+        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository, IMailingRepository mailingRepository, ICartRepository cartRepository)
         {
             _userManager = userManager;
             _authManager = authManager;
             _addressRepository = addressRepository;
             _mailingRepository = mailingRepository;
+            _cartRepository = cartRepository;
             logger = LogManager.GetCurrentClassLogger();
         }
 
@@ -272,10 +274,9 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 AppUser user = Mapper.Map<AppUser>(model);
                 user.Created = DateTime.UtcNow;
-                user.Cart = new Cart()
+                user.Carts = new Collection<Cart>
                 {
-                    CartLines = new Collection<CartLine>(),
-                    AppUser = user
+                    new Cart(user)
                 };
 
                 IdentityResult result = new IdentityResult();

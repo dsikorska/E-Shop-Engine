@@ -70,8 +70,9 @@ namespace E_Shop_Engine.Website.Controllers
         {
             OrderViewModel model = new OrderViewModel();
             AppUser user = GetCurrentUser();
+            Cart cart = _cartRepository.GetCurrentCart(user);
             model.AppUser = user;
-            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
+            model.Cart = cart;
             return View(model);
         }
 
@@ -86,18 +87,16 @@ namespace E_Shop_Engine.Website.Controllers
                 return PartialView(model);
             }
             AppUser user = GetCurrentUser();
-            model.OrderedCart = Mapper.Map<OrderedCart>(user.Cart);
+            Cart cart = _cartRepository.GetCurrentCart(user);
+            model.Cart = cart;
             model.Created = DateTime.UtcNow;
             model.AppUser = user;
 
-            if (model.OrderedCart.CartLines.Count == 0)
+            if (model.Cart.CartLines.Count == 0)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return PartialView("_Error", new string[] { "Cannot order empty cart." });
             }
-
-            _orderRepository.Create(Mapper.Map<Order>(model));
-            _cartRepository.Clear(user.Cart);
 
             return Json(new { url = Url.Action("Index", "Home") });
         }

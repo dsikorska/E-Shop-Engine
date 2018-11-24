@@ -8,6 +8,16 @@ namespace E_Shop_Engine.Website.Extensions
 {
     public static class PagedListHelper
     {
+        /// <summary>
+        /// Before collection can be translated to paged list it needs to be sorted.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="model">Model that needs sorting.</param>
+        /// <param name="defaultSortOrder">Default sort order.</param>
+        /// <param name="sortOrder">Expected sort order.</param>
+        /// <param name="descending">Should sorting be descending?</param>
+        /// <returns>Sorted model.</returns>
         public static IEnumerable<T> SortBy<T, TKey>(IEnumerable<T> model, Expression<Func<T, TKey>> defaultSortOrder, string sortOrder = null, bool descending = false)
         {
             PropertyInfo sortBy = null;

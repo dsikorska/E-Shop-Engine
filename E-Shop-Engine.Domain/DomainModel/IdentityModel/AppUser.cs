@@ -18,7 +18,7 @@ namespace E_Shop_Engine.Domain.DomainModel.IdentityModel
 
         public virtual Address Address { get; set; }
 
-        public virtual Cart Cart { get; set; }
+        public virtual ICollection<Cart> Carts { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {

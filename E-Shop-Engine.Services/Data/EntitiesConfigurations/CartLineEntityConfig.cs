@@ -17,12 +17,14 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             HasRequired(c => c.Product)
-                .WithOptional()
-                .Map(c => c.MapKey("Product_Id"));
+                .WithMany(c => c.CartLines)
+                .Map(c => c.MapKey("Product_Id"))
+                .WillCascadeOnDelete(true);
 
             HasRequired(c => c.Cart)
                 .WithMany(c => c.CartLines)
-                .HasForeignKey(c => c.Cart_Id);
+                .HasForeignKey(c => c.Cart_Id)
+                .WillCascadeOnDelete(true);
 
             Property(c => c.Quantity)
                 .IsRequired();

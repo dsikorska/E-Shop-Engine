@@ -24,13 +24,10 @@ namespace E_Shop_Engine.Services.Data.EntitiesConfigurations
             HasMany(c => c.Orders)
                 .WithRequired(o => o.AppUser);
 
-            HasOptional(c => c.Cart)
-                .WithRequired(o => o.AppUser)
-                .Map(c => c.MapKey("AppUser_Id"));
-
             HasOptional(c => c.Address)
                 .WithRequired(c => c.AppUser)
-                .Map(c => c.MapKey("AppUser_Id"));
+                .Map(c => c.MapKey("AppUser_Id"))
+                .WillCascadeOnDelete(true);
         }
     }
 }

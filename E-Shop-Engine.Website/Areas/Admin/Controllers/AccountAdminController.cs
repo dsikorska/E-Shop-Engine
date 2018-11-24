@@ -91,6 +91,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                // Memorise all child entities.
+                user.Carts?.ToString();
+                user.Orders?.ToList();
+                user.Address?.ToString();
+
                 IdentityResult result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
@@ -134,6 +139,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 user.Email = model.Email;
                 IdentityResult validEmail = await _userManager.UserValidator.ValidateAsync(user);
+
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
@@ -146,6 +152,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                     user.PhoneNumber = model.PhoneNumber;
                     user.UserName = model.Email;
                     IdentityResult result = await _userManager.UpdateAsync(user);
+
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");

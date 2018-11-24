@@ -40,7 +40,7 @@ namespace E_Shop_Engine.Services.Migrations
 
             string roleName = "Administrators";
             string userName = "Admin";
-            string password = "123456";
+            string password = "Qwerty1!";
             string email = "my@email.com";
 
             if (!roleManager.RoleExists(roleName))
@@ -63,14 +63,13 @@ namespace E_Shop_Engine.Services.Migrations
                     UserName = email,
                     Email = email,
                     Created = DateTime.UtcNow,
-                    EmailConfirmed = true,
-                    Cart = new Cart()
-                    {
-                        CartLines = new Collection<CartLine>()
-                    }
+                    EmailConfirmed = true
                 };
 
-                newUser.Cart.AppUser = newUser;
+                newUser.Carts = new Collection<Cart>
+                {
+                    new Cart(newUser)
+                };
 
                 IdentityResult result = userManager.Create(newUser, password);
                 user = userManager.Find(email, password);

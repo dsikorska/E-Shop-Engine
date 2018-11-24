@@ -126,8 +126,6 @@
     <Compile Include="Data\EntitiesConfigurations\CartEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CartLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\CategoryEntityConfig.cs" />
-    <Compile Include="Data\EntitiesConfigurations\OrderedCartEntityConfig.cs" />
-    <Compile Include="Data\EntitiesConfigurations\OrderedCartLineEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\UserEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\OrderEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
@@ -240,6 +238,22 @@
     <Compile Include="Migrations\201811112214582_Remove sensitive data from Settings.cs" />
     <Compile Include="Migrations\201811112214582_Remove sensitive data from Settings.Designer.cs">
       <DependentUpon>201811112214582_Remove sensitive data from Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811222005319_Simplify Cart and Order.cs" />
+    <Compile Include="Migrations\201811222005319_Simplify Cart and Order.Designer.cs">
+      <DependentUpon>201811222005319_Simplify Cart and Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811232103421_Fix cascade delete on orders, carts, products, users.cs" />
+    <Compile Include="Migrations\201811232103421_Fix cascade delete on orders, carts, products, users.Designer.cs">
+      <DependentUpon>201811232103421_Fix cascade delete on orders, carts, products, users.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811232147151_Make product id prop out of model from CartLines.cs" />
+    <Compile Include="Migrations\201811232147151_Make product id prop out of model from CartLines.Designer.cs">
+      <DependentUpon>201811232147151_Make product id prop out of model from CartLines.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811232225144_Add IsORdered prop at Carts.cs" />
+    <Compile Include="Migrations\201811232225144_Add IsORdered prop at Carts.Designer.cs">
+      <DependentUpon>201811232225144_Add IsORdered prop at Carts.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
@@ -357,6 +371,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811112214582_Remove sensitive data from Settings.resx">
       <DependentUpon>201811112214582_Remove sensitive data from Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811222005319_Simplify Cart and Order.resx">
+      <DependentUpon>201811222005319_Simplify Cart and Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811232103421_Fix cascade delete on orders, carts, products, users.resx">
+      <DependentUpon>201811232103421_Fix cascade delete on orders, carts, products, users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811232147151_Make product id prop out of model from CartLines.resx">
+      <DependentUpon>201811232147151_Make product id prop out of model from CartLines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811232225144_Add IsORdered prop at Carts.resx">
+      <DependentUpon>201811232225144_Add IsORdered prop at Carts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

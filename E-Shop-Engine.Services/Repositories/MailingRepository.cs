@@ -17,6 +17,12 @@ namespace E_Shop_Engine.Services.Repositories
             _settings = context.Settings.FirstOrDefault();
         }
 
+        /// <summary>
+        /// User send message to admin address email (specified in Settings).
+        /// </summary>
+        /// <param name="sender">Mail sender.</param>
+        /// <param name="senderName">Sender name.</param>
+        /// <param name="body">Message.</param>
         public void CustomMail(string sender, string senderName, string body)
         {
             string subject = "Contact from " + senderName + " <" + senderName + ">";
@@ -24,6 +30,10 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send welcome mail.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
         public void WelcomeMail(string mailTo)
         {
             string body = Properties.Resources.OnlyTextTemplateMail
@@ -37,6 +47,11 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send mail with activation link.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
+        /// <param name="url">Activation link.</param>
         public void ActivationMail(string mailTo, string url)
         {
             string body = Properties.Resources.OneButtonTemplateMail
@@ -52,6 +67,11 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send mail with reset password link.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
+        /// <param name="url">Reset password link.</param>
         public void ResetPasswordMail(string mailTo, string url)
         {
             string body = Properties.Resources.OneButtonTemplateMail.Replace("#url#", url)
@@ -66,6 +86,10 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send mail that informs recipient password changed.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
         public void PasswordChangedMail(string mailTo)
         {
             string body = Properties.Resources.OnlyTextTemplateMail
@@ -79,6 +103,13 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send mail that informs recipient order status has changed.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
+        /// <param name="orderNumber">Property that identifies the order.</param>
+        /// <param name="orderStatus">Current order status.</param>
+        /// <param name="title">Mail title.</param>
         public void OrderChangedStatusMail(string mailTo, string orderNumber, string orderStatus, string title)
         {
             string body = Properties.Resources.OnlyTextTemplateMail
@@ -92,6 +123,11 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send mail that informs recipient the payment failed.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
+        /// <param name="orderNumber">Property that identifies the failed payment.</param>
         public void PaymentFailedMail(string mailTo, string orderNumber)
         {
             string body = Properties.Resources.OnlyTextTemplateMail
@@ -106,6 +142,9 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send test mail to Contact Email Address (specified in Settings).
+        /// </summary>
         public void TestMail()
         {
             string body = Properties.Resources.OnlyTextTemplateMail
@@ -119,6 +158,10 @@ namespace E_Shop_Engine.Services.Repositories
             SendMail(mail);
         }
 
+        /// <summary>
+        /// Send specified message.
+        /// </summary>
+        /// <param name="mail">Send this message.</param>
         private void SendMail(MailMessage mail)
         {
             SmtpClient smtpClient = GetSmtpCLient();
@@ -132,6 +175,10 @@ namespace E_Shop_Engine.Services.Repositories
             }
         }
 
+        /// <summary>
+        /// Get credentials from application settings.
+        /// </summary>
+        /// <returns>Set up smtp client.</returns>
         private SmtpClient GetSmtpCLient()
         {
             NetworkCredential credentials = new NetworkCredential()
@@ -149,6 +196,13 @@ namespace E_Shop_Engine.Services.Repositories
             };
         }
 
+        /// <summary>
+        /// Setings for message.
+        /// </summary>
+        /// <param name="mailTo">Mail recipient.</param>
+        /// <param name="body">Mail body.</param>
+        /// <param name="subject">Mail subject.</param>
+        /// <returns>Message ready to send.</returns>
         private MailMessage GetMessage(string mailTo, string body, string subject)
         {
             MailAddress from = new MailAddress(_settings.NotificationReplyEmail, _settings.ShopName);

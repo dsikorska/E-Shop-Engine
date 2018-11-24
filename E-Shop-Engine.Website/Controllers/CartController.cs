@@ -30,7 +30,8 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult CountItems()
         {
             AppUser user = GetCurrentUser();
-            int model = _cartRepository.CountItems(user.Cart);
+            Cart cart = _cartRepository.GetCurrentCart(user);
+            int model = _cartRepository.CountItems(cart);
 
             return PartialView("_Cart", model);
         }
@@ -40,8 +41,9 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Details()
         {
             AppUser user = GetCurrentUser();
-            CartViewModel model = Mapper.Map<Cart, CartViewModel>(user.Cart);
-            model.TotalValue = _cartRepository.GetTotalValue(user.Cart);
+            Cart cart = _cartRepository.GetCurrentCart(user);
+            CartViewModel model = Mapper.Map<Cart, CartViewModel>(cart);
+            model.TotalValue = _cartRepository.GetTotalValue(cart);
 
             return View(model);
         }
@@ -54,11 +56,12 @@ namespace E_Shop_Engine.Website.Controllers
         {
             Product product = _productRepository.GetById(id);
             AppUser user = GetCurrentUser();
+            Cart cart = _cartRepository.GetCurrentCart(user);
 
             if (product.NumberInStock > 0)
             {
                 product.NumberInStock -= quantity;
-                _cartRepository.AddItem(user.Cart, product, quantity);
+                _cartRepository.AddItem(cart, product, quantity);
             }
             else
             {
@@ -76,9 +79,10 @@ namespace E_Shop_Engine.Website.Controllers
         {
             Product product = _productRepository.GetById(id);
             AppUser user = GetCurrentUser();
+            Cart cart = _cartRepository.GetCurrentCart(user);
 
             product.NumberInStock += quantity;
-            _cartRepository.RemoveItem(user.Cart, product, quantity);
+            _cartRepository.RemoveItem(cart, product, quantity);
 
             return Redirect(ViewBag.returnUrl);
         }
@@ -91,9 +95,10 @@ namespace E_Shop_Engine.Website.Controllers
         {
             Product product = _productRepository.GetById(id);
             AppUser user = GetCurrentUser();
+            Cart cart = _cartRepository.GetCurrentCart(user);
 
             product.NumberInStock += quantity;
-            _cartRepository.RemoveLine(user.Cart, product);
+            _cartRepository.RemoveLine(cart, product);
 
             return Redirect(ViewBag.returnUrl);
         }
