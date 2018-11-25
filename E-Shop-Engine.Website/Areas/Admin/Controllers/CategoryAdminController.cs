@@ -84,7 +84,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Category/Create
         public ViewResult Create()
         {
-            return View("Edit");
+            return View("Edit", new CategoryAdminViewModel());
         }
 
         // Post: Admin/Category/Create

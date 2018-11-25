@@ -88,7 +88,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Edit", model);
+                return View("Edit", model);
             }
 
             _productRepository.Update(Mapper.Map<Product>(model));
@@ -114,7 +114,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Create");
+                return View("Edit", model);
             }
 
             model.ImageMimeType = model.ImageData?.ContentType;

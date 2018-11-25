@@ -232,6 +232,12 @@
     <Content Include="Areas\Admin\Views\OrderAdmin\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\SettingsAdmin\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\AccountAdmin\Details.cshtml" />
+    <Content Include="App_Data\app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\connectionString.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -378,7 +384,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Payment\" />
   </ItemGroup>
   <ItemGroup>
