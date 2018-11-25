@@ -21,6 +21,8 @@ There is also Unit of Work implemented, but not used at all.
 ```update-database```
 * Build and run the solution.
 
+Application errors are logging in E-Shop-Engine.Website/logs.
+
 ## Built With
 * .NET Framework 4.7
 * ASP.NET MVC 5
