@@ -66,6 +66,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Order/Create
+        [NullNotification]
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();

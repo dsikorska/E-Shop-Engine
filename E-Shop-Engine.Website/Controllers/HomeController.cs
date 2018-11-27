@@ -29,6 +29,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /
+        [NullNotification]
         public ActionResult Index()
         {
             return View();

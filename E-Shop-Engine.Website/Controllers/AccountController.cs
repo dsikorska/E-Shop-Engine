@@ -39,6 +39,7 @@ namespace E_Shop_Engine.Website.Controllers
 
         // GET: /Account
         [Authorize]
+        [NullNotification]
         public ActionResult Index()
         {
             return View();

@@ -20,6 +20,11 @@ There is also Unit of Work implemented, but not used at all.
 * In Package Manager Console run at E-Shop.Engine.Services command:
 ```update-database```
 * Build and run the solution.
+* Login at default admin account: 
+```login: my@email.com```
+```password: Qwerty1!```
+**You can change it at "Your Account" tab. Do it after you set up your SMTP settings at "Admin Panel" - the step below.**
+* Go to "Admin Panel" and at tab Settings update data for your needs.
 
 Application errors are logging in E-Shop-Engine.Website/logs.
 
