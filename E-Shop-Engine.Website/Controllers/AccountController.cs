@@ -18,7 +18,6 @@ using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    [ReturnUrl]
     public class AccountController : BaseController
     {
         private readonly AppUserManager _userManager;
@@ -38,6 +37,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Account
+        [ReturnUrl]
         [Authorize]
         [NullNotification]
         public ActionResult Index()
@@ -46,6 +46,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Account/Details
+        [ReturnUrl]
         [Authorize]
         public ActionResult Details()
         {
@@ -124,6 +125,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Account/Edit
+        [ReturnUrl]
         [Authorize]
         public ActionResult Edit()
         {
@@ -191,6 +193,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Account/Login
+        [ReturnUrl]
         [AllowAnonymous]
         public ActionResult Login()
         {
@@ -249,6 +252,7 @@ namespace E_Shop_Engine.Website.Controllers
 
         // GET: /Account/Create
         [AllowAnonymous]
+        [ReturnUrl]
         public ActionResult Create()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -268,7 +272,7 @@ namespace E_Shop_Engine.Website.Controllers
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return Json(new { url = Url.Action(ViewBag.returnUrl) });
+                return Json(new { url = UrlManager.PopUrl() });
             }
 
             if (ModelState.IsValid)
@@ -453,6 +457,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Account/AddressDetails
+        [ReturnUrl]
         [Authorize]
         public ActionResult AddressDetails()
         {

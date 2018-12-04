@@ -4,10 +4,18 @@ namespace E_Shop_Engine.Website.Models.Custom
 {
     public static class UrlManager
     {
+        /// <summary>
+        /// Use only for paging/sorting!
+        /// </summary>
         public static string PreviousUrl { get; private set; }
 
         private static Stack<string> Urls = new Stack<string>();
 
+        public static bool IsReturning { get; set; }
+
+        /// <summary>
+        /// Use only for paging/sorting!
+        /// </summary>
         public static void SetPreviousUrl(string url)
         {
             PreviousUrl = url;
@@ -18,29 +26,18 @@ namespace E_Shop_Engine.Website.Models.Custom
             Urls.Push(url);
         }
 
-        public static string GetLastUrl()
+        public static string PopUrl()
         {
-            return Urls.Peek();
+            if (Urls.Count != 0)
+            {
+                return Urls.Pop();
+            }
+            return "/";
         }
 
         public static void ClearStack()
         {
             Urls.Clear();
-        }
-
-        public static string GetUrl(int stage)
-        {
-            for (int i = 0; i < stage; i++)
-            {
-                if (i == stage - 1)
-                {
-                    return Urls.Peek();
-                }
-
-                Urls.Pop();
-            }
-
-            return null;
         }
     }
 }

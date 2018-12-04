@@ -98,5 +98,11 @@ namespace E_Shop_Engine.Website.Controllers
 
             return PartialView("_ProductsDeck", viewModel);
         }
+
+        public ActionResult GoBack()
+        {
+            UrlManager.IsReturning = true;
+            return Redirect(UrlManager.PopUrl());
+        }
     }
 }

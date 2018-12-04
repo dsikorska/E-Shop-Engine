@@ -6,6 +6,9 @@
 }
 
 <h1>New Order</h1>
+<p>
+    @Html.ActionLink("Go Back", "GoBack", "Home", null, new { @class = "btn btn-secondary text-white my-2" })
+</p>
 
 <a href="@Url.Action("DotPayPayment", "Payment")" class="btn btn-outline-secondary" id="dotpayLink">
     <img src="~/Content/dotpay_logo.jpg" class="card-img" />

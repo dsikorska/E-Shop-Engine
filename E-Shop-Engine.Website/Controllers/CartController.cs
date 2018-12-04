@@ -4,13 +4,11 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
-using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    [ReturnUrl]
     public class CartController : BaseController
     {
         private readonly ICartRepository _cartRepository;
@@ -68,7 +66,7 @@ namespace E_Shop_Engine.Website.Controllers
                 return View("_Error", new string[] { "Product out of stock!" });
             }
 
-            return Redirect(ViewBag.returnUrl);
+            return RedirectToAction("Details");
         }
 
         // POST: /Cart/RemoveItem?id=&quantity=1
@@ -84,7 +82,7 @@ namespace E_Shop_Engine.Website.Controllers
             product.NumberInStock += quantity;
             _cartRepository.RemoveItem(cart, product, quantity);
 
-            return Redirect(ViewBag.returnUrl);
+            return RedirectToAction("Details");
         }
 
         // POST: /Cart/RemoveLine?id&quantity
@@ -100,7 +98,7 @@ namespace E_Shop_Engine.Website.Controllers
             product.NumberInStock += quantity;
             _cartRepository.RemoveLine(cart, product);
 
-            return Redirect(ViewBag.returnUrl);
+            return RedirectToAction("Details");
         }
     }
 }

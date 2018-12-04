@@ -8,7 +8,7 @@
 <h1>Your Cart</h1>
 
 <p>
-    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Continue shopping</a>
+    @Html.ActionLink("Go Back", "GoBack", "Home", null, new { @class = "btn btn-primary text-white" })
 </p>
 
 <div class=" table-responsive">

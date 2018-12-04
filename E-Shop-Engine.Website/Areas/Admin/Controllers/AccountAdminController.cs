@@ -19,7 +19,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Account")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators, Staff")]
     public class AccountAdminController : BaseController
     {
@@ -32,6 +31,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Account/
+        [ReturnUrl]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
@@ -71,6 +71,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Account/Details?id
+        [ReturnUrl]
         public async Task<ActionResult> Details(string id)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
@@ -113,6 +114,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Account/Edit?id
+        [ReturnUrl]
         [Authorize(Roles = "Administrators")]
         public async Task<ActionResult> Edit(string id)
         {

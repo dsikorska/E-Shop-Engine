@@ -37,7 +37,7 @@
         @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
     </div>
     <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go back", "Index", "AccountAdmin", null, new { @class = "btn btn-secondary btn-lg" })
+        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-lg" })
         <input type="submit" value="Save" class="btn btn-success btn-lg" />
     </div>
 }

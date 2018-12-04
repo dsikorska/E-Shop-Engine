@@ -18,7 +18,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Product")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators, Staff")]
     public class ProductAdminController : BaseController
     {
@@ -35,6 +34,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product
+        [ReturnUrl]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
@@ -72,6 +72,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product/Edit?id
+        [ReturnUrl]
         public ViewResult Edit(int id)
         {
             Product product = _productRepository.GetById(id);
@@ -97,6 +98,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product/Create
+        [ReturnUrl]
         public ViewResult Create()
         {
             ProductAdminViewModel model = new ProductAdminViewModel
@@ -126,6 +128,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product/GetSubcategories?id
+        [ReturnUrl]
         public JsonResult GetSubcategories(int id)
         {
             ICollection<Subcategory> subcategories = _categoryRepository.GetById(id)?.Subcategories;
@@ -140,6 +143,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product/Details?id
+        [ReturnUrl]
         public ActionResult Details(int id)
         {
             Product product = _productRepository.GetById(id);

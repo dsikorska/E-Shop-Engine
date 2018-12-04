@@ -16,7 +16,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Role")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators")]
     public class RoleAdminController : BaseController
     {
@@ -31,12 +30,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Role
+        [ReturnUrl]
         public ActionResult Index()
         {
             IQueryable<AppRole> model = RoleManager.Roles;
             return View(model);
         }
 
+        [ReturnUrl]
         public ActionResult Create()
         {
             return View();
@@ -63,6 +64,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Role/Edit?id
+        [ReturnUrl]
         public async Task<ActionResult> Edit(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);

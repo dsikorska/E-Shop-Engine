@@ -12,7 +12,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Settings")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators")]
     public class SettingsAdminController : BaseController
     {
@@ -27,6 +26,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Settings/Edit
+        [ReturnUrl]
         public ActionResult Edit()
         {
             Settings model = _settingsRepository.Get();
