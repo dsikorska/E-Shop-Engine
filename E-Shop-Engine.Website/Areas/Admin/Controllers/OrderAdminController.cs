@@ -16,7 +16,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Order")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators, Staff")]
     public class OrderAdminController : BaseController
     {
@@ -31,6 +30,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order
+        [ReturnUrl]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
@@ -60,6 +60,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order/Details?id
+        [ReturnUrl]
         public ActionResult Details(int id)
         {
             Order order = _orderRepository.GetById(id);
@@ -69,6 +70,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Order/Edit?id
+        [ReturnUrl]
         public ViewResult Edit(int id)
         {
             Order order = _orderRepository.GetById(id);

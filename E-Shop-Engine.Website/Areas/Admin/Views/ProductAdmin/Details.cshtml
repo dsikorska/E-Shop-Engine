@@ -8,7 +8,7 @@
 <h1>Details @Model.Name</h1>
 
 <p>
-    <a class="btn btn-primary text-white" href="@ViewBag.returnUrl">Go back</a>
+    @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-primary text-white" })
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
 </p>
 

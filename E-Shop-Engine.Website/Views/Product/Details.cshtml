@@ -8,7 +8,7 @@
 <div class="mx-auto">
     <div class="text-left">
         <p class="my-0">
-            <a class="btn btn-primary text-white my-2" href="@ViewBag.returnUrl">Go back</a>
+            @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-primary text-white my-2" })
         </p>
 
         @if (Model.SubcategoryName != null)

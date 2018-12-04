@@ -17,7 +17,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Category")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators, Staff")]
     public class CategoryAdminController : BaseController
     {
@@ -30,6 +29,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Category
+        [ReturnUrl]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = false, bool reversable = false)
         {
@@ -59,6 +59,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Category?id
+        [ReturnUrl]
         public ViewResult Edit(int id)
         {
             Category category = _categoryRepository.GetById(id);
@@ -82,6 +83,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Category/Create
+        [ReturnUrl]
         public ViewResult Create()
         {
             return View("Edit", new CategoryAdminViewModel());
@@ -101,6 +103,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Category/Details?id
+        [ReturnUrl]
         public ActionResult Details(int id)
         {
             Category category = _categoryRepository.GetById(id);

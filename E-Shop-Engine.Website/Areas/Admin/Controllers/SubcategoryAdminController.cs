@@ -17,7 +17,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RouteArea("Admin", AreaPrefix = "Admin")]
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
-    [ReturnUrl]
     [Authorize(Roles = "Administrators, Staff")]
     public class SubcategoryAdminController : BaseController
     {
@@ -32,6 +31,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory
+        [ReturnUrl]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
         {
@@ -61,6 +61,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory/Edit?id
+        [ReturnUrl]
         public ViewResult Edit(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);
@@ -85,6 +86,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory/Create
+        [ReturnUrl]
         public ViewResult Create()
         {
             SubcategoryAdminViewModel model = new SubcategoryAdminViewModel
@@ -109,6 +111,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         }
 
         // GET: Admin/Subcategory/Details?id
+        [ReturnUrl]
         public ActionResult Details(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);

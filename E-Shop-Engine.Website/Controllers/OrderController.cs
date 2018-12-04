@@ -16,7 +16,6 @@ using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    [ReturnUrl]
     public class OrderController : BaseController
     {
         private readonly IRepository<Order> _orderRepository;
@@ -34,6 +33,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Order
+        [ReturnUrl]
         [ResetDataDictionaries]
         public ActionResult Index(int? page, string sortOrder, bool descending = true, bool reversable = false)
         {
@@ -67,6 +67,7 @@ namespace E_Shop_Engine.Website.Controllers
 
         // GET: /Order/Create
         [NullNotification]
+        [ReturnUrl]
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
@@ -103,6 +104,7 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Order/Details?id
+        [ReturnUrl]
         public ActionResult Details(int id)
         {
             Order model = _orderRepository.GetById(id);
