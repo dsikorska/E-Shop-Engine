@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel;
@@ -31,5 +32,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public virtual ICollection<Order> Orders { get; set; }
 
         public virtual Address Address { get; set; }
+
+        public UserAdminViewModel()
+        {
+            Orders = new Collection<Order>();
+        }
     }
 }

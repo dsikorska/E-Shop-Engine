@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -19,6 +20,12 @@ namespace E_Shop_Engine.Domain.DomainModel.IdentityModel
         public virtual Address Address { get; set; }
 
         public virtual ICollection<Cart> Carts { get; set; }
+
+        public AppUser()
+        {
+            Orders = new Collection<Order>();
+            Carts = new Collection<Cart>();
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
@@ -62,5 +63,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public DateTime? Edited { get; set; }
 
         public IEnumerable<Category> Categories { get; set; }
+
+        public ProductAdminViewModel()
+        {
+            Categories = new Collection<Category>();
+        }
     }
 }
