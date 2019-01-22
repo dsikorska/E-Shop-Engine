@@ -15,7 +15,7 @@ namespace E_Shop_Engine.Website.CustomFilters
         {
             string requestUrl = filterContext.HttpContext.Request.Url.LocalPath;
 
-            if (UrlManager.PreviousUrl != null && UrlManager.PreviousUrl != requestUrl)
+            if (string.IsNullOrWhiteSpace(UrlManager.PreviousUrl) && UrlManager.PreviousUrl != requestUrl)
             {
                 SortingManager.ResetSorting();
             }

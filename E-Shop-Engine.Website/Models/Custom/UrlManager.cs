@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace E_Shop_Engine.Website.Models.Custom
 {
     public static class UrlManager
     {
         /// <summary>
-        /// Use only for paging/sorting!
+        /// Use only to reset sorting/paging.
         /// </summary>
         public static string PreviousUrl { get; private set; }
 
@@ -14,7 +15,7 @@ namespace E_Shop_Engine.Website.Models.Custom
         public static bool IsReturning { get; set; }
 
         /// <summary>
-        /// Use only for paging/sorting!
+        /// Use only to reset sorting/paging.
         /// </summary>
         public static void SetPreviousUrl(string url)
         {
@@ -38,6 +39,16 @@ namespace E_Shop_Engine.Website.Models.Custom
         public static void ClearStack()
         {
             Urls.Clear();
+        }
+
+        public static bool IsAtIndexView(string url)
+        {
+            return url.Where(s => s == '/').Count() == 1 || url.IndexOf("Index") != -1;
+        }
+
+        public static bool IsLastView(string url)
+        {
+            return url.IndexOf("Edit") != -1 && url.IndexOf("Create") != -1;
         }
     }
 }

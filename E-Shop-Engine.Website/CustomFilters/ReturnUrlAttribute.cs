@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using E_Shop_Engine.Website.Models.Custom;
 
 namespace E_Shop_Engine.Website.CustomFilters
@@ -21,12 +20,12 @@ namespace E_Shop_Engine.Website.CustomFilters
 
             string requestUrl = filterContext.HttpContext.Request.UrlReferrer?.PathAndQuery;
 
-            if (requestUrl.Where(s => s == '/').Count() == 1 || requestUrl.IndexOf("Index") != -1) //check if url is at "Index"
+            if (UrlManager.IsAtIndexView(requestUrl))
             {
                 UrlManager.ClearStack();
             }
 
-            if (requestUrl.IndexOf("Edit") == -1 && requestUrl.IndexOf("Create") == -1)
+            if (!UrlManager.IsLastView(requestUrl))
             {
                 UrlManager.AddUrl(requestUrl);
             }
