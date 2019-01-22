@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace E_Shop_Engine.Domain.DomainModel
 {
@@ -11,5 +12,10 @@ namespace E_Shop_Engine.Domain.DomainModel
         public virtual Category Category { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
+
+        public Subcategory()
+        {
+            Products = new Collection<Product>();
+        }
     }
 }

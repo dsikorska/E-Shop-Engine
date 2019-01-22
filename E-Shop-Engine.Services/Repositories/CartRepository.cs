@@ -76,7 +76,6 @@ namespace E_Shop_Engine.Services.Repositories
         {
             CartLine line = cart.CartLines.Where(l => l.Product.ID == product.ID).FirstOrDefault();
             _cartLines.Remove(line);
-            Save();
         }
 
         /// <summary>
@@ -106,7 +105,6 @@ namespace E_Shop_Engine.Services.Repositories
         public void NewCart(AppUser user)
         {
             user.Carts.Add(new Cart(user));
-            Save();
         }
 
         /// <summary>
@@ -116,7 +114,6 @@ namespace E_Shop_Engine.Services.Repositories
         public void SetCartOrdered(Cart cart)
         {
             cart.IsOrdered = true;
-            Save();
         }
 
         /// <summary>

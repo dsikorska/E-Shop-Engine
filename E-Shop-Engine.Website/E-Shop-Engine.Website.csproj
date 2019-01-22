@@ -202,7 +202,6 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Scripts\custom\clickable-row.js" />
     <Content Include="Scripts\custom\decimal-validator.js" />
-    <Content Include="Scripts\custom\notify.js" />
     <Content Include="Scripts\custom\preview-img.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -301,13 +300,12 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SubcategoryController.cs" />
-    <Compile Include="CustomFilters\NullNotificationAttribute.cs" />
     <Compile Include="CustomFilters\ResetDataDictionariesAttribute.cs" />
     <Compile Include="CustomFilters\ReturnUrlAttribute.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
-    <Compile Include="Extensions\PagedListHelper.cs" />
+    <Compile Include="Extensions\IEnumerableHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -316,8 +314,8 @@
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ContactViewModel.cs" />
-    <Compile Include="Models\Custom\NotifyManager.cs" />
     <Compile Include="Models\Custom\SortingManager.cs" />
+    <Compile Include="Models\DTO\CartDTO.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />

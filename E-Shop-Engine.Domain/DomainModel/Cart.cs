@@ -21,6 +21,7 @@ namespace E_Shop_Engine.Domain.DomainModel
         public Cart()
         {
             IsOrdered = false;
+            CartLines = new Collection<CartLine>();
         }
     }
 }

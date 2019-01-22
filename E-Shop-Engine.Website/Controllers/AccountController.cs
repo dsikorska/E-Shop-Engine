@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -26,7 +24,14 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IMailingRepository _mailingRepository;
         private readonly ICartRepository _cartRepository;
 
-        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository, IMailingRepository mailingRepository, ICartRepository cartRepository)
+        public AccountController(
+            AppUserManager userManager,
+            IAuthenticationManager authManager,
+            IRepository<Address> addressRepository,
+            IMailingRepository mailingRepository,
+            ICartRepository cartRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _userManager = userManager;
             _authManager = authManager;
@@ -39,7 +44,6 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: /Account
         [ReturnUrl]
         [Authorize]
-        [NullNotification]
         public ActionResult Index()
         {
             return View();
@@ -71,15 +75,13 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View(model);
             }
 
             if (model.NewPassword != model.NewPasswordCopy)
             {
                 ModelState.AddModelError("", "The new password and confirmation password does not match.");
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View(model);
             }
 
             AppUser user = GetCurrentUser();
@@ -88,8 +90,7 @@ namespace E_Shop_Engine.Website.Controllers
             if (!correctPass)
             {
                 ModelState.AddModelError("", "Please enter valid current password.");
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View(model);
             }
 
             IdentityResult validPass = await _userManager.PasswordValidator.ValidateAsync(model.NewPassword);
@@ -108,8 +109,8 @@ namespace E_Shop_Engine.Website.Controllers
                 if (result.Succeeded)
                 {
                     _mailingRepository.PasswordChangedMail(user.Email);
-                    NotifyManager.Set("notification-success", "Success!", "Your password has been changed!");
-                    return Json(new { url = Url.Action("Index") });
+
+                    return Redirect(Url.Action("Index"));
                 }
                 else
                 {
@@ -120,8 +121,7 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 ModelState.AddModelError("", "User Not Found");
             }
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return PartialView(model);
+            return View(model);
         }
 
         // GET: /Account/Edit
@@ -150,7 +150,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return PartialView(model);
+                return View(model);
             }
             AppUser user = GetCurrentUser();
 
@@ -174,8 +174,8 @@ namespace E_Shop_Engine.Website.Controllers
 
                     if (result.Succeeded)
                     {
-                        NotifyManager.Set("notification-success", "Success!", "Your profile informations updated!");
-                        return Json(new { url = Url.Action("Index") });
+
+                        return Redirect(Url.Action("Index"));
                     }
                     else
                     {
@@ -188,8 +188,7 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 ModelState.AddModelError("", "User Not Found");
             }
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return PartialView(model);
+            return View(model);
         }
 
         // GET: /Account/Login
@@ -225,8 +224,7 @@ namespace E_Shop_Engine.Website.Controllers
                         string code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         _mailingRepository.ActivationMail(user.Email, callbackUrl);
-                        Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                        return PartialView("_Error", new string[] { "You must have a confirmed email to log on. Check your email for activation link." });
+                        return View("_Error", new string[] { "You must have a confirmed email to log on. Check your email for activation link." });
                     }
 
                     ClaimsIdentity ident = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
@@ -235,11 +233,10 @@ namespace E_Shop_Engine.Website.Controllers
                     {
                         IsPersistent = false,
                     }, ident);
-                    return Json(new { url = "/" });
+                    return Redirect(Url.Action("Index", "Home"));
                 }
             }
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return PartialView(model);
+            return View(model);
         }
 
         // GET: /Account/Logout
@@ -271,18 +268,13 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return Json(new { url = UrlManager.PopUrl() });
+                return Redirect(UrlManager.PopUrl());
             }
 
             if (ModelState.IsValid)
             {
                 AppUser user = Mapper.Map<AppUser>(model);
                 user.Created = DateTime.UtcNow;
-                user.Carts = new Collection<Cart>
-                {
-                    new Cart(user)
-                };
 
                 IdentityResult result = new IdentityResult();
                 result = await _userManager.CreateAsync(user, model.Password);
@@ -292,8 +284,8 @@ namespace E_Shop_Engine.Website.Controllers
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     _mailingRepository.WelcomeMail(user.Email);
                     _mailingRepository.ActivationMail(user.Email, callbackUrl);
-                    NotifyManager.Set("notification-success", "Success!", "Profile created. Please check Your email to activate account.");
-                    return Json(new { url = Url.Action("Index", "Home") });
+
+                    return Redirect(Url.Action("Index", "Home"));
                 }
                 else
                 {
@@ -301,8 +293,7 @@ namespace E_Shop_Engine.Website.Controllers
                 }
             }
 
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return PartialView(model);
+            return View(model);
         }
 
         // GET: /Account/ConfirmEmail?userId=&code=
@@ -316,6 +307,7 @@ namespace E_Shop_Engine.Website.Controllers
             IdentityResult result = await _userManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
+
                 return View("ConfirmEmail");
             }
 
@@ -341,11 +333,10 @@ namespace E_Shop_Engine.Website.Controllers
                 string code = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
                 string callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: Request.Url.Scheme);
                 _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
-                return PartialView("ForgotPasswordConfirmation");
+                return View("ForgotPasswordConfirmation");
             }
             ModelState.AddModelError("", "User Not Found");
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return PartialView();
+            return View();
         }
 
         [AllowAnonymous]
@@ -362,28 +353,26 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View(model);
             }
 
             AppUser user = await _userManager.FindByNameAsync(model.Email);
 
             if (user == null)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View(model);
             }
 
             IdentityResult result = await _userManager.ResetPasswordAsync(user.Id, model.Code, model.NewPassword);
 
             if (result.Succeeded)
             {
-                return PartialView("ResetPasswordConfirmation");
+
+                return View("ResetPasswordConfirmation");
             }
 
             AddErrorsFromResult(result);
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return PartialView();
+            return View();
         }
 
         // GET: /Account/AddressEdit
@@ -413,8 +402,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (!ModelState.IsValid)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View(model);
             }
 
             AppUser user = GetCurrentUser();
@@ -446,14 +434,13 @@ namespace E_Shop_Engine.Website.Controllers
                 _addressRepository.Update(address);
             }
 
-            NotifyManager.Set("notification-success", "Success!", "Your address informations updated!");
 
             if (isOrder)
             {
-                return Json(new { url = Url.Action("Create", "Order") });
+                return Redirect(Url.Action("Create", "Order"));
             }
 
-            return Json(new { url = Url.Action("Index") });
+            return Redirect(Url.Action("Index"));
         }
 
         // GET: /Account/AddressDetails

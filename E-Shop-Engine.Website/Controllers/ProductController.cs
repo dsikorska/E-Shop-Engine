@@ -19,7 +19,10 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IProductRepository _productRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(
+            IProductRepository productRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _productRepository = productRepository;
             logger = LogManager.GetCurrentClassLogger();
@@ -38,7 +41,7 @@ namespace E_Shop_Engine.Website.Controllers
                 SortingManager.SetSorting(sortOrder, descending);
             }
 
-            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(model, x => x.Name, sortOrder, descending);
+            IEnumerable<ProductViewModel> sortedModel = model.SortBy(x => x.Name, sortOrder, descending);
             int pageNumber = page ?? 1;
             IPagedList<ProductViewModel> viewModel = new PagedList<ProductViewModel>(sortedModel, pageNumber, 9);
 
@@ -70,7 +73,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(model);
-            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+            IEnumerable<ProductViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<ProductViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 9);

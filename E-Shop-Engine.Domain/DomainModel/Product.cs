@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace E_Shop_Engine.Domain.DomainModel
 {
@@ -25,5 +26,10 @@ namespace E_Shop_Engine.Domain.DomainModel
         public virtual Subcategory Subcategory { get; set; }
 
         public virtual ICollection<CartLine> CartLines { get; set; }
+
+        public Product()
+        {
+            CartLines = new Collection<CartLine>();
+        }
     }
 }

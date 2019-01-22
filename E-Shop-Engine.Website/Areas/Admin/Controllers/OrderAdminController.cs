@@ -22,7 +22,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IMailingRepository _mailingRepository;
 
-        public OrderAdminController(IOrderRepository orderRepository, IMailingRepository mailingRepository)
+        public OrderAdminController(
+            IOrderRepository orderRepository,
+            IMailingRepository mailingRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _orderRepository = orderRepository;
             _mailingRepository = mailingRepository;
@@ -49,7 +53,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
 
             IEnumerable<OrderAdminViewModel> mappedModel = Mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
-            IEnumerable<OrderAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Created, sortOrder, descending);
+            IEnumerable<OrderAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<OrderAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
@@ -95,6 +99,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             _orderRepository.Update(Mapper.Map<Order>(order));
             _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }

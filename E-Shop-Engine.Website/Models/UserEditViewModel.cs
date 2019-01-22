@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace E_Shop_Engine.Website.Models
@@ -21,5 +22,10 @@ namespace E_Shop_Engine.Website.Models
         public string Email { get; set; }
 
         public IEnumerable<OrderViewModel> Orders { get; set; }
+
+        public UserEditViewModel()
+        {
+            Orders = new Collection<OrderViewModel>();
+        }
     }
 }

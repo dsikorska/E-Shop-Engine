@@ -22,7 +22,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryAdminController(ICategoryRepository categoryRepository)
+        public CategoryAdminController(
+            ICategoryRepository categoryRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _categoryRepository = categoryRepository;
             logger = LogManager.GetCurrentClassLogger();
@@ -48,7 +51,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
 
             IEnumerable<CategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<CategoryAdminViewModel>>(model);
-            IEnumerable<CategoryAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+            IEnumerable<CategoryAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<CategoryAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
@@ -78,6 +81,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View(model);
             }
             _categoryRepository.Update(Mapper.Map<Category>(model));
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -99,6 +103,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View("Edit", model);
             }
             _categoryRepository.Create(Mapper.Map<Category>(model));
+            _unitOfWork.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -120,6 +126,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             try
             {
                 _categoryRepository.Delete(id);
+                _unitOfWork.SaveChanges();
             }
             catch (DbUpdateException e)
             {

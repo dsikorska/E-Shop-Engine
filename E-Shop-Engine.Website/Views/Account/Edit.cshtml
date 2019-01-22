@@ -6,7 +6,7 @@
 
 <h1>Edit Account Informations</h1>
 
-@using (Ajax.BeginForm(new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success", OnFailure = "Failed" }))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
@@ -44,21 +44,5 @@
 
 @section Scripts {
     @Scripts.Render("~/Bundles/validate")
-
-    <script src="~/Scripts/custom/notify.js" type="text/javascript"></script>
-
-    <script>
-        function Success(result) {
-            $('#notify').show();
-            Redirect(result);
-        }
-
-        function Failed(result) {
-            ReplaceContent(result.responseText);
-            SetNotify("notification-error", "Error", "Something unexpected happend!");
-            $('#notify').show();
-            HideNotify();
-        }
-    </script>
 }
 

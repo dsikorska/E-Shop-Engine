@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using E_Shop_Engine.Domain.DomainModel;
 
@@ -22,5 +23,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public string CategoryName { get; set; }
 
         public IEnumerable<Product> Products { get; set; }
+
+        public SubcategoryAdminViewModel()
+        {
+            Categories = new Collection<Category>();
+            Products = new Collection<Product>();
+        }
     }
 }

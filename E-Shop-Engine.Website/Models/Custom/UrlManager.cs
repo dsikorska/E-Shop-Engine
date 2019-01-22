@@ -43,12 +43,22 @@ namespace E_Shop_Engine.Website.Models.Custom
 
         public static bool IsAtIndexView(string url)
         {
-            return url.Where(s => s == '/').Count() == 1 || url.IndexOf("Index") != -1;
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                return url.Where(s => s == '/').Count() == 1 || url.IndexOf("Index") != -1;
+            }
+
+            return true;
         }
 
         public static bool IsLastView(string url)
         {
-            return url.IndexOf("Edit") != -1 && url.IndexOf("Create") != -1;
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                return url.IndexOf("Edit") != -1 && url.IndexOf("Create") != -1;
+            }
+
+            return false;
         }
     }
 }
