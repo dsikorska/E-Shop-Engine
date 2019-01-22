@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Models.Custom;
 using Microsoft.AspNet.Identity;
@@ -10,10 +11,12 @@ namespace E_Shop_Engine.Website.Controllers
     public class BaseController : Controller
     {
         protected Logger logger;
+        protected readonly IUnitOfWork _unitOfWork;
 
-        public BaseController()
+        public BaseController(IUnitOfWork unitOfWork)
         {
             logger = LogManager.GetCurrentClassLogger();
+            _unitOfWork = unitOfWork;
         }
 
         protected override void OnException(ExceptionContext filterContext)

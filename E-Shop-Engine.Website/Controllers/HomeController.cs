@@ -18,7 +18,12 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IMailingRepository _mailingRepository;
 
-        public HomeController(IRepository<Category> categoryRepository, IProductRepository productRepository, IMailingRepository mailingRepository)
+        public HomeController(
+            IRepository<Category> categoryRepository,
+            IProductRepository productRepository,
+            IMailingRepository mailingRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;

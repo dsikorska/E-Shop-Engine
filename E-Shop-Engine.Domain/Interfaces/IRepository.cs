@@ -34,10 +34,5 @@ namespace E_Shop_Engine.Domain.Interfaces
         /// </summary>
         /// <param name="id">Search by this id.</param>
         void Delete(int id);
-
-        /// <summary>
-        /// Save changes at database.
-        /// </summary>
-        void Save();
     }
 }

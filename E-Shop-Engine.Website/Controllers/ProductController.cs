@@ -19,7 +19,10 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IProductRepository _productRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(
+            IProductRepository productRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _productRepository = productRepository;
             logger = LogManager.GetCurrentClassLogger();

@@ -22,7 +22,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryAdminController(ICategoryRepository categoryRepository)
+        public CategoryAdminController(
+            ICategoryRepository categoryRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _categoryRepository = categoryRepository;
             logger = LogManager.GetCurrentClassLogger();
@@ -78,6 +81,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View(model);
             }
             _categoryRepository.Update(Mapper.Map<Category>(model));
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -99,6 +103,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View("Edit", model);
             }
             _categoryRepository.Create(Mapper.Map<Category>(model));
+            _unitOfWork.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -120,6 +126,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             try
             {
                 _categoryRepository.Delete(id);
+                _unitOfWork.SaveChanges();
             }
             catch (DbUpdateException e)
             {

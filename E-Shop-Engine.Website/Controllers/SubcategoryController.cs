@@ -11,7 +11,10 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Subcategory> _subcategoryRepository;
 
-        public SubcategoryController(IRepository<Subcategory> subcategoryRepository)
+        public SubcategoryController(
+            IRepository<Subcategory> subcategoryRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _subcategoryRepository = subcategoryRepository;
             logger = LogManager.GetCurrentClassLogger();

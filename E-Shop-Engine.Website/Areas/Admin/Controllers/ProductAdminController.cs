@@ -25,7 +25,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         private IRepository<Category> _categoryRepository;
         private IRepository<Subcategory> _subcategoryRepository;
 
-        public ProductAdminController(IProductRepository productRepository, IRepository<Category> categoryRepository, IRepository<Subcategory> subcategoryRepository)
+        public ProductAdminController(
+            IProductRepository productRepository,
+            IRepository<Category> categoryRepository,
+            IRepository<Subcategory> subcategoryRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
@@ -93,6 +98,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
 
             _productRepository.Update(Mapper.Map<Product>(model));
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -123,6 +129,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             Product product = Mapper.Map<Product>(model);
             _productRepository.Create(product);
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -160,6 +167,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Delete(int id)
         {
             _productRepository.Delete(id);
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }

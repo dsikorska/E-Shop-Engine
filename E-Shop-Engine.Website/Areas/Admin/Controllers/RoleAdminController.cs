@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
@@ -22,7 +23,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         private readonly AppUserManager UserManager;
         private readonly AppRoleManager RoleManager;
 
-        public RoleAdminController(AppUserManager userManager, AppRoleManager roleManager)
+        public RoleAdminController(
+            AppUserManager userManager,
+            AppRoleManager roleManager,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             UserManager = userManager;
             RoleManager = roleManager;

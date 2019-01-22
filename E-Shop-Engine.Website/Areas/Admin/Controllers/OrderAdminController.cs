@@ -22,7 +22,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IMailingRepository _mailingRepository;
 
-        public OrderAdminController(IOrderRepository orderRepository, IMailingRepository mailingRepository)
+        public OrderAdminController(
+            IOrderRepository orderRepository,
+            IMailingRepository mailingRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _orderRepository = orderRepository;
             _mailingRepository = mailingRepository;
@@ -95,6 +99,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             _orderRepository.Update(Mapper.Map<Order>(order));
             _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }

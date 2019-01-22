@@ -90,6 +90,7 @@
         </div>
         <select id="SubcategoryId" name="SubcategoryId" class="custom-select">
             <option value="@Model.SubcategoryId">@Model.SubcategoryName</option>
+            <option value=""> </option>
         </select>
     </div>
 
@@ -120,12 +121,19 @@
 
     <script>
         jQuery(document).ready(function () {
-            let categoryId = $("#CategoryId").val();
-            GetSubcategories(categoryId);
+            if ($("#SubcategoryId").val() == "") {
+                let categoryId = $("#CategoryId").val();
+                if (categoryId != "") {
+                    GetSubcategories(categoryId);
+                }
+            }
         });
 
         jQuery("#CategoryId").change(function () {
-            GetSubcategories($(this).val());
+            $("#SubcategoryId").empty();
+            if ($(this).val() != "") {
+                GetSubcategories($(this).val());
+            }
         });
 
         function GetSubcategories(categoryId) {

@@ -93,7 +93,6 @@ namespace E_Shop_Engine.Services.Repositories
                 .FirstOrDefault(x => x.ID == id);
 
             _dbSet.Remove(entity);
-            Save();
         }
     }
 }

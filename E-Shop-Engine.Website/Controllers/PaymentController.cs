@@ -23,7 +23,15 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IPaymentTransactionRepository _transactionRepository;
         private readonly AppUserManager _userManager;
 
-        public PaymentController(IOrderRepository orderRepository, ICartRepository cartRepository, ISettingsRepository settingsRepository, IMailingRepository mailingRepository, IPaymentTransactionRepository transactionRepository, AppUserManager userManager)
+        public PaymentController(
+            IOrderRepository orderRepository,
+            ICartRepository cartRepository,
+            ISettingsRepository settingsRepository,
+            IMailingRepository mailingRepository,
+            IPaymentTransactionRepository transactionRepository,
+            AppUserManager userManager,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
@@ -82,6 +90,7 @@ namespace E_Shop_Engine.Website.Controllers
             _cartRepository.SetCartOrdered(cart);
             _cartRepository.NewCart(user);
             _mailingRepository.OrderChangedStatusMail(user.Email, newOrder.OrderNumber, newOrder.OrderStatus.ToString(), "Order confirmation " + newOrder.OrderNumber);
+            _unitOfWork.SaveChanges();
             return Redirect(redirectUrl);
         }
 
@@ -117,6 +126,7 @@ namespace E_Shop_Engine.Website.Controllers
                         {
                             _orderRepository.OrderPaymentFailed(order);
                             _mailingRepository.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
+                            _unitOfWork.SaveChanges();
                             return HttpStatusCode.OK;
                         }
 
@@ -140,11 +150,13 @@ namespace E_Shop_Engine.Website.Controllers
                         {
                             _orderRepository.OrderPaymentFailed(order);
                             _mailingRepository.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
+                            _unitOfWork.SaveChanges();
                             return HttpStatusCode.OK;
                         }
 
                         _orderRepository.OrderPaymentSuccess(order, model.operation_number);
                         _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
+                        _unitOfWork.SaveChanges();
                     }
                 }
             }

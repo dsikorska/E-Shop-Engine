@@ -22,7 +22,13 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly AppUserManager _userManager;
         private readonly ISettingsRepository _settingsRepository;
 
-        public OrderController(IRepository<Order> orderRepository, ICartRepository cartRepository, AppUserManager userManager, ISettingsRepository settingsRepository)
+        public OrderController(
+            IRepository<Order> orderRepository,
+            ICartRepository cartRepository,
+            AppUserManager userManager,
+            ISettingsRepository settingsRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;

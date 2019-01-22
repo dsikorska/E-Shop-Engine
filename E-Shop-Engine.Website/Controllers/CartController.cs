@@ -15,7 +15,7 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IProductRepository _productRepository;
         private readonly AppUserManager _userManager;
 
-        public CartController(ICartRepository cartRepository, IProductRepository productRepository, AppUserManager userManager)
+        public CartController(ICartRepository cartRepository, IProductRepository productRepository, AppUserManager userManager, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
@@ -60,6 +60,7 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 product.NumberInStock -= quantity;
                 _cartRepository.AddItem(cart, product, quantity);
+                _unitOfWork.SaveChanges();
             }
             else
             {
@@ -81,6 +82,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             product.NumberInStock += quantity;
             _cartRepository.RemoveItem(cart, product, quantity);
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Details");
         }
@@ -97,6 +99,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             product.NumberInStock += quantity;
             _cartRepository.RemoveLine(cart, product);
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Details");
         }

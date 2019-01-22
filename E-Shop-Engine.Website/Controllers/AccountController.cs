@@ -24,7 +24,14 @@ namespace E_Shop_Engine.Website.Controllers
         private readonly IMailingRepository _mailingRepository;
         private readonly ICartRepository _cartRepository;
 
-        public AccountController(AppUserManager userManager, IAuthenticationManager authManager, IRepository<Address> addressRepository, IMailingRepository mailingRepository, ICartRepository cartRepository)
+        public AccountController(
+            AppUserManager userManager,
+            IAuthenticationManager authManager,
+            IRepository<Address> addressRepository,
+            IMailingRepository mailingRepository,
+            ICartRepository cartRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _userManager = userManager;
             _authManager = authManager;
@@ -102,6 +109,7 @@ namespace E_Shop_Engine.Website.Controllers
                 if (result.Succeeded)
                 {
                     _mailingRepository.PasswordChangedMail(user.Email);
+
                     return Redirect(Url.Action("Index"));
                 }
                 else
@@ -166,6 +174,7 @@ namespace E_Shop_Engine.Website.Controllers
 
                     if (result.Succeeded)
                     {
+
                         return Redirect(Url.Action("Index"));
                     }
                     else
@@ -275,6 +284,7 @@ namespace E_Shop_Engine.Website.Controllers
                     string callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     _mailingRepository.WelcomeMail(user.Email);
                     _mailingRepository.ActivationMail(user.Email, callbackUrl);
+
                     return Redirect(Url.Action("Index", "Home"));
                 }
                 else
@@ -297,6 +307,7 @@ namespace E_Shop_Engine.Website.Controllers
             IdentityResult result = await _userManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
+
                 return View("ConfirmEmail");
             }
 
@@ -356,6 +367,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (result.Succeeded)
             {
+
                 return View("ResetPasswordConfirmation");
             }
 
@@ -421,6 +433,7 @@ namespace E_Shop_Engine.Website.Controllers
                 address.ZipCode = model.ZipCode;
                 _addressRepository.Update(address);
             }
+
 
             if (isOrder)
             {

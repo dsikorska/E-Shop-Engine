@@ -1,5 +1,1 @@
-api ctrls
-move save changes to uow
-viewmodels should not refer to domain models!
-
 rework payment

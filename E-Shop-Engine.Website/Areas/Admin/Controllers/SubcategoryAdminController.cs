@@ -23,7 +23,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         private readonly ISubcategoryRepository _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
 
-        public SubcategoryAdminController(ISubcategoryRepository subcategoryRepository, IRepository<Category> categoryRepository)
+        public SubcategoryAdminController(
+            ISubcategoryRepository subcategoryRepository,
+            IRepository<Category> categoryRepository,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _subcategoryRepository = subcategoryRepository;
             _categoryRepository = categoryRepository;
@@ -81,6 +85,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View(model);
             }
             _subcategoryRepository.Update(Mapper.Map<Subcategory>(model));
+            _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -107,6 +112,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View("Edit", model);
             }
             _subcategoryRepository.Create(Mapper.Map<Subcategory>(model));
+            _unitOfWork.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -128,6 +135,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             try
             {
                 _subcategoryRepository.Delete(id);
+                _unitOfWork.SaveChanges();
             }
             catch (DbUpdateException e)
             {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
 
@@ -25,7 +24,6 @@ namespace E_Shop_Engine.Services.Repositories
         public virtual void Create(T entity)
         {
             _context.Set<T>().Add(entity);
-            Save();
         }
 
         /// <summary>
@@ -36,7 +34,6 @@ namespace E_Shop_Engine.Services.Repositories
         {
             T entity = _dbSet.Find(id);
             _dbSet.Remove(entity);
-            Save();
         }
 
         /// <summary>
@@ -65,15 +62,6 @@ namespace E_Shop_Engine.Services.Repositories
         public virtual void Update(T entity)
         {
             _context.Entry<T>(entity).State = EntityState.Modified;
-            Save();
-        }
-
-        /// <summary>
-        /// Save changes at database.
-        /// </summary>
-        public virtual void Save()
-        {
-            _context.SaveChanges();
         }
 
         /// <summary>

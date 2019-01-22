@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Services.Extensions;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -24,7 +25,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     {
         private readonly AppUserManager _userManager;
 
-        public AccountAdminController(AppUserManager userManager)
+        public AccountAdminController(
+            AppUserManager userManager,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
             _userManager = userManager;
             logger = LogManager.GetCurrentClassLogger();
