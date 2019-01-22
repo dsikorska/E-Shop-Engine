@@ -3,9 +3,7 @@ move save changes to uow
 viewmodels should not refer to domain models!
 repo should not return iqueryable
 
-remove domain ref from orderviewmodel
 requestweb class make it more generic
-rework payment
 extract address to another ctrl
-default error pages are show on not valid model instead of view with model
 on edit product subcategories are not loaded 
+rework payment

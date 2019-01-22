@@ -64,7 +64,7 @@ namespace E_Shop_Engine.Website.Controllers
                 "&surname=" + surname +
                 "&email=" + email +
                 "&control=" + control +
-                "&URLC=" + Url.Action("DotPayConfirmation", "Payment", null, Request.Url.Scheme);
+                "&URLC=" + urlc;
 
             Order newOrder = new Order()
             {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -11,6 +9,7 @@ using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
+using E_Shop_Engine.Website.Models.DTO;
 using NLog;
 using X.PagedList;
 
@@ -66,42 +65,47 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /Order/Create
-        [NullNotification]
         [ReturnUrl]
         public ActionResult Create()
         {
             OrderViewModel model = new OrderViewModel();
             AppUser user = GetCurrentUser();
             Cart cart = _cartRepository.GetCurrentCart(user);
+
+            if (cart.CartLines.Count == 0)
+            {
+                return View("_Error", new string[] { "Cannot order empty cart." });
+            }
+
             model.AppUser = user;
-            model.Cart = cart;
+            model.Cart = Mapper.Map<CartDTO>(cart);
             return View(model);
         }
 
         // POST: /Order/Create
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult Create(OrderViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
-            }
-            AppUser user = GetCurrentUser();
-            Cart cart = _cartRepository.GetCurrentCart(user);
-            model.Cart = cart;
-            model.Created = DateTime.UtcNow;
-            model.AppUser = user;
+        //[ValidateAntiForgeryToken]
+        //[HttpPost]
+        //public ActionResult Create(OrderViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        //        return PartialView(model);
+        //    }
+        //    AppUser user = GetCurrentUser();
+        //    Cart cart = _cartRepository.GetCurrentCart(user);
+        //    model.Cart = Mapper.Map<CartDTO>(cart);
+        //    model.Created = DateTime.UtcNow;
+        //    model.AppUser = user;
 
-            if (model.Cart.CartLines.Count == 0)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView("_Error", new string[] { "Cannot order empty cart." });
-            }
+        //    if (model.Cart.CartLines.Count == 0)
+        //    {
+        //        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        //        return PartialView("_Error", new string[] { "Cannot order empty cart." });
+        //    }
 
-            return Json(new { url = Url.Action("Index", "Home") });
-        }
+        //    return Redirect(Url.Action("Index", "Home"));
+        //}
 
         // GET: /Order/Details?id
         [ReturnUrl]

@@ -4,6 +4,7 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Utilities;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Models;
+using E_Shop_Engine.Website.Models.DTO;
 
 namespace E_Shop_Engine.Website.App_Start
 {
@@ -73,6 +74,10 @@ namespace E_Shop_Engine.Website.App_Start
                 cfg.CreateMap<Cart, CartViewModel>();
 
                 cfg.CreateMap<CartViewModel, Cart>();
+
+                cfg.CreateMap<Cart, CartDTO>();
+
+                cfg.CreateMap<CartDTO, Cart>();
 
                 cfg.CreateMap<CartLine, CartLineViewModel>();
 

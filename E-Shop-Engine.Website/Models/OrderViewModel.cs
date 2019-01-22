@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Enumerables;
+using E_Shop_Engine.Website.Models.DTO;
 
 namespace E_Shop_Engine.Website.Models
 {
@@ -20,7 +20,7 @@ namespace E_Shop_Engine.Website.Models
         public virtual AppUser AppUser { get; set; }
 
         [Display(Name = "Cart")]
-        public virtual Cart Cart { get; set; }
+        public virtual CartDTO Cart { get; set; }
         public decimal Payment { get; set; }
 
         [Display(Name = "Is Paid")]

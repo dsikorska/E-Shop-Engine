@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -29,7 +28,6 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         // GET: /
-        [NullNotification]
         public ActionResult Index()
         {
             return View();
@@ -58,12 +56,10 @@ namespace E_Shop_Engine.Website.Controllers
             }
             catch
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return PartialView(model);
+                return View("_Error");
             }
 
-            NotifyManager.Set("notification-success", "Success!", "Message sent!");
-            return Json(new { url = Url.Action("Index") });
+            return Redirect(Url.Action("Index"));
         }
 
         // GET: /Home/NavList
