@@ -48,7 +48,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
 
             IEnumerable<CategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<CategoryAdminViewModel>>(model);
-            IEnumerable<CategoryAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+            IEnumerable<CategoryAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<CategoryAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);

@@ -1,9 +1,5 @@
 api ctrls
 move save changes to uow
 viewmodels should not refer to domain models!
-repo should not return iqueryable
 
-requestweb class make it more generic
-extract address to another ctrl
-on edit product subcategories are not loaded 
 rework payment

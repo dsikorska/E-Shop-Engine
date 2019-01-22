@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace E_Shop_Engine.Domain.Interfaces
 {
@@ -8,7 +8,7 @@ namespace E_Shop_Engine.Domain.Interfaces
         /// Get all entities from table.
         /// </summary>
         /// <returns>Entities from table.</returns>
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
 
         /// <summary>
         /// Get entity that id matches.

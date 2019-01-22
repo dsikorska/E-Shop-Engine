@@ -18,7 +18,7 @@ namespace E_Shop_Engine.Services.Repositories
         /// Get all products that are showing at main page at the first place.
         /// </summary>
         /// <returns>Products that are showing at main page at the first plac</returns>
-        public IQueryable<Product> GetAllSpecialOffers()
+        public IEnumerable<Product> GetAllSpecialOffers()
         {
             return _dbSet.Where(p => p.ShowAsSpecialOffer == true).Select(p => p);
         }
@@ -27,7 +27,7 @@ namespace E_Shop_Engine.Services.Repositories
         /// Get all products that are showing at main page below.
         /// </summary>
         /// <returns>Products that are showing at main page below.</returns>
-        public IQueryable<Product> GetAllShowingInDeck()
+        public IEnumerable<Product> GetAllShowingInDeck()
         {
             return _dbSet.Where(p => p.ShowAtMainPage == true).Select(p => p);
         }

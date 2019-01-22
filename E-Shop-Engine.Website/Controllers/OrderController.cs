@@ -44,7 +44,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             IEnumerable<Order> model = user.Orders;
             IEnumerable<OrderViewModel> mappedModel = Mapper.Map<IEnumerable<OrderViewModel>>(model);
-            IEnumerable<OrderViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Created, sortOrder, descending);
+            IEnumerable<OrderViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<OrderViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 5);

@@ -52,7 +52,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
             IEnumerable<ProductAdminViewModel> mappedModel = Mapper.Map<IEnumerable<ProductAdminViewModel>>(model);
-            IEnumerable<ProductAdminViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+            IEnumerable<ProductAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<ProductAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);

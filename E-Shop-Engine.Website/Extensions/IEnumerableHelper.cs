@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace E_Shop_Engine.Website.Extensions
+namespace E_Shop_Engine.Utilities.Extensions
 {
-    public static class PagedListHelper
+    public static class IEnumerableHelper
     {
         /// <summary>
         /// Before collection can be translated to paged list it needs to be sorted.
@@ -18,11 +18,11 @@ namespace E_Shop_Engine.Website.Extensions
         /// <param name="sortOrder">Expected sort order.</param>
         /// <param name="descending">Should sorting be descending?</param>
         /// <returns>Sorted model.</returns>
-        public static IEnumerable<T> SortBy<T, TKey>(IEnumerable<T> model, Expression<Func<T, TKey>> defaultSortOrder, string sortOrder = null, bool descending = false)
+        public static IEnumerable<T> SortBy<T>(this IEnumerable<T> model, Expression<Func<T, object>> defaultSortOrder, string sortOrder = null, bool descending = false)
         {
             PropertyInfo sortBy = null;
 
-            if (sortOrder != null)
+            if (!string.IsNullOrWhiteSpace(sortOrder))
             {
                 sortBy = typeof(T).GetProperty(sortOrder);
             }

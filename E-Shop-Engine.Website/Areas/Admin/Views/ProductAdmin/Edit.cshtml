@@ -119,13 +119,18 @@
     <script type="text/javascript" src="~/Scripts/custom/decimal-validator.js"></script>
 
     <script>
+        jQuery(document).ready(function () {
+            let categoryId = $("#CategoryId").val();
+            GetSubcategories(categoryId);
+        });
+
         jQuery("#CategoryId").change(function () {
             GetSubcategories($(this).val());
         });
 
         function GetSubcategories(categoryId) {
-            var catId = categoryId;
-            var subcategoriesHtml = $("#SubcategoryId");
+            let catId = categoryId;
+            let subcategoriesHtml = $("#SubcategoryId");
             $.getJSON({
                 url: "@Url.Action("GetSubcategories", "ProductAdmin")",
                 data: { id: catId },

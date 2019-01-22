@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
@@ -65,16 +64,16 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: /Home/NavList
         public PartialViewResult NavList()
         {
-            IQueryable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryViewModel> viewModel = Mapper.Map<IQueryable<Category>, IEnumerable<CategoryViewModel>>(model);
+            IEnumerable<Category> model = _categoryRepository.GetAll();
+            IEnumerable<CategoryViewModel> viewModel = Mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(model);
             return PartialView("_Categories", viewModel);
         }
 
         // GET: /Home/GetSpecialOffers
         public PartialViewResult GetSpecialOffers()
         {
-            IQueryable<Product> model = _productRepository.GetAllSpecialOffers();
-            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IQueryable<Product>, IEnumerable<ProductViewModel>>(model);
+            IEnumerable<Product> model = _productRepository.GetAllSpecialOffers();
+            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(model);
             return PartialView("SpecialOffers", viewModel);
         }
 
@@ -82,10 +81,10 @@ namespace E_Shop_Engine.Website.Controllers
         [ResetDataDictionaries]
         public PartialViewResult GetSpecialOffersInDeck(int? page, string sortOrder, bool descending = true)
         {
-            IQueryable<Product> model = _productRepository.GetAllShowingInDeck();
+            IEnumerable<Product> model = _productRepository.GetAllShowingInDeck();
 
             IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(model);
-            IEnumerable<ProductViewModel> sortedModel = PagedListHelper.SortBy(mappedModel, x => x.Name, sortOrder, descending);
+            IEnumerable<ProductViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
             IPagedList<ProductViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 9);

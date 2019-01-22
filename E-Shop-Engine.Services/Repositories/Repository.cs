@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using E_Shop_Engine.Domain.Interfaces;
@@ -42,7 +43,7 @@ namespace E_Shop_Engine.Services.Repositories
         /// Get all entities from table.
         /// </summary>
         /// <returns>Entities from table.</returns>
-        public virtual IQueryable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbSet;
         }
