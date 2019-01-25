@@ -18,12 +18,13 @@ namespace E_Shop_Engine.Website.Controllers
             ICartRepository cartRepository,
             IProductRepository productRepository,
             IAppUserManager userManager,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork, userManager)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Cart/CountItems
@@ -43,7 +44,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             AppUser user = GetCurrentUser();
             Cart cart = _cartRepository.GetCurrentCart(user);
-            CartViewModel model = Mapper.Map<Cart, CartViewModel>(cart);
+            CartViewModel model = _mapper.Map<Cart, CartViewModel>(cart);
             model.TotalValue = _cartRepository.GetTotalValue(cart);
 
             return View(model);

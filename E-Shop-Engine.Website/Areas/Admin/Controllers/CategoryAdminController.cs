@@ -26,11 +26,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public CategoryAdminController(
             ICategoryRepository categoryRepository,
             IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _categoryRepository = categoryRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Category
@@ -52,7 +53,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IEnumerable<CategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<CategoryAdminViewModel>>(model);
+            IEnumerable<CategoryAdminViewModel> mappedModel = _mapper.Map<IEnumerable<CategoryAdminViewModel>>(model);
             IEnumerable<CategoryAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -68,7 +69,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ViewResult Edit(int id)
         {
             Category category = _categoryRepository.GetById(id);
-            CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
+            CategoryAdminViewModel model = _mapper.Map<CategoryAdminViewModel>(category);
 
             return View(model);
         }
@@ -82,7 +83,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            _categoryRepository.Update(Mapper.Map<Category>(model));
+            _categoryRepository.Update(_mapper.Map<Category>(model));
             _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
@@ -104,7 +105,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View("Edit", model);
             }
-            _categoryRepository.Create(Mapper.Map<Category>(model));
+            _categoryRepository.Create(_mapper.Map<Category>(model));
             _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
@@ -115,7 +116,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             Category category = _categoryRepository.GetById(id);
-            CategoryAdminViewModel model = Mapper.Map<CategoryAdminViewModel>(category);
+            CategoryAdminViewModel model = _mapper.Map<CategoryAdminViewModel>(category);
 
             return View(model);
         }

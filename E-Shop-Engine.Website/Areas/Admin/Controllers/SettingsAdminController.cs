@@ -23,12 +23,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             ISettingsRepository settingsRepository,
             IMailingRepository mailingRepository,
             IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _settingsRepository = settingsRepository;
             _mailingRepository = mailingRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Settings/Edit
@@ -36,7 +37,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Edit()
         {
             Settings model = _settingsRepository.Get();
-            SettingsAdminViewModel viewModel = Mapper.Map<SettingsAdminViewModel>(model);
+            SettingsAdminViewModel viewModel = _mapper.Map<SettingsAdminViewModel>(model);
             return View(viewModel);
         }
 
@@ -51,7 +52,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
 
             _mailingRepository.TestMail();
-            _settingsRepository.Update(Mapper.Map<Settings>(model));
+            _settingsRepository.Update(_mapper.Map<Settings>(model));
             _unitOfWork.SaveChanges();
 
             return Redirect("/Admin/Order/Index");

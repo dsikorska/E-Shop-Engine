@@ -27,12 +27,13 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             IOrderRepository orderRepository,
             IMailingRepository mailingRepository,
             IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _orderRepository = orderRepository;
             _mailingRepository = mailingRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Order
@@ -54,7 +55,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IEnumerable<OrderAdminViewModel> mappedModel = Mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
+            IEnumerable<OrderAdminViewModel> mappedModel = _mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
             IEnumerable<OrderAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -70,7 +71,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             Order order = _orderRepository.GetById(id);
-            OrderAdminViewModel model = Mapper.Map<OrderAdminViewModel>(order);
+            OrderAdminViewModel model = _mapper.Map<OrderAdminViewModel>(order);
 
             return View(model);
         }
@@ -80,7 +81,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ViewResult Edit(int id)
         {
             Order order = _orderRepository.GetById(id);
-            OrderAdminViewModel model = Mapper.Map<OrderAdminViewModel>(order);
+            OrderAdminViewModel model = _mapper.Map<OrderAdminViewModel>(order);
 
             return View(model);
         }
@@ -99,7 +100,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             order.Finished = model.Finished;
             order.OrderStatus = model.OrderStatus;
 
-            _orderRepository.Update(Mapper.Map<Order>(order));
+            _orderRepository.Update(_mapper.Map<Order>(order));
             _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
             _unitOfWork.SaveChanges();
 

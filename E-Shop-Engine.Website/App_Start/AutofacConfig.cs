@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
@@ -25,6 +26,7 @@ namespace E_Shop_Engine.Website.App_Start
         {
             ContainerBuilder builder = new ContainerBuilder();
 
+            builder.Register(c => AutoMapperConfig.Register()).As<IMapper>().InstancePerLifetimeScope().PropertiesAutowired().PreserveExistingDefaults();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().As<IAppDbContext>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().AsSelf().InstancePerRequest();

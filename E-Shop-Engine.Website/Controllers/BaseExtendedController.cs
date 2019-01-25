@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
@@ -12,9 +13,13 @@ namespace E_Shop_Engine.Website.Controllers
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IAppUserManager _userManager;
 
-        public BaseExtendedController(IUnitOfWork unitOfWork, IAppUserManager userManager)
+        public BaseExtendedController(
+            IUnitOfWork unitOfWork,
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(mapper)
         {
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }

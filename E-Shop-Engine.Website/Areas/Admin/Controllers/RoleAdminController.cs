@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
@@ -26,11 +27,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public RoleAdminController(
             IAppUserManager userManager,
             AppRoleManager roleManager,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork, userManager)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             RoleManager = roleManager;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Role

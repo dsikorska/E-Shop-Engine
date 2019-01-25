@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Website.Models.Custom;
 using NLog;
 
@@ -6,18 +7,20 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class BaseController : Controller
     {
-        protected Logger logger;
+        protected Logger _logger;
+        protected IMapper _mapper;
 
-        public BaseController()
+        public BaseController(IMapper mapper)
         {
-            logger = LogManager.GetCurrentClassLogger();
+            _mapper = mapper;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;
 
-            logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
+            _logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
             string msg = "We're sorry. Something unexpected happend! Please try again later or contact us.";
 
             if (filterContext.IsChildAction)

@@ -7,6 +7,7 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
+using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using E_Shop_Engine.Website.Models.Custom;
@@ -29,14 +30,15 @@ namespace E_Shop_Engine.Website.Controllers
             IRepository<Address> addressRepository,
             IMailingRepository mailingRepository,
             ICartRepository cartRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork, userManager)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _authManager = authManager;
             _addressRepository = addressRepository;
             _mailingRepository = mailingRepository;
             _cartRepository = cartRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Account
@@ -53,7 +55,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Details()
         {
             AppUser user = GetCurrentUser();
-            UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
+            UserEditViewModel model = _mapper.Map<UserEditViewModel>(user);
 
             return PartialView(model);
         }
@@ -78,53 +80,49 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (model.NewPassword != model.NewPasswordCopy)
             {
-                ModelState.AddModelError("", "The new password and confirmation password does not match.");
+                ModelState.AddModelError("", ErrorMessage.PasswordsDontMatch);
                 return View(model);
             }
 
             AppUser user = GetCurrentUser();
 
-            bool correctPass = await _userManager.CheckPasswordAsync(user, model.OldPassword);
-            if (!correctPass)
+            if (user != null)
             {
-                ModelState.AddModelError("", "Please enter valid current password.");
-                return View(model);
-            }
-
-            IdentityResult validPass = await _userManager.PasswordValidator.ValidateAsync(model.NewPassword);
-            if (validPass.Succeeded)
-            {
-                user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.NewPassword);
-            }
-            else
-            {
-                AddErrorsFromResult(validPass);
-            }
-
-            if (CanChangePassword(model.NewPassword, validPass))
-            {
-                IdentityResult result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
+                bool correctPass = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+                if (!correctPass)
                 {
-                    _mailingRepository.PasswordChangedMail(user.Email);
+                    ModelState.AddModelError("", ErrorMessage.PasswordNotValid);
+                    return View(model);
+                }
 
-                    return RedirectToAction("Index");
+                IdentityResult validPass = await _userManager.PasswordValidator.ValidateAsync(model.NewPassword);
+                if (validPass.Succeeded)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.NewPassword);
+
+                    IdentityResult result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        _mailingRepository.PasswordChangedMail(user.Email);
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(result);
+                    }
                 }
                 else
                 {
-                    AddErrorsFromResult(result);
+                    AddErrorsFromResult(validPass);
+                    return View(model);
                 }
             }
             else
             {
-                ModelState.AddModelError("", "User Not Found");
+                ModelState.AddModelError("", ErrorMessage.NullUser);
             }
             return View(model);
-        }
-
-        private static bool CanChangePassword(string newPassword, IdentityResult validPass)
-        {
-            return validPass == null || (newPassword != string.Empty && validPass.Succeeded);
         }
 
         // GET: /Account/Edit
@@ -133,7 +131,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Edit()
         {
             AppUser user = GetCurrentUser();
-            UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
+            UserEditViewModel model = _mapper.Map<UserEditViewModel>(user);
 
             if (user != null)
             {
@@ -276,7 +274,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (ModelState.IsValid)
             {
-                AppUser user = Mapper.Map<AppUser>(model);
+                AppUser user = _mapper.Map<AppUser>(model);
                 user.Created = DateTime.UtcNow;
 
                 IdentityResult result = new IdentityResult();
@@ -387,7 +385,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (user?.Address != null)
             {
-                model = Mapper.Map<AddressViewModel>(user.Address);
+                model = _mapper.Map<AddressViewModel>(user.Address);
             }
             else
             {
@@ -458,7 +456,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (user?.Address != null)
             {
-                model = Mapper.Map<AddressViewModel>(user.Address);
+                model = _mapper.Map<AddressViewModel>(user.Address);
             }
 
             return PartialView(model);

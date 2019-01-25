@@ -19,10 +19,10 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IProductRepository _productRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IMapper mapper) : base(mapper)
         {
             _productRepository = productRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Product/ProductsToPagedList
@@ -51,7 +51,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
 
             Product model = _productRepository.GetById(id);
-            ProductViewModel viewModel = Mapper.Map<ProductViewModel>(model);
+            ProductViewModel viewModel = _mapper.Map<ProductViewModel>(model);
 
             return View(viewModel);
         }
@@ -69,7 +69,7 @@ namespace E_Shop_Engine.Website.Controllers
                 model = _productRepository.GetAll();
             }
 
-            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(model);
+            IEnumerable<ProductViewModel> mappedModel = _mapper.Map<IEnumerable<ProductViewModel>>(model);
             IEnumerable<ProductViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;

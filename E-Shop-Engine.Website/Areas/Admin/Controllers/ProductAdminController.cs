@@ -31,13 +31,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             IRepository<Category> categoryRepository,
             IRepository<Subcategory> subcategoryRepository,
             IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _subcategoryRepository = subcategoryRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Product
@@ -58,7 +59,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 ReverseSorting(ref descending, sortOrder);
             }
-            IEnumerable<ProductAdminViewModel> mappedModel = Mapper.Map<IEnumerable<ProductAdminViewModel>>(model);
+            IEnumerable<ProductAdminViewModel> mappedModel = _mapper.Map<IEnumerable<ProductAdminViewModel>>(model);
             IEnumerable<ProductAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -83,7 +84,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ViewResult Edit(int id)
         {
             Product product = _productRepository.GetById(id);
-            ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
+            ProductAdminViewModel model = _mapper.Map<ProductAdminViewModel>(product);
             model.Categories = _categoryRepository.GetAll();
 
             return View(model);
@@ -99,7 +100,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 return View("Edit", model);
             }
 
-            _productRepository.Update(Mapper.Map<Product>(model));
+            _productRepository.Update(_mapper.Map<Product>(model));
             _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
@@ -129,7 +130,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
 
             model.ImageMimeType = model.ImageData?.ContentType;
 
-            Product product = Mapper.Map<Product>(model);
+            Product product = _mapper.Map<Product>(model);
             _productRepository.Create(product);
             _unitOfWork.SaveChanges();
 
@@ -141,7 +142,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public JsonResult GetSubcategories(int id)
         {
             ICollection<Subcategory> subcategories = _categoryRepository.GetById(id)?.Subcategories;
-            IEnumerable<SubcategoryAdminViewModel> model = Mapper.Map<ICollection<Subcategory>, IEnumerable<SubcategoryAdminViewModel>>(subcategories);
+            IEnumerable<SubcategoryAdminViewModel> model = _mapper.Map<ICollection<Subcategory>, IEnumerable<SubcategoryAdminViewModel>>(subcategories);
             var viewModel = model.Select(x => new
             {
                 Id = x.Id,
@@ -156,7 +157,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             Product product = _productRepository.GetById(id);
-            ProductAdminViewModel model = Mapper.Map<ProductAdminViewModel>(product);
+            ProductAdminViewModel model = _mapper.Map<ProductAdminViewModel>(product);
             model.Created = product.Created.ToLocalTime();
             model.Edited = product.Edited.GetValueOrDefault().ToLocalTime();
 

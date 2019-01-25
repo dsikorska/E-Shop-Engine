@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Enumerables;
@@ -29,15 +30,16 @@ namespace E_Shop_Engine.Website.Controllers
             IMailingRepository mailingRepository,
             IPaymentTransactionRepository transactionRepository,
             IAppUserManager userManager,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork, userManager)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             settings = settingsRepository.Get();
             _mailingRepository = mailingRepository;
             _transactionRepository = transactionRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Payment/DotPayPayment
