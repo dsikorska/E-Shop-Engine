@@ -3,7 +3,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Models;
 using NLog;
 
@@ -13,13 +13,16 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
-        private readonly AppUserManager _userManager;
 
-        public CartController(ICartRepository cartRepository, IProductRepository productRepository, AppUserManager userManager, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public CartController(
+            ICartRepository cartRepository,
+            IProductRepository productRepository,
+            IAppUserManager userManager,
+            IUnitOfWork unitOfWork)
+            : base(unitOfWork, userManager)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
-            _userManager = userManager;
             logger = LogManager.GetCurrentClassLogger();
         }
 

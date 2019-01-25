@@ -6,7 +6,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using E_Shop_Engine.Website.Models.Custom;
@@ -18,22 +18,20 @@ namespace E_Shop_Engine.Website.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly AppUserManager _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IRepository<Address> _addressRepository;
         private readonly IMailingRepository _mailingRepository;
         private readonly ICartRepository _cartRepository;
 
         public AccountController(
-            AppUserManager userManager,
+            IAppUserManager userManager,
             IAuthenticationManager authManager,
             IRepository<Address> addressRepository,
             IMailingRepository mailingRepository,
             ICartRepository cartRepository,
             IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            : base(unitOfWork, userManager)
         {
-            _userManager = userManager;
             _authManager = authManager;
             _addressRepository = addressRepository;
             _mailingRepository = mailingRepository;
@@ -110,7 +108,7 @@ namespace E_Shop_Engine.Website.Controllers
                 {
                     _mailingRepository.PasswordChangedMail(user.Email);
 
-                    return Redirect(Url.Action("Index"));
+                    return RedirectToAction("Index");
                 }
                 else
                 {

@@ -1,7 +1,7 @@
 # E-Shop Engine
 The application was created for educational purposes. 
-The project implements Repository pattern, Dependency Injection and Separation of Concerns.
-There is also Unit of Work implemented, but not used at all.
+The project implements Repository and Dependency Injection patterns.
+
 
 **It shouldn't be use for any real business. I don't take any reposibility if you decide to use it for real transactions. Before you do it, make sure the application fulfill security standards.**
 
@@ -10,9 +10,9 @@ There is also Unit of Work implemented, but not used at all.
 * .NET Framework 4.7+
 * SQL Server
 * IIS 8.0+
-* Microsoft Visual Studio 2013+
 
-### Installing
+### Installation guide
+#### Development
 * Clone / download repo.
 * Run E-Shop-Engine.sln file in VS.
 * In folder E-Shop-Engine.Website/App_Data/app.config set your SMTP credentials.

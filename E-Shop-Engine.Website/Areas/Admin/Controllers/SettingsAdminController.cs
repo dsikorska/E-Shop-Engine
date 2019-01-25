@@ -2,6 +2,7 @@
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -21,8 +22,9 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public SettingsAdminController(
             ISettingsRepository settingsRepository,
             IMailingRepository mailingRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IUnitOfWork unitOfWork,
+            AppUserManager userManager)
+            : base(unitOfWork, userManager)
         {
             _settingsRepository = settingsRepository;
             _mailingRepository = mailingRepository;

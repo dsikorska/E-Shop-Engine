@@ -7,7 +7,7 @@ using E_Shop_Engine.Domain.Enumerables;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Domain.TempModel;
 using E_Shop_Engine.Services;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Utilities;
 using Newtonsoft.Json;
 using NLog;
@@ -21,7 +21,6 @@ namespace E_Shop_Engine.Website.Controllers
         private static Settings settings;
         private readonly IMailingRepository _mailingRepository;
         private readonly IPaymentTransactionRepository _transactionRepository;
-        private readonly AppUserManager _userManager;
 
         public PaymentController(
             IOrderRepository orderRepository,
@@ -29,16 +28,15 @@ namespace E_Shop_Engine.Website.Controllers
             ISettingsRepository settingsRepository,
             IMailingRepository mailingRepository,
             IPaymentTransactionRepository transactionRepository,
-            AppUserManager userManager,
+            IAppUserManager userManager,
             IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            : base(unitOfWork, userManager)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             settings = settingsRepository.Get();
             _mailingRepository = mailingRepository;
             _transactionRepository = transactionRepository;
-            _userManager = userManager;
             logger = LogManager.GetCurrentClassLogger();
         }
 

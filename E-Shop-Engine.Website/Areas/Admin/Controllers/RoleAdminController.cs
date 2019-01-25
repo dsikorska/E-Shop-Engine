@@ -20,16 +20,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [Authorize(Roles = "Administrators")]
     public class RoleAdminController : BaseController
     {
-        private readonly AppUserManager UserManager;
         private readonly AppRoleManager RoleManager;
 
         public RoleAdminController(
             AppUserManager userManager,
             AppRoleManager roleManager,
             IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            : base(unitOfWork, userManager)
         {
-            UserManager = userManager;
             RoleManager = roleManager;
             logger = LogManager.GetCurrentClassLogger();
         }
@@ -74,8 +72,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
             string[] memberIDs = role.Users.Select(x => x.UserId).ToArray();
-            IEnumerable<AppUser> members = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
-            IEnumerable<AppUser> nonMembers = UserManager.Users.Except(members);
+            IEnumerable<AppUser> members = _userManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
+            IEnumerable<AppUser> nonMembers = _userManager.Users.Except(members);
             RoleEditViewModel model = new RoleEditViewModel
             {
                 Role = role,
@@ -96,7 +94,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 foreach (string userId in model.IdsToAdd ?? new string[] { })
                 {
-                    result = await UserManager.AddToRoleAsync(userId, model.RoleName);
+                    result = await _userManager.AddToRoleAsync(userId, model.RoleName);
                     if (!result.Succeeded)
                     {
                         return View("_Error", result.Errors);
@@ -104,7 +102,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 }
                 foreach (string userId in model.IdsToDelete ?? new string[] { })
                 {
-                    result = await UserManager.RemoveFromRoleAsync(userId, model.RoleName);
+                    result = await _userManager.RemoveFromRoleAsync(userId, model.RoleName);
                     if (!result.Succeeded)
                     {
                         return View("_Error", result.Errors);

@@ -130,6 +130,7 @@
     <Compile Include="Data\EntitiesConfigurations\OrderEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\ProductEntityConfig.cs" />
     <Compile Include="Data\EntitiesConfigurations\SubcategoryEntityConfig.cs" />
+    <Compile Include="Data\Identity\Abstraction\IAppUserManager.cs" />
     <Compile Include="Data\Identity\AppRoleManager.cs" />
     <Compile Include="Data\Identity\AppSignInManager.cs" />
     <Compile Include="Data\Identity\AppUserManager.cs" />

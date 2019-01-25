@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Models.Custom;
 using Microsoft.AspNet.Identity;
 using NLog;
@@ -12,11 +12,13 @@ namespace E_Shop_Engine.Website.Controllers
     {
         protected Logger logger;
         protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IAppUserManager _userManager;
 
-        public BaseController(IUnitOfWork unitOfWork)
+        public BaseController(IUnitOfWork unitOfWork, IAppUserManager userManager)
         {
             logger = LogManager.GetCurrentClassLogger();
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         protected override void OnException(ExceptionContext filterContext)
@@ -39,9 +41,8 @@ namespace E_Shop_Engine.Website.Controllers
         [NonAction]
         protected AppUser GetCurrentUser()
         {
-            AppUserManager userManager = DependencyResolver.Current.GetService<AppUserManager>();
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = userManager.FindById(userId);
+            string userId = ControllerContext.HttpContext.User.Identity.GetUserId();
+            AppUser user = _userManager.FindById(userId);
             return user;
         }
 

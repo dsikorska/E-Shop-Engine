@@ -5,7 +5,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
@@ -19,20 +19,18 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
-        private readonly AppUserManager _userManager;
         private readonly ISettingsRepository _settingsRepository;
 
         public OrderController(
             IRepository<Order> orderRepository,
             ICartRepository cartRepository,
-            AppUserManager userManager,
+            IAppUserManager userManager,
             ISettingsRepository settingsRepository,
             IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            : base(unitOfWork, userManager)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
-            _userManager = userManager;
             _settingsRepository = settingsRepository;
             logger = LogManager.GetCurrentClassLogger();
         }

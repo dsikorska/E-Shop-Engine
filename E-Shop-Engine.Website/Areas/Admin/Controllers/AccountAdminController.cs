@@ -23,14 +23,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [Authorize(Roles = "Administrators, Staff")]
     public class AccountAdminController : BaseController
     {
-        private readonly AppUserManager _userManager;
-
         public AccountAdminController(
             AppUserManager userManager,
             IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            : base(unitOfWork, userManager)
         {
-            _userManager = userManager;
             logger = LogManager.GetCurrentClassLogger();
         }
 
