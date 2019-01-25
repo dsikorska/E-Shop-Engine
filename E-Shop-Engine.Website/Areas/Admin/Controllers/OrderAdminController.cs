@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -18,7 +18,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Order")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class OrderAdminController : BaseController
+    public class OrderAdminController : BaseExtendedController
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMailingRepository _mailingRepository;
@@ -27,7 +27,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             IOrderRepository orderRepository,
             IMailingRepository mailingRepository,
             IUnitOfWork unitOfWork,
-            AppUserManager userManager)
+            IAppUserManager userManager)
             : base(unitOfWork, userManager)
         {
             _orderRepository = orderRepository;

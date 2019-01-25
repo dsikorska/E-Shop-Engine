@@ -2,7 +2,7 @@
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -14,7 +14,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Settings")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators")]
-    public class SettingsAdminController : BaseController
+    public class SettingsAdminController : BaseExtendedController
     {
         private readonly ISettingsRepository _settingsRepository;
         private readonly IMailingRepository _mailingRepository;
@@ -23,7 +23,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             ISettingsRepository settingsRepository,
             IMailingRepository mailingRepository,
             IUnitOfWork unitOfWork,
-            AppUserManager userManager)
+            IAppUserManager userManager)
             : base(unitOfWork, userManager)
         {
             _settingsRepository = settingsRepository;

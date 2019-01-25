@@ -5,8 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
-using E_Shop_Engine.Services.Extensions;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -21,10 +20,10 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Account")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class AccountAdminController : BaseController
+    public class AccountAdminController : BaseExtendedController
     {
         public AccountAdminController(
-            AppUserManager userManager,
+            IAppUserManager userManager,
             IUnitOfWork unitOfWork)
             : base(unitOfWork, userManager)
         {

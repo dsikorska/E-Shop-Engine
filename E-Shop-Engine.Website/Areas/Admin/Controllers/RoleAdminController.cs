@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -18,12 +19,12 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Role")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators")]
-    public class RoleAdminController : BaseController
+    public class RoleAdminController : BaseExtendedController
     {
         private readonly AppRoleManager RoleManager;
 
         public RoleAdminController(
-            AppUserManager userManager,
+            IAppUserManager userManager,
             AppRoleManager roleManager,
             IUnitOfWork unitOfWork)
             : base(unitOfWork, userManager)

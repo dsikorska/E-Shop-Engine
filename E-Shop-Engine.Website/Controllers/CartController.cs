@@ -9,7 +9,7 @@ using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class CartController : BaseController
+    public class CartController : BaseExtendedController
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;

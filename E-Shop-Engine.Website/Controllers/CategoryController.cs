@@ -2,7 +2,6 @@
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Models;
 using NLog;
 
@@ -12,11 +11,7 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Category> _categoryRepository;
 
-        public CategoryController(
-            IRepository<Category> categoryRepository,
-            IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+        public CategoryController(IRepository<Category> categoryRepository)
         {
             _categoryRepository = categoryRepository;
             logger = LogManager.GetCurrentClassLogger();

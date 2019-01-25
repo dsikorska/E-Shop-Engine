@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
@@ -20,11 +19,7 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IProductRepository _productRepository;
 
-        public ProductController(
-            IProductRepository productRepository,
-            IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+        public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
             logger = LogManager.GetCurrentClassLogger();

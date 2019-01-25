@@ -23,7 +23,7 @@ namespace E_Shop_Engine.Services.Data.Identity.Abstraction
         Task<AppUser> FindAsync(string userName, string password);
         Task<AppUser> FindByEmailAsync(string email);
         Task<AppUser> FindByIdAsync(string userId);
-        AppUser FindById(string id);
+        AppUser FindById(string userid);
         Task<AppUser> FindByNameAsync(string userName);
         IEnumerable<AppUser> FindUsersByEmail(string term);
         IEnumerable<AppUser> FindUsersByName(string term);

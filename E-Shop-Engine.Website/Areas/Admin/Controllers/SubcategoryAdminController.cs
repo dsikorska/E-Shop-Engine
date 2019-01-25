@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -19,7 +19,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class SubcategoryAdminController : BaseController
+    public class SubcategoryAdminController : BaseExtendedController
     {
         private readonly ISubcategoryRepository _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
@@ -28,7 +28,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             ISubcategoryRepository subcategoryRepository,
             IRepository<Category> categoryRepository,
             IUnitOfWork unitOfWork,
-            AppUserManager userManager)
+            IAppUserManager userManager)
             : base(unitOfWork, userManager)
         {
             _subcategoryRepository = subcategoryRepository;

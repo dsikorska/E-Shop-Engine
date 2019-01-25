@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
@@ -22,10 +21,7 @@ namespace E_Shop_Engine.Website.Controllers
         public HomeController(
             IRepository<Category> categoryRepository,
             IProductRepository productRepository,
-            IMailingRepository mailingRepository,
-            IUnitOfWork unitOfWork,
-            IAppUserManager userManager)
-            : base(unitOfWork, userManager)
+            IMailingRepository mailingRepository)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;

@@ -14,7 +14,7 @@ using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class PaymentController : BaseController
+    public class PaymentController : BaseExtendedController
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepository _cartRepository;

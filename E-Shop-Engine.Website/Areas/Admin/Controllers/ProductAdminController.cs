@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -20,7 +20,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Product")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class ProductAdminController : BaseController
+    public class ProductAdminController : BaseExtendedController
     {
         private IProductRepository _productRepository;
         private IRepository<Category> _categoryRepository;
@@ -31,7 +31,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             IRepository<Category> categoryRepository,
             IRepository<Subcategory> subcategoryRepository,
             IUnitOfWork unitOfWork,
-            AppUserManager userManager)
+            IAppUserManager userManager)
             : base(unitOfWork, userManager)
         {
             _productRepository = productRepository;

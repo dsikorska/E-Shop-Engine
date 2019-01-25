@@ -16,7 +16,7 @@ using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : BaseExtendedController
     {
         private readonly IAuthenticationManager _authManager;
         private readonly IRepository<Address> _addressRepository;
@@ -101,7 +101,7 @@ namespace E_Shop_Engine.Website.Controllers
                 AddErrorsFromResult(validPass);
             }
 
-            if (validPass == null || (model.NewPassword != string.Empty && validPass.Succeeded))
+            if (CanChangePassword(model.NewPassword, validPass))
             {
                 IdentityResult result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -120,6 +120,11 @@ namespace E_Shop_Engine.Website.Controllers
                 ModelState.AddModelError("", "User Not Found");
             }
             return View(model);
+        }
+
+        private static bool CanChangePassword(string newPassword, IdentityResult validPass)
+        {
+            return validPass == null || (newPassword != string.Empty && validPass.Succeeded);
         }
 
         // GET: /Account/Edit
@@ -432,6 +437,7 @@ namespace E_Shop_Engine.Website.Controllers
                 _addressRepository.Update(address);
             }
 
+            _unitOfWork.SaveChanges();
 
             if (isOrder)
             {

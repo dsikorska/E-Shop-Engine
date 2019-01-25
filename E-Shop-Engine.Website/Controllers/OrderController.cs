@@ -15,7 +15,7 @@ using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class OrderController : BaseController
+    public class OrderController : BaseExtendedController
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;

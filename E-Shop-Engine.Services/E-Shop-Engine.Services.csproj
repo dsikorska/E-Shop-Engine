@@ -135,7 +135,6 @@
     <Compile Include="Data\Identity\AppSignInManager.cs" />
     <Compile Include="Data\Identity\AppUserManager.cs" />
     <Compile Include="Data\Identity\AppUserStore.cs" />
-    <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Migrations\201808072054560_Init.cs" />
     <Compile Include="Migrations\201808072054560_Init.Designer.cs">
       <DependentUpon>201808072054560_Init.cs</DependentUpon>
@@ -393,6 +392,9 @@
   <ItemGroup>
     <Content Include="EmailTemplates\OneButtonTemplateMail.html" />
     <Content Include="EmailTemplates\OnlyTextTemplateMail.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

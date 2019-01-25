@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -19,14 +19,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Category")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class CategoryAdminController : BaseController
+    public class CategoryAdminController : BaseExtendedController
     {
         private readonly ICategoryRepository _categoryRepository;
 
         public CategoryAdminController(
             ICategoryRepository categoryRepository,
             IUnitOfWork unitOfWork,
-            AppUserManager userManager)
+            IAppUserManager userManager)
             : base(unitOfWork, userManager)
         {
             _categoryRepository = categoryRepository;
