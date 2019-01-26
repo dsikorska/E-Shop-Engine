@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-Shop-Engine.Services", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-Shop-Engine.Utilities", "E-Shop-Engine.Utilities\E-Shop-Engine.Utilities.csproj", "{44BA2192-129A-4D41-B03F-072940900CF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-Shop-Engine.UnitTests", "E-Shop-Engine.UnitTests\E-Shop-Engine.UnitTests.csproj", "{7A0B096C-79A4-467C-8C97-5E92544F3228}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{44BA2192-129A-4D41-B03F-072940900CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44BA2192-129A-4D41-B03F-072940900CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44BA2192-129A-4D41-B03F-072940900CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0B096C-79A4-467C-8C97-5E92544F3228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0B096C-79A4-467C-8C97-5E92544F3228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0B096C-79A4-467C-8C97-5E92544F3228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0B096C-79A4-467C-8C97-5E92544F3228}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

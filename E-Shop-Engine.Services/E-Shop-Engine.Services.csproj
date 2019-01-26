@@ -273,6 +273,7 @@
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\SubcategoryRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
+    <Compile Include="Services\ErrorMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
