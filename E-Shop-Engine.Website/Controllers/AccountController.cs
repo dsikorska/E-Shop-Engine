@@ -158,36 +158,33 @@ namespace E_Shop_Engine.Website.Controllers
             if (user != null)
             {
                 user.Email = model.Email;
-                IdentityResult validEmail = await _userManager.UserValidator.ValidateAsync(user);
-                if (!validEmail.Succeeded)
-                {
-                    AddErrorsFromResult(validEmail);
-                    return View(model);
-                }
+                user.Name = model.Name;
+                user.Surname = model.Surname;
+                user.PhoneNumber = model.PhoneNumber;
+                user.UserName = model.Email;
 
-                if (validEmail.Succeeded)
+                IdentityResult userValidationResult = await _userManager.UserValidator.ValidateAsync(user);
+                if (userValidationResult.Succeeded)
                 {
-                    user.Name = model.Name;
-                    user.Surname = model.Surname;
-                    user.PhoneNumber = model.PhoneNumber;
-                    user.UserName = model.Email;
                     IdentityResult result = await _userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
                     {
-
-                        return Redirect(Url.Action("Index"));
+                        return RedirectToAction("Index");
                     }
                     else
                     {
                         AddErrorsFromResult(result);
-                        return View(model);
                     }
+                }
+                else
+                {
+                    AddErrorsFromResult(userValidationResult);
                 }
             }
             else
             {
-                ModelState.AddModelError("", "User Not Found");
+                ModelState.AddModelError("", ErrorMessage.NullUser);
             }
             return View(model);
         }
@@ -199,7 +196,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("_Error", new string[] { "Access denied." });
+                return View("_Error", new string[] { ErrorMessage.NoAccess });
             }
 
             return View();
@@ -216,7 +213,7 @@ namespace E_Shop_Engine.Website.Controllers
                 AppUser user = await _userManager.FindAsync(model.Email, model.Password);
                 if (user == null)
                 {
-                    ModelState.AddModelError("", "Invalid name or password");
+                    ModelState.AddModelError("", ErrorMessage.InvalidNameOrPassword);
                 }
                 else
                 {
@@ -234,7 +231,8 @@ namespace E_Shop_Engine.Website.Controllers
                     {
                         IsPersistent = false,
                     }, ident);
-                    return Redirect(Url.Action("Index", "Home"));
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             return View(model);
@@ -286,7 +284,7 @@ namespace E_Shop_Engine.Website.Controllers
                     _mailingRepository.WelcomeMail(user.Email);
                     _mailingRepository.ActivationMail(user.Email, callbackUrl);
 
-                    return Redirect(Url.Action("Index", "Home"));
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -301,14 +299,13 @@ namespace E_Shop_Engine.Website.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
             {
                 return View("_Error", new string[] { "Something went wrong." });
             }
             IdentityResult result = await _userManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
-
                 return View("ConfirmEmail");
             }
 
