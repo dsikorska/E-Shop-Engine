@@ -11,13 +11,10 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Subcategory> _subcategoryRepository;
 
-        public SubcategoryController(
-            IRepository<Subcategory> subcategoryRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        public SubcategoryController(IRepository<Subcategory> subcategoryRepository, IMapper mapper) : base(mapper)
         {
             _subcategoryRepository = subcategoryRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Category/{mainName}/{subcategoryName}/{subcategoryId}
@@ -28,7 +25,7 @@ namespace E_Shop_Engine.Website.Controllers
                 SaveSortingState(sortOrder, descending);
             }
             Subcategory subcategory = _subcategoryRepository.GetById(id);
-            SubcategoryViewModel model = Mapper.Map<SubcategoryViewModel>(subcategory);
+            SubcategoryViewModel model = _mapper.Map<SubcategoryViewModel>(subcategory);
 
             return View(model);
         }

@@ -5,7 +5,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
@@ -15,26 +15,25 @@ using X.PagedList;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class OrderController : BaseController
+    public class OrderController : BaseExtendedController
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ICartRepository _cartRepository;
-        private readonly AppUserManager _userManager;
         private readonly ISettingsRepository _settingsRepository;
 
         public OrderController(
             IRepository<Order> orderRepository,
             ICartRepository cartRepository,
-            AppUserManager userManager,
+            IAppUserManager userManager,
             ISettingsRepository settingsRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
-            _userManager = userManager;
             _settingsRepository = settingsRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Order
@@ -49,7 +48,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             IEnumerable<Order> model = user.Orders;
-            IEnumerable<OrderViewModel> mappedModel = Mapper.Map<IEnumerable<OrderViewModel>>(model);
+            IEnumerable<OrderViewModel> mappedModel = _mapper.Map<IEnumerable<OrderViewModel>>(model);
             IEnumerable<OrderViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -84,7 +83,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             model.AppUser = user;
-            model.Cart = Mapper.Map<CartDTO>(cart);
+            model.Cart = _mapper.Map<CartDTO>(cart);
             return View(model);
         }
 
@@ -100,7 +99,7 @@ namespace E_Shop_Engine.Website.Controllers
         //    }
         //    AppUser user = GetCurrentUser();
         //    Cart cart = _cartRepository.GetCurrentCart(user);
-        //    model.Cart = Mapper.Map<CartDTO>(cart);
+        //    model.Cart = _mapper.Map<CartDTO>(cart);
         //    model.Created = DateTime.UtcNow;
         //    model.AppUser = user;
 
@@ -123,7 +122,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (user.Orders.Contains(model))
             {
-                OrderViewModel viewModel = Mapper.Map<OrderViewModel>(model);
+                OrderViewModel viewModel = _mapper.Map<OrderViewModel>(model);
                 viewModel.Created = viewModel.Created.ToLocalTime();
                 return View(viewModel);
             }

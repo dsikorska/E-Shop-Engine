@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
-using E_Shop_Engine.Services.Data.Identity;
-using Microsoft.AspNet.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 
 namespace E_Shop_Engine.Website.Extensions
 {
@@ -14,7 +13,7 @@ namespace E_Shop_Engine.Website.Extensions
         /// <returns></returns>
         public static MvcHtmlString GetUserName(this HtmlHelper html, string id)
         {
-            AppUserManager manager = DependencyResolver.Current.GetService<AppUserManager>();
+            IAppUserManager manager = DependencyResolver.Current.GetService<IAppUserManager>();
             string result = manager.FindById(id)?.UserName;
             return new MvcHtmlString(result);
         }

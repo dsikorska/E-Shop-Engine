@@ -3,24 +3,28 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Models;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class CartController : BaseController
+    public class CartController : BaseExtendedController
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
-        private readonly AppUserManager _userManager;
 
-        public CartController(ICartRepository cartRepository, IProductRepository productRepository, AppUserManager userManager, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public CartController(
+            ICartRepository cartRepository,
+            IProductRepository productRepository,
+            IAppUserManager userManager,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
-            _userManager = userManager;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Cart/CountItems
@@ -40,7 +44,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             AppUser user = GetCurrentUser();
             Cart cart = _cartRepository.GetCurrentCart(user);
-            CartViewModel model = Mapper.Map<Cart, CartViewModel>(cart);
+            CartViewModel model = _mapper.Map<Cart, CartViewModel>(cart);
             model.TotalValue = _cartRepository.GetTotalValue(cart);
 
             return View(model);

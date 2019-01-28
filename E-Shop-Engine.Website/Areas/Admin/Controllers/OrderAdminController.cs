@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -17,7 +18,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Order")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class OrderAdminController : BaseController
+    public class OrderAdminController : BaseExtendedController
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMailingRepository _mailingRepository;
@@ -25,12 +26,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public OrderAdminController(
             IOrderRepository orderRepository,
             IMailingRepository mailingRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IUnitOfWork unitOfWork,
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _orderRepository = orderRepository;
             _mailingRepository = mailingRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Order
@@ -52,7 +55,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IEnumerable<OrderAdminViewModel> mappedModel = Mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
+            IEnumerable<OrderAdminViewModel> mappedModel = _mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
             IEnumerable<OrderAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -68,7 +71,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             Order order = _orderRepository.GetById(id);
-            OrderAdminViewModel model = Mapper.Map<OrderAdminViewModel>(order);
+            OrderAdminViewModel model = _mapper.Map<OrderAdminViewModel>(order);
 
             return View(model);
         }
@@ -78,7 +81,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ViewResult Edit(int id)
         {
             Order order = _orderRepository.GetById(id);
-            OrderAdminViewModel model = Mapper.Map<OrderAdminViewModel>(order);
+            OrderAdminViewModel model = _mapper.Map<OrderAdminViewModel>(order);
 
             return View(model);
         }
@@ -97,7 +100,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             order.Finished = model.Finished;
             order.OrderStatus = model.OrderStatus;
 
-            _orderRepository.Update(Mapper.Map<Order>(order));
+            _orderRepository.Update(_mapper.Map<Order>(order));
             _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
             _unitOfWork.SaveChanges();
 

@@ -6,7 +6,8 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
+using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Models;
 using E_Shop_Engine.Website.Models.Custom;
@@ -16,29 +17,28 @@ using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : BaseExtendedController
     {
-        private readonly AppUserManager _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IRepository<Address> _addressRepository;
         private readonly IMailingRepository _mailingRepository;
         private readonly ICartRepository _cartRepository;
 
         public AccountController(
-            AppUserManager userManager,
+            IAppUserManager userManager,
             IAuthenticationManager authManager,
             IRepository<Address> addressRepository,
             IMailingRepository mailingRepository,
             ICartRepository cartRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
-            _userManager = userManager;
             _authManager = authManager;
             _addressRepository = addressRepository;
             _mailingRepository = mailingRepository;
             _cartRepository = cartRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Account
@@ -55,7 +55,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Details()
         {
             AppUser user = GetCurrentUser();
-            UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
+            UserEditViewModel model = _mapper.Map<UserEditViewModel>(user);
 
             return PartialView(model);
         }
@@ -80,46 +80,47 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (model.NewPassword != model.NewPasswordCopy)
             {
-                ModelState.AddModelError("", "The new password and confirmation password does not match.");
+                ModelState.AddModelError("", ErrorMessage.PasswordsDontMatch);
                 return View(model);
             }
 
             AppUser user = GetCurrentUser();
 
-            bool correctPass = await _userManager.CheckPasswordAsync(user, model.OldPassword);
-            if (!correctPass)
+            if (user != null)
             {
-                ModelState.AddModelError("", "Please enter valid current password.");
-                return View(model);
-            }
-
-            IdentityResult validPass = await _userManager.PasswordValidator.ValidateAsync(model.NewPassword);
-            if (validPass.Succeeded)
-            {
-                user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.NewPassword);
-            }
-            else
-            {
-                AddErrorsFromResult(validPass);
-            }
-
-            if (validPass == null || (model.NewPassword != string.Empty && validPass.Succeeded))
-            {
-                IdentityResult result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
+                bool correctPass = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+                if (!correctPass)
                 {
-                    _mailingRepository.PasswordChangedMail(user.Email);
+                    ModelState.AddModelError("", ErrorMessage.PasswordNotValid);
+                    return View(model);
+                }
 
-                    return Redirect(Url.Action("Index"));
+                IdentityResult validPass = await _userManager.PasswordValidator.ValidateAsync(model.NewPassword);
+                if (validPass.Succeeded)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.NewPassword);
+
+                    IdentityResult result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        _mailingRepository.PasswordChangedMail(user.Email);
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(result);
+                    }
                 }
                 else
                 {
-                    AddErrorsFromResult(result);
+                    AddErrorsFromResult(validPass);
+                    return View(model);
                 }
             }
             else
             {
-                ModelState.AddModelError("", "User Not Found");
+                ModelState.AddModelError("", ErrorMessage.NullUser);
             }
             return View(model);
         }
@@ -130,7 +131,7 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Edit()
         {
             AppUser user = GetCurrentUser();
-            UserEditViewModel model = Mapper.Map<UserEditViewModel>(user);
+            UserEditViewModel model = _mapper.Map<UserEditViewModel>(user);
 
             if (user != null)
             {
@@ -157,36 +158,33 @@ namespace E_Shop_Engine.Website.Controllers
             if (user != null)
             {
                 user.Email = model.Email;
-                IdentityResult validEmail = await _userManager.UserValidator.ValidateAsync(user);
-                if (!validEmail.Succeeded)
-                {
-                    AddErrorsFromResult(validEmail);
-                    return View(model);
-                }
+                user.Name = model.Name;
+                user.Surname = model.Surname;
+                user.PhoneNumber = model.PhoneNumber;
+                user.UserName = model.Email;
 
-                if (validEmail.Succeeded)
+                IdentityResult userValidationResult = await _userManager.UserValidator.ValidateAsync(user);
+                if (userValidationResult.Succeeded)
                 {
-                    user.Name = model.Name;
-                    user.Surname = model.Surname;
-                    user.PhoneNumber = model.PhoneNumber;
-                    user.UserName = model.Email;
                     IdentityResult result = await _userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
                     {
-
-                        return Redirect(Url.Action("Index"));
+                        return RedirectToAction("Index");
                     }
                     else
                     {
                         AddErrorsFromResult(result);
-                        return View(model);
                     }
+                }
+                else
+                {
+                    AddErrorsFromResult(userValidationResult);
                 }
             }
             else
             {
-                ModelState.AddModelError("", "User Not Found");
+                ModelState.AddModelError("", ErrorMessage.NullUser);
             }
             return View(model);
         }
@@ -198,7 +196,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("_Error", new string[] { "Access denied." });
+                return View("_Error", new string[] { ErrorMessage.NoAccess });
             }
 
             return View();
@@ -215,7 +213,7 @@ namespace E_Shop_Engine.Website.Controllers
                 AppUser user = await _userManager.FindAsync(model.Email, model.Password);
                 if (user == null)
                 {
-                    ModelState.AddModelError("", "Invalid name or password");
+                    ModelState.AddModelError("", ErrorMessage.InvalidNameOrPassword);
                 }
                 else
                 {
@@ -233,7 +231,8 @@ namespace E_Shop_Engine.Website.Controllers
                     {
                         IsPersistent = false,
                     }, ident);
-                    return Redirect(Url.Action("Index", "Home"));
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
             return View(model);
@@ -273,7 +272,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (ModelState.IsValid)
             {
-                AppUser user = Mapper.Map<AppUser>(model);
+                AppUser user = _mapper.Map<AppUser>(model);
                 user.Created = DateTime.UtcNow;
 
                 IdentityResult result = new IdentityResult();
@@ -285,7 +284,7 @@ namespace E_Shop_Engine.Website.Controllers
                     _mailingRepository.WelcomeMail(user.Email);
                     _mailingRepository.ActivationMail(user.Email, callbackUrl);
 
-                    return Redirect(Url.Action("Index", "Home"));
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -300,14 +299,13 @@ namespace E_Shop_Engine.Website.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
             {
                 return View("_Error", new string[] { "Something went wrong." });
             }
             IdentityResult result = await _userManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
-
                 return View("ConfirmEmail");
             }
 
@@ -328,21 +326,27 @@ namespace E_Shop_Engine.Website.Controllers
         public async Task<ActionResult> ForgotPassword(string email)
         {
             AppUser user = await _userManager.FindByEmailAsync(email);
-            if (!string.IsNullOrEmpty(email) && user != null)
+            if (user == null)
+            {
+                ModelState.AddModelError("", ErrorMessage.NullUser);
+                return View();
+            }
+
+            if (!string.IsNullOrWhiteSpace(email) && email.Contains("@"))
             {
                 string code = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
                 string callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: Request.Url.Scheme);
                 _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
                 return View("ForgotPasswordConfirmation");
             }
-            ModelState.AddModelError("", "User Not Found");
+            ModelState.AddModelError("", ErrorMessage.NoEmail);
             return View();
         }
 
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("_Error", new string[] { "Something went wrong." }) : View();
+            return string.IsNullOrWhiteSpace(code) ? View("_Error", new string[] { "Something went wrong." }) : View();
         }
 
         // POST: /Account/ResetPassword
@@ -367,12 +371,11 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (result.Succeeded)
             {
-
                 return View("ResetPasswordConfirmation");
             }
 
             AddErrorsFromResult(result);
-            return View();
+            return View(model);
         }
 
         // GET: /Account/AddressEdit
@@ -380,11 +383,16 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult AddressEdit()
         {
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { "Couldn't find user." });
+            }
+
             AddressViewModel model;
 
             if (user?.Address != null)
             {
-                model = Mapper.Map<AddressViewModel>(user.Address);
+                model = _mapper.Map<AddressViewModel>(user.Address);
             }
             else
             {
@@ -406,6 +414,11 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { "Couldn't find user." });
+            }
+
             Address address = _addressRepository.GetById(model.Id);
             if (address == null)
             {
@@ -434,13 +447,14 @@ namespace E_Shop_Engine.Website.Controllers
                 _addressRepository.Update(address);
             }
 
+            _unitOfWork.SaveChanges();
 
             if (isOrder)
             {
-                return Redirect(Url.Action("Create", "Order"));
+                return RedirectToAction("Create", "Order");
             }
 
-            return Redirect(Url.Action("Index"));
+            return RedirectToAction("Index");
         }
 
         // GET: /Account/AddressDetails
@@ -454,7 +468,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (user?.Address != null)
             {
-                model = Mapper.Map<AddressViewModel>(user.Address);
+                model = _mapper.Map<AddressViewModel>(user.Address);
             }
 
             return PartialView(model);

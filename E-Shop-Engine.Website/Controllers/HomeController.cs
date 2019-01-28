@@ -22,13 +22,13 @@ namespace E_Shop_Engine.Website.Controllers
             IRepository<Category> categoryRepository,
             IProductRepository productRepository,
             IMailingRepository mailingRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IMapper mapper)
+            : base(mapper)
         {
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
             _mailingRepository = mailingRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /
@@ -70,7 +70,7 @@ namespace E_Shop_Engine.Website.Controllers
         public PartialViewResult NavList()
         {
             IEnumerable<Category> model = _categoryRepository.GetAll();
-            IEnumerable<CategoryViewModel> viewModel = Mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(model);
+            IEnumerable<CategoryViewModel> viewModel = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(model);
             return PartialView("_Categories", viewModel);
         }
 
@@ -78,7 +78,7 @@ namespace E_Shop_Engine.Website.Controllers
         public PartialViewResult GetSpecialOffers()
         {
             IEnumerable<Product> model = _productRepository.GetAllSpecialOffers();
-            IEnumerable<ProductViewModel> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(model);
+            IEnumerable<ProductViewModel> viewModel = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(model);
             return PartialView("SpecialOffers", viewModel);
         }
 
@@ -88,7 +88,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             IEnumerable<Product> model = _productRepository.GetAllShowingInDeck();
 
-            IEnumerable<ProductViewModel> mappedModel = Mapper.Map<IEnumerable<ProductViewModel>>(model);
+            IEnumerable<ProductViewModel> mappedModel = _mapper.Map<IEnumerable<ProductViewModel>>(model);
             IEnumerable<ProductViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
 
             int pageNumber = page ?? 1;

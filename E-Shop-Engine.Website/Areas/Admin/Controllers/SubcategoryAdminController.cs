@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -18,7 +19,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Subcategory")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class SubcategoryAdminController : BaseController
+    public class SubcategoryAdminController : BaseExtendedController
     {
         private readonly ISubcategoryRepository _subcategoryRepository;
         private readonly IRepository<Category> _categoryRepository;
@@ -26,12 +27,14 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public SubcategoryAdminController(
             ISubcategoryRepository subcategoryRepository,
             IRepository<Category> categoryRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IUnitOfWork unitOfWork,
+            IAppUserManager userManager,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
             _subcategoryRepository = subcategoryRepository;
             _categoryRepository = categoryRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Subcategory
@@ -53,7 +56,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IEnumerable<SubcategoryAdminViewModel> mappedModel = Mapper.Map<IEnumerable<SubcategoryAdminViewModel>>(model);
+            IEnumerable<SubcategoryAdminViewModel> mappedModel = _mapper.Map<IEnumerable<SubcategoryAdminViewModel>>(model);
             IEnumerable<SubcategoryAdminViewModel> sortedModel = mappedModel.SortBy(x => x.CategoryID, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -69,7 +72,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ViewResult Edit(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);
-            SubcategoryAdminViewModel model = Mapper.Map<SubcategoryAdminViewModel>(subcategory);
+            SubcategoryAdminViewModel model = _mapper.Map<SubcategoryAdminViewModel>(subcategory);
             model.Categories = _categoryRepository.GetAll();
 
             return View(model);
@@ -84,7 +87,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            _subcategoryRepository.Update(Mapper.Map<Subcategory>(model));
+            _subcategoryRepository.Update(_mapper.Map<Subcategory>(model));
             _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
@@ -111,7 +114,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             {
                 return View("Edit", model);
             }
-            _subcategoryRepository.Create(Mapper.Map<Subcategory>(model));
+            _subcategoryRepository.Create(_mapper.Map<Subcategory>(model));
             _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
@@ -122,7 +125,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public ActionResult Details(int id)
         {
             Subcategory subcategory = _subcategoryRepository.GetById(id);
-            SubcategoryAdminViewModel model = Mapper.Map<SubcategoryAdminViewModel>(subcategory);
+            SubcategoryAdminViewModel model = _mapper.Map<SubcategoryAdminViewModel>(subcategory);
 
             return View(model);
         }

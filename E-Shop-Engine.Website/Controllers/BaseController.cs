@@ -1,29 +1,26 @@
 ﻿using System.Web.Mvc;
-using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
+using AutoMapper;
 using E_Shop_Engine.Website.Models.Custom;
-using Microsoft.AspNet.Identity;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
 {
     public class BaseController : Controller
     {
-        protected Logger logger;
-        protected readonly IUnitOfWork _unitOfWork;
+        protected Logger _logger;
+        protected IMapper _mapper;
 
-        public BaseController(IUnitOfWork unitOfWork)
+        public BaseController(IMapper mapper)
         {
-            logger = LogManager.GetCurrentClassLogger();
-            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;
 
-            logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
+            _logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
             string msg = "We're sorry. Something unexpected happend! Please try again later or contact us.";
 
             if (filterContext.IsChildAction)
@@ -34,15 +31,6 @@ namespace E_Shop_Engine.Website.Controllers
             {
                 filterContext.Result = View("_Error", new string[] { msg });
             }
-        }
-
-        [NonAction]
-        protected AppUser GetCurrentUser()
-        {
-            AppUserManager userManager = DependencyResolver.Current.GetService<AppUserManager>();
-            string userId = HttpContext.User.Identity.GetUserId();
-            AppUser user = userManager.FindById(userId);
-            return user;
         }
 
         [NonAction]

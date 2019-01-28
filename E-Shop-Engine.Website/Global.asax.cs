@@ -16,7 +16,6 @@ namespace E_Shop_Engine.Website
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
-            AutoMapperConfig.RegisterMappings();
         }
     }
 }

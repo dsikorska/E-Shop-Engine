@@ -43,7 +43,7 @@
             <tbody>
                 @foreach (var item in Model.Cart.CartLines)
                 {
-                    <tr class="clickable-row pointer" data-href="/@item.Product.ID/@item.Product.Name">
+                    <tr class="clickable-row pointer" data-href="/@item.Product.Id/@item.Product.Name">
                         <td>
                             @Html.DisplayFor(modelItem => item.Product.CatalogNumber)
                         </td>

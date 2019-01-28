@@ -11,13 +11,10 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Category> _categoryRepository;
 
-        public CategoryController(
-            IRepository<Category> categoryRepository,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        public CategoryController(IRepository<Category> categoryRepository, IMapper mapper) : base(mapper)
         {
             _categoryRepository = categoryRepository;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: /Category/{name}/{id}
@@ -28,7 +25,7 @@ namespace E_Shop_Engine.Website.Controllers
                 SaveSortingState(sortOrder, descending);
             }
             Category category = _categoryRepository.GetById(id);
-            CategoryViewModel model = Mapper.Map<CategoryViewModel>(category);
+            CategoryViewModel model = _mapper.Map<CategoryViewModel>(category);
             return View(model);
         }
     }

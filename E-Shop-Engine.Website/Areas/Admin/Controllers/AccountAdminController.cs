@@ -5,8 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Services.Data.Identity;
-using E_Shop_Engine.Services.Extensions;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -21,17 +20,15 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     [RoutePrefix("Account")]
     [Route("{action}")]
     [Authorize(Roles = "Administrators, Staff")]
-    public class AccountAdminController : BaseController
+    public class AccountAdminController : BaseExtendedController
     {
-        private readonly AppUserManager _userManager;
-
         public AccountAdminController(
-            AppUserManager userManager,
-            IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+            IAppUserManager userManager,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+            : base(unitOfWork, userManager, mapper)
         {
-            _userManager = userManager;
-            logger = LogManager.GetCurrentClassLogger();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         // GET: Admin/Account/
@@ -53,7 +50,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 ReverseSorting(ref descending, sortOrder);
             }
 
-            IEnumerable<UserAdminViewModel> mappedModel = Mapper.Map<IEnumerable<UserAdminViewModel>>(model);
+            IEnumerable<UserAdminViewModel> mappedModel = _mapper.Map<IEnumerable<UserAdminViewModel>>(model);
             IEnumerable<UserAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
 
             int pageNumber = page ?? 1;
@@ -81,7 +78,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                UserAdminViewModel viewModel = Mapper.Map<UserAdminViewModel>(user);
+                UserAdminViewModel viewModel = _mapper.Map<UserAdminViewModel>(user);
                 return View(viewModel);
             }
             return Redirect("Index");
@@ -123,7 +120,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
-            UserAdminViewModel model = Mapper.Map<UserAdminViewModel>(user);
+            UserAdminViewModel model = _mapper.Map<UserAdminViewModel>(user);
             if (user != null)
             {
                 return View(model);

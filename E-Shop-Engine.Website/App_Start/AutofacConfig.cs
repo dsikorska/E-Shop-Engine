@@ -2,10 +2,12 @@
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
 using E_Shop_Engine.Services.Data.Identity;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Repositories;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -24,6 +26,7 @@ namespace E_Shop_Engine.Website.App_Start
         {
             ContainerBuilder builder = new ContainerBuilder();
 
+            builder.Register(c => AutoMapperConfig.Register()).As<IMapper>().InstancePerLifetimeScope().PropertiesAutowired().PreserveExistingDefaults();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().As<IAppDbContext>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().AsSelf().InstancePerRequest();
@@ -31,7 +34,8 @@ namespace E_Shop_Engine.Website.App_Start
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => app.GetDataProtectionProvider()).InstancePerRequest();
             //builder.RegisterType<AppUserStore>().As<IUserStore<AppUser>>().InstancePerRequest();
-            builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
+            //builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
+            builder.RegisterType<AppUserManager>().As<IAppUserManager>().InstancePerRequest();
             builder.RegisterType<AppRoleManager>().AsSelf().InstancePerRequest();
             builder.Register(c => new RoleStore<AppRole>(c.Resolve<AppDbContext>())).As<IRoleStore<AppRole, string>>().InstancePerRequest();
             builder.Register(c => new AppUserStore(c.Resolve<IAppDbContext>())).As<IUserStore<AppUser>>().InstancePerRequest();
