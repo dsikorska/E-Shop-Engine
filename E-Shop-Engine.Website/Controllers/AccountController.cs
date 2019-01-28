@@ -326,21 +326,27 @@ namespace E_Shop_Engine.Website.Controllers
         public async Task<ActionResult> ForgotPassword(string email)
         {
             AppUser user = await _userManager.FindByEmailAsync(email);
-            if (!string.IsNullOrEmpty(email) && user != null)
+            if (user == null)
+            {
+                ModelState.AddModelError("", ErrorMessage.NullUser);
+                return View();
+            }
+
+            if (!string.IsNullOrWhiteSpace(email) && email.Contains("@"))
             {
                 string code = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
                 string callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: Request.Url.Scheme);
                 _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
                 return View("ForgotPasswordConfirmation");
             }
-            ModelState.AddModelError("", "User Not Found");
+            ModelState.AddModelError("", ErrorMessage.NoEmail);
             return View();
         }
 
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("_Error", new string[] { "Something went wrong." }) : View();
+            return string.IsNullOrWhiteSpace(code) ? View("_Error", new string[] { "Something went wrong." }) : View();
         }
 
         // POST: /Account/ResetPassword
@@ -365,12 +371,11 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (result.Succeeded)
             {
-
                 return View("ResetPasswordConfirmation");
             }
 
             AddErrorsFromResult(result);
-            return View();
+            return View(model);
         }
 
         // GET: /Account/AddressEdit
@@ -378,6 +383,11 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult AddressEdit()
         {
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { "Couldn't find user." });
+            }
+
             AddressViewModel model;
 
             if (user?.Address != null)
@@ -404,6 +414,11 @@ namespace E_Shop_Engine.Website.Controllers
             }
 
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { "Couldn't find user." });
+            }
+
             Address address = _addressRepository.GetById(model.Id);
             if (address == null)
             {
@@ -436,10 +451,10 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (isOrder)
             {
-                return Redirect(Url.Action("Create", "Order"));
+                return RedirectToAction("Create", "Order");
             }
 
-            return Redirect(Url.Action("Index"));
+            return RedirectToAction("Index");
         }
 
         // GET: /Account/AddressDetails
