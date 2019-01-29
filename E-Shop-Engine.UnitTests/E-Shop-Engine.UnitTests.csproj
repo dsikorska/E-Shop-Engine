@@ -116,7 +116,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="E-Shop-Engine.WebsiteTests\ControllersTests\AccountControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\AccountControllerBaseTest.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\AccountControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\AddressMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ChangePasswordMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ConfirmEmailMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\CreateMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\EditMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ForgotPasswordMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\LoginMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ResetPasswordMethodTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
