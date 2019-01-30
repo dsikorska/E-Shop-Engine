@@ -8,5 +8,6 @@
         public const string NoAccess = "Access denied.";
         public const string InvalidNameOrPassword = "Invalid name or password.";
         public const string NoEmail = "Please enter email.";
+        public const string ItemNotFound = "Sorry, found nothing.";
     }
 }

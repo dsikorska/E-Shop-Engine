@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class Create : AccountControllerBaseTest<UserCreateViewModel>
+    public class Create : AccountControllerTests<UserCreateViewModel>
     {
         [SetUp]
         public override void Setup()
@@ -23,8 +23,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Create();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
+            AssertIsInstanceOf<ViewResult>(result);
         }
 
         [Test(Description = "HTTPGET")]
@@ -32,9 +31,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Create();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
+            AssertErrorViewReturns<UserCreateViewModel, ViewResult>(_model, result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -69,7 +66,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.Create(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserCreateViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -78,23 +75,20 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.Create(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectResult>(result);
+            AssertIsInstanceOf<RedirectResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task Create_WhenValidModelPassed_RedirectToIndexHome()
         {
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext(isUserAuthenticated: false);
-            FakeControllerUrlAction();
+            MockHttpContext(isUserAuthenticated: false);
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.Create(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
-            Assert.AreEqual("Home", (result as RedirectToRouteResult).RouteValues["controller"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToActionController(result, "Index", "Home");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
@@ -108,8 +102,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         public async Task Create_WhenValidModelPassed_SendActivationLinkMethodCall()
         {
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext(isUserAuthenticated: false);
-            FakeControllerUrlAction();
+            MockHttpContext(isUserAuthenticated: false);
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.Create(_model);
 
@@ -120,8 +114,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         public async Task Create_WhenValidModelPassed_CreateMethodCall()
         {
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext(isUserAuthenticated: false);
-            FakeControllerUrlAction();
+            MockHttpContext(isUserAuthenticated: false);
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.Create(_model);
 
@@ -132,8 +126,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         public async Task Create_WhenValidModelPassed_GenerateEmailConfirmationTokenMethodCall()
         {
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext(isUserAuthenticated: false);
-            FakeControllerUrlAction();
+            MockHttpContext(isUserAuthenticated: false);
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.Create(_model);
 
@@ -150,7 +144,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.Create(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserCreateViewModel, ViewResult>(_model, result, errors);
         }
     }
 }

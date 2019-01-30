@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class ConfirmEmailMethodTests : AccountControllerBaseTest<string>
+    public class ConfirmEmailMethodTests : AccountControllerTests<string>
     {
         [SetUp]
         public override void Setup()
@@ -23,9 +23,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ConfirmEmail(input, input);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("ConfirmEmail", (result as ViewResult).ViewName);
+            AssertSpecifiedViewReturns<string, ViewResult>(_model, result, "ConfirmEmail");
         }
 
         [Test(Description = "HTTPPOST")]
@@ -47,9 +45,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ConfirmEmail(input, input);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
+            AssertErrorViewReturns<string, ViewResult>(_model, result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -64,9 +60,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = await _controller.ConfirmEmail(userId, code);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
+            AssertErrorViewReturns<string, ViewResult>(_model, result);
         }
     }
 }

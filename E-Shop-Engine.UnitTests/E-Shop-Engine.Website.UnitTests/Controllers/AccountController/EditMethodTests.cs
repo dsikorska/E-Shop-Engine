@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class EditMethodTests : AccountControllerBaseTest<UserEditViewModel>
+    public class EditMethodTests : AccountControllerTests<UserEditViewModel>
     {
         [SetUp]
         public override void Setup()
@@ -23,20 +23,18 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         public void Edit_WhenCalled_ReturnsViewWithForm()
         {
             _mapper.Setup(m => m.Map<UserEditViewModel>(It.IsAny<AppUser>())).Returns(_model);
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
 
             ActionResult result = _controller.Edit();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual(_model, (result as ViewResult).Model);
+            AssertViewWithModelReturns<UserEditViewModel, ViewResult>(_model, result);
         }
 
         [Test(Description = "HTTPGET")]
         public void Edit_WhenCalled_FindByIdMethodCall()
         {
             _mapper.Setup(m => m.Map<UserEditViewModel>(It.IsAny<AppUser>())).Returns(_model);
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
 
             ActionResult result = _controller.Edit();
 
@@ -46,13 +44,12 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPGET")]
         public void Edit_WhenCalledAndUserNotFound_RedirectToAction()
         {
-            SetupFindById();
+            MockSetupFindByIdMethod();
 
             ActionResult result = _controller.Edit();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToAction(result, "Index");
         }
 
         [Test(Description = "HTTPPOST")]
@@ -85,7 +82,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.Edit(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserEditViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -95,14 +92,13 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.Edit(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToAction(result, "Index");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _userManager.Setup(um => um.UserValidator.ValidateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(um => um.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
         }
@@ -156,37 +152,37 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPPOST")]
         public async Task Edit_WhenUserNotFound_ReturnsViewWithModelError()
         {
-            SetupFindById();
+            MockSetupFindByIdMethod();
 
             ActionResult result = await _controller.Edit(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserEditViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task Edit_WhenUserValidationFail_ReturnsViewWithModelError()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _userManager.Setup(um => um.UserValidator.ValidateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Failed("test"));
 
             ActionResult result = await _controller.Edit(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserEditViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task Edit_WhenUpdatingUserFails_ReturnsViewWithModelError()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _userManager.Setup(um => um.UserValidator.ValidateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(um => um.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Failed("test"));
 
             ActionResult result = await _controller.Edit(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserEditViewModel, ViewResult>(_model, result, errors);
         }
     }
 }

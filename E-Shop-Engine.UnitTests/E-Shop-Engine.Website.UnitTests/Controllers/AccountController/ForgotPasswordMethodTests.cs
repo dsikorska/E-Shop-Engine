@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class ForgotPasswordMethodTests : AccountControllerBaseTest<string>
+    public class ForgotPasswordMethodTests : AccountControllerTests<string>
     {
         [SetUp]
         public override void Setup()
@@ -22,8 +22,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.ForgotPassword();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
+            AssertIsInstanceOf<ViewResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -32,14 +31,12 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             string email = "@";
             SetupFindByEmailAsync(_user);
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext();
-            FakeControllerUrlAction();
+            MockHttpContext();
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.ForgotPassword(email);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("ForgotPasswordConfirmation", (result as ViewResult).ViewName);
+            AssertSpecifiedViewReturns<string, ViewResult>(_model, result, "ForgotPasswordConfirmation");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
@@ -59,8 +56,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             string email = "@";
             SetupFindByEmailAsync(_user);
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext();
-            FakeControllerUrlAction();
+            MockHttpContext();
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.ForgotPassword(email);
 
@@ -73,8 +70,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             string email = "@";
             SetupFindByEmailAsync(_user);
             SetupMockedWhenValidModelPassed();
-            FakeHttpContext();
-            FakeControllerUrlAction();
+            MockHttpContext();
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.ForgotPassword(email);
 
@@ -90,7 +87,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ForgotPassword(email);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<string, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -105,7 +102,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ForgotPassword(email);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NoEmail);
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<string, ViewResult>(_model, result, errors);
         }
     }
 }

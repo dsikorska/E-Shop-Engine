@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class ChangePasswordMethodTests : AccountControllerBaseTest<UserChangePasswordViewModel>
+    public class ChangePasswordMethodTests : AccountControllerTests<UserChangePasswordViewModel>
     {
         [SetUp]
         public override void Setup()
@@ -24,8 +24,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.ChangePassword();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
+            AssertIsInstanceOf<ViewResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -61,7 +60,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ChangePassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -71,14 +70,13 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ChangePassword(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToAction(result, "Index");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _userManager.Setup(um => um.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
             _userManager.Setup(um => um.PasswordValidator.ValidateAsync(It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(um => um.PasswordHasher.HashPassword(It.IsAny<string>())).Returns(It.IsAny<string>());
@@ -128,27 +126,27 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPPOST")]
         public async Task ChangePassword_WhenNewPasswordAndConfirmationPasswordDoesntMatch_ReturnsViewWithModelError()
         {
-            UserChangePasswordViewModel model = new UserChangePasswordViewModel()
+            _model = new UserChangePasswordViewModel()
             {
                 NewPassword = "",
                 NewPasswordCopy = "a"
             };
 
-            ActionResult result = await _controller.ChangePassword(model);
+            ActionResult result = await _controller.ChangePassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.PasswordsDontMatch);
 
-            AssertReturnsViewWithModelError(result, errors, model);
+            AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task ChangePassword_WhenUserNotFound_ReturnsViewWithModelError()
         {
-            SetupFindById();
+            MockSetupFindByIdMethod();
 
             ActionResult result = await _controller.ChangePassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -159,26 +157,26 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ChangePassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.PasswordNotValid);
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task ChangePassword_WhenNewPasswordNotValid_ReturnsViewWithModelError()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _userManager.Setup(um => um.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
             _userManager.Setup(um => um.PasswordValidator.ValidateAsync(It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed("test"));
 
             ActionResult result = await _controller.ChangePassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task ChangePassword_WhenUpdatingFailed_ReturnsViewWithModelError()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _userManager.Setup(um => um.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(true);
             _userManager.Setup(um => um.PasswordValidator.ValidateAsync(It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(um => um.PasswordHasher.HashPassword(It.IsAny<string>())).Returns(It.IsAny<string>());
@@ -187,7 +185,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ChangePassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
     }
 }

@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class ResetPasswordMethodTests : AccountControllerBaseTest<UserResetPasswordViewModel>
+    public class ResetPasswordMethodTests : AccountControllerTests<UserResetPasswordViewModel>
     {
         [SetUp]
         public override void Setup()
@@ -25,8 +25,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = _controller.ResetPassword(code);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
+            AssertIsInstanceOf<ViewResult>(result);
             Assert.IsTrue((result as ViewResult).ViewName != "_Error");
         }
 
@@ -38,9 +37,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.ResetPassword(code);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.IsTrue((result as ViewResult).ViewName == "_Error");
+            AssertErrorViewReturns<UserResetPasswordViewModel, ViewResult>(_model, result);
         }
 
         [Test]
@@ -70,7 +67,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ResetPassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserResetPasswordViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test]
@@ -80,9 +77,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ResetPassword(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("ResetPasswordConfirmation", (result as ViewResult).ViewName);
+            AssertSpecifiedViewReturns<UserResetPasswordViewModel, ViewResult>(_model, result, "ResetPasswordConfirmation");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
@@ -108,9 +103,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ResetPassword(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual(_model, (result as ViewResult).Model);
+            AssertViewWithModelReturns<UserResetPasswordViewModel, ViewResult>(_model, result);
         }
 
         [Test]
@@ -122,7 +115,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.ResetPassword(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserResetPasswordViewModel, ViewResult>(_model, result, errors);
         }
     }
 }

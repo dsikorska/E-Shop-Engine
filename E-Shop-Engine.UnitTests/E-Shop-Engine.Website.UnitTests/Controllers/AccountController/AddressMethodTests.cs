@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class AddressMethodTests : AccountControllerBaseTest<AddressViewModel>
+    public class AddressMethodTests : AccountControllerTests<AddressViewModel>
     {
         [SetUp]
         public override void Setup()
@@ -19,32 +19,29 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPGET")]
         public void AddressEdit_WhenCalled_ReturnsViewWithModel()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _mapper.Setup(m => m.Map<AddressViewModel>(It.IsAny<Address>())).Returns(It.IsAny<AddressViewModel>());
 
             ActionResult result = _controller.AddressEdit();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
+            AssertIsInstanceOf<ViewResult>(result);
             Assert.IsInstanceOf<AddressViewModel>((result as ViewResult).Model);
         }
 
         [Test(Description = "HTTPGET")]
         public void AddressEdit_WhenUserNull_ReturnsErrorView()
         {
-            SetupFindById();
+            MockSetupFindByIdMethod();
 
             ActionResult result = _controller.AddressEdit();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
+            AssertErrorViewReturns<AddressViewModel, ViewResult>(_model, result);
         }
 
         [Test(Description = "HTTPGET")]
         public void AddressEdit_WhenUserAddressNull_CreateAddressInstance()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
 
             ActionResult result = _controller.AddressEdit();
 
@@ -80,7 +77,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = _controller.AddressEdit(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<AddressViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -90,14 +87,13 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = _controller.AddressEdit(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToAction(result, "Index");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _addressRepository.Setup(ar => ar.GetById(It.IsAny<int>())).Returns<Address>(null);
             _addressRepository.Setup(ar => ar.Create(It.IsAny<Address>()));
             _unitOfWork.Setup(uow => uow.SaveChanges());
@@ -110,21 +106,18 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = _controller.AddressEdit(_model, isOrder: true);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Order", (result as RedirectToRouteResult).RouteValues["controller"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToController(result, "Order");
         }
 
         [Test(Description = "HTTPPOST")]
         public void AddressEdit_WhenUserNotFound_ReturnsErrorView()
         {
-            SetupFindById();
+            MockSetupFindByIdMethod();
 
             ActionResult result = _controller.AddressEdit(_model, isOrder: true);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
+            AssertErrorViewReturns<AddressViewModel, ViewResult>(_model, result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -142,7 +135,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPPOST")]
         public void AddressEdit_WhenAddressFound_UpdateAddress()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _addressRepository.Setup(ar => ar.GetById(It.IsAny<int>())).Returns(new Address());
             _addressRepository.Setup(ar => ar.Update(It.IsAny<Address>()));
             _unitOfWork.Setup(uow => uow.SaveChanges());
@@ -190,13 +183,12 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPGET")]
         public void AddressDetails_WhenCalled_ReturnsPartialViewWithModel()
         {
-            SetupFindById(_user);
+            MockSetupFindByIdMethod(_user);
             _mapper.Setup(m => m.Map<AddressViewModel>(It.IsAny<Address>())).Returns(_model);
 
             ActionResult result = _controller.AddressDetails();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<PartialViewResult>(result);
+            AssertIsInstanceOf<PartialViewResult>(result);
             Assert.IsInstanceOf<AddressViewModel>((result as PartialViewResult).Model);
         }
     }

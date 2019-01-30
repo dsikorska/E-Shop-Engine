@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class LoginMethodTests : AccountControllerBaseTest<UserLoginViewModel>
+    public class LoginMethodTests : AccountControllerTests<UserLoginViewModel>
     {
         [SetUp]
         public override void Setup()
@@ -25,8 +25,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Login();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
+            AssertIsInstanceOf<ViewResult>(result);
         }
 
         [Test(Description = "HTTPGET")]
@@ -34,9 +33,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Login();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
+            AssertErrorViewReturns<UserLoginViewModel, ViewResult>(_model, result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -64,7 +61,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = await _controller.Login(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage("test");
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserLoginViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -74,10 +71,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.Login(_model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
-            Assert.AreEqual("Home", (result as RedirectToRouteResult).RouteValues["controller"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToActionController(result, "Index", "Home");
         }
 
         protected override void SetupMockedWhenValidModelPassed()
@@ -120,38 +115,24 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         [Test(Description = "HTTPPOST")]
         public async Task Login_WhenUserNotFound_ReturnsViewWithModelError()
         {
-            SetupFindById();
+            MockSetupFindByIdMethod();
 
             ActionResult result = await _controller.Login(_model);
             IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.InvalidNameOrPassword);
 
-            AssertReturnsViewWithModelError(result, errors);
+            AssertViewWithModelErrorReturns<UserLoginViewModel, ViewResult>(_model, result, errors);
         }
 
         [Test(Description = "HTTPPOST")]
         public async Task Login_WhenEmailNotConfirmed_SendActivationEmail()
         {
             SetupMockedWhenEmailNotConfirmed();
-            FakeHttpContext();
-            FakeControllerUrlAction();
+            MockHttpContext();
+            MockControllerUrlAction();
 
             ActionResult result = await _controller.Login(_model);
 
             _mailingRepository.Verify(mr => mr.ActivationMail(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-        }
-
-        [Test(Description = "HTTPPOST")]
-        public async Task Login_WhenEmailNotConfirmed_ReturnsErrorView()
-        {
-            SetupMockedWhenEmailNotConfirmed();
-            FakeHttpContext();
-            FakeControllerUrlAction();
-
-            ActionResult result = await _controller.Login(_model);
-
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ViewResult>(result);
-            Assert.AreEqual("_Error", (result as ViewResult).ViewName);
         }
 
         private void SetupMockedWhenEmailNotConfirmed()
@@ -159,6 +140,18 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             _userManager.Setup(um => um.FindAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_user);
             _userManager.Setup(um => um.IsEmailConfirmedAsync(It.IsAny<string>())).ReturnsAsync(false);
             _userManager.Setup(um => um.GenerateEmailConfirmationTokenAsync(It.IsAny<string>())).ReturnsAsync(It.IsAny<string>());
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public async Task Login_WhenEmailNotConfirmed_ReturnsErrorView()
+        {
+            SetupMockedWhenEmailNotConfirmed();
+            MockHttpContext();
+            MockControllerUrlAction();
+
+            ActionResult result = await _controller.Login(_model);
+
+            AssertErrorViewReturns<UserLoginViewModel, ViewResult>(_model, result);
         }
     }
 }

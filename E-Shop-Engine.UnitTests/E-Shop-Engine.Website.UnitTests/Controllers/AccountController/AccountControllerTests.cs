@@ -1,51 +1,79 @@
 ﻿using System.Web.Mvc;
+using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
+using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Services.Data.Identity.Abstraction;
+using E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Base;
 using E_Shop_Engine.Website.Models;
+using Microsoft.Owin.Security;
 using Moq;
 using NUnit.Framework;
+using SourceController = E_Shop_Engine.Website.Controllers;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.AccountController
 {
-    public class AccountControllerTests : AccountControllerBaseTest<string>
+    public abstract class AccountControllerTests<T> : ControllerExtendedTest<SourceController.AccountController>
     {
-        [SetUp]
+        protected Mock<ICartRepository> _cartRepository;
+        protected Mock<IMailingRepository> _mailingRepository;
+        protected Mock<IRepository<Address>> _addressRepository;
+        protected Mock<IAuthenticationManager> _authManager;
+        protected T _model;
+
         public override void Setup()
         {
             base.Setup();
-            _model = null;
+            InitializeFields();
+            _controller = new SourceController.AccountController(
+                _userManager.Object,
+                _authManager.Object,
+                _addressRepository.Object,
+                _mailingRepository.Object,
+                _cartRepository.Object,
+                _unitOfWork.Object,
+                _mapper.Object);
+
+            MockHttpContext();
+        }
+
+        protected void InitializeFields()
+        {
+            _unitOfWork = new Mock<IUnitOfWork>();
+            _cartRepository = new Mock<ICartRepository>();
+            _mailingRepository = new Mock<IMailingRepository>();
+            _addressRepository = new Mock<IRepository<Address>>();
+            _authManager = new Mock<IAuthenticationManager>();
+            _userManager = new Mock<IAppUserManager>();
         }
 
         [Test(Description = "HTTPGET")]
         public void Index_WhenCalled_ReturnsViewResult()
         {
-            ActionResult actionResult = _controller.Index();
+            ActionResult result = _controller.Index();
 
-            Assert.IsNotNull(actionResult);
-            Assert.IsInstanceOf<ViewResult>(actionResult);
+            AssertIsInstanceOf<ViewResult>(result);
         }
 
         [Test(Description = "HTTPGET")]
         public void Details_WhenCalled_ReturnsPartialViewWithModel()
         {
-            UserEditViewModel userEditViewModel = new UserEditViewModel();
-            SetupFindById(_user);
-            _mapper.Setup(m => m.Map<UserEditViewModel>(It.IsAny<AppUser>())).Returns(userEditViewModel);
+            UserEditViewModel model = new UserEditViewModel();
+            MockSetupFindByIdMethod(_user);
+            _mapper.Setup(m => m.Map<UserEditViewModel>(It.IsAny<AppUser>())).Returns(model);
 
-            ActionResult actionResult = _controller.Details();
+            ActionResult result = _controller.Details();
 
-            Assert.IsNotNull(actionResult);
-            Assert.IsInstanceOf<PartialViewResult>(actionResult);
-            Assert.AreEqual(userEditViewModel, (actionResult as PartialViewResult).Model);
+            AssertViewWithModelReturns<UserEditViewModel, PartialViewResult>(model, result);
         }
 
         [Test(Description = "HTTPGET")]
         public void Details_WhenCalled_FindByIdMethodIsCalled()
         {
-            UserEditViewModel userEditViewModel = new UserEditViewModel();
-            SetupFindById(_user);
-            _mapper.Setup(m => m.Map<UserEditViewModel>(It.IsAny<AppUser>())).Returns(userEditViewModel);
+            UserEditViewModel model = new UserEditViewModel();
+            MockSetupFindByIdMethod(_user);
+            _mapper.Setup(m => m.Map<UserEditViewModel>(It.IsAny<AppUser>())).Returns(model);
 
-            ActionResult actionResult = _controller.Details();
+            ActionResult result = _controller.Details();
 
             _userManager.Verify(um => um.FindById(It.IsAny<string>()), Times.Once);
         }
@@ -55,10 +83,8 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Logout();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<RedirectToRouteResult>(result);
-            Assert.AreEqual("Index", (result as RedirectToRouteResult).RouteValues["action"]);
-            Assert.AreEqual("Home", (result as RedirectToRouteResult).RouteValues["controller"]);
+            AssertIsInstanceOf<RedirectToRouteResult>(result);
+            AssertRedirectsToActionController(result, "Index", "Home");
         }
 
         [Test(Description = "HTTPGET")]
