@@ -2,6 +2,7 @@
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.Models;
 using NLog;
 
@@ -26,6 +27,11 @@ namespace E_Shop_Engine.Website.Controllers
             }
             Subcategory subcategory = _subcategoryRepository.GetById(id);
             SubcategoryViewModel model = _mapper.Map<SubcategoryViewModel>(subcategory);
+
+            if (model == null)
+            {
+                return View("_Error", new string[] { ErrorMessage.ItemNotFound });
+            }
 
             return View(model);
         }

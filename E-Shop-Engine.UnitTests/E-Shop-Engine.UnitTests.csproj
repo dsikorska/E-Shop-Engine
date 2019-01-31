@@ -116,7 +116,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="E-Shop-Engine.WebsiteTests\ControllersTests\AccountControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\AccountControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\AddressMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ChangePasswordMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ConfirmEmailMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\CreateMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\EditMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ForgotPasswordMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\LoginMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\ResetPasswordMethodTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Base\ControllerExtendedTest.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Base\ControllerTest.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CartControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CategoryControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\SubcategoryControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +150,7 @@
       <Name>E-Shop-Engine.Website</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
