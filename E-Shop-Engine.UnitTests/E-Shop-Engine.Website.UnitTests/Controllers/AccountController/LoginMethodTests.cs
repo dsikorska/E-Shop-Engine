@@ -33,7 +33,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Login();
 
-            AssertErrorViewReturns<UserLoginViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -151,7 +151,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.Login(_model);
 
-            AssertErrorViewReturns<UserLoginViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
     }
 }

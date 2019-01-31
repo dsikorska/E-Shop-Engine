@@ -63,7 +63,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
 
             ViewResult result = _controller.Details(0, null);
 
-            AssertErrorViewReturns<CategoryViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test(Description = "HTTPGET")]

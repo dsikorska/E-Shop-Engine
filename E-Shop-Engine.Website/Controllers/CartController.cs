@@ -4,6 +4,7 @@ using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
+using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.Models;
 using NLog;
 
@@ -32,6 +33,11 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult CountItems()
         {
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { ErrorMessage.NullUser });
+            }
+
             Cart cart = _cartRepository.GetCurrentCart(user);
             int model = _cartRepository.CountItems(cart);
 
@@ -43,6 +49,11 @@ namespace E_Shop_Engine.Website.Controllers
         public ActionResult Details()
         {
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { ErrorMessage.NullUser });
+            }
+
             Cart cart = _cartRepository.GetCurrentCart(user);
             CartViewModel model = _mapper.Map<Cart, CartViewModel>(cart);
             model.TotalValue = _cartRepository.GetTotalValue(cart);

@@ -31,7 +31,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.Create();
 
-            AssertErrorViewReturns<UserCreateViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]

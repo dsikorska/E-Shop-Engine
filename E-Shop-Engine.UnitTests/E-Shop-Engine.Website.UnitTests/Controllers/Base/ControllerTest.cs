@@ -44,7 +44,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ba
             Assert.AreEqual(viewName, (result as T2).ViewName);
         }
 
-        protected void AssertErrorViewReturns<T1, T2>(T1 model, ActionResult result) where T2 : ViewResultBase
+        protected void AssertErrorViewReturns<T2>(ActionResult result) where T2 : ViewResultBase
         {
             AssertIsInstanceOf<T2>(result);
             Assert.AreEqual("_Error", (result as T2).ViewName);

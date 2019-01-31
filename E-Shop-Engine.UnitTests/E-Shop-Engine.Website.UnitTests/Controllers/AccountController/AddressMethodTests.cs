@@ -35,7 +35,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = _controller.AddressEdit();
 
-            AssertErrorViewReturns<AddressViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test(Description = "HTTPGET")]
@@ -117,7 +117,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = _controller.AddressEdit(_model, isOrder: true);
 
-            AssertErrorViewReturns<AddressViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]

@@ -37,7 +37,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = _controller.ResetPassword(code);
 
-            AssertErrorViewReturns<UserResetPasswordViewModel, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test]

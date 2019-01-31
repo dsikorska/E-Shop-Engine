@@ -45,7 +45,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ConfirmEmail(input, input);
 
-            AssertErrorViewReturns<string, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
 
         [Test(Description = "HTTPPOST")]
@@ -60,7 +60,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             ActionResult result = await _controller.ConfirmEmail(userId, code);
 
-            AssertErrorViewReturns<string, ViewResult>(_model, result);
+            AssertErrorViewReturns<ViewResult>(result);
         }
     }
 }
