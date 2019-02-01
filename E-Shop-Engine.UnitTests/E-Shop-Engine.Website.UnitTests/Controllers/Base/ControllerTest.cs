@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -18,6 +19,25 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ba
         }
 
         protected virtual void SetupMockedWhenValidModelPassed() { }
+
+        protected void AddModelStateError(string msg)
+        {
+            _controller.ModelState.AddModelError("", msg);
+        }
+
+        protected IEnumerable<bool> GetErrorsWithMessage(string msg)
+        {
+            return _controller.ViewData.ModelState.Values.Select(x => x.Errors.Any(y => y.ErrorMessage == msg));
+        }
+
+        protected static void IsModelStateValidationWorks<T1>(T1 model)
+        {
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext =
+                new System.ComponentModel.DataAnnotations.ValidationContext(model, null, null);
+            List<ValidationResult> validationResultList = new List<ValidationResult>();
+
+            Assert.IsFalse(Validator.TryValidateObject(model, validationContext, validationResultList, true));
+        }
 
         protected static void AssertIsInstanceOf<T2>(ActionResult result)
         {
