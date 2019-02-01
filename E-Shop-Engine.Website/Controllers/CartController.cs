@@ -67,8 +67,13 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpPost]
         public ActionResult AddItem(int id, int quantity = 1)
         {
-            Product product = _productRepository.GetById(id);
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { ErrorMessage.NullUser });
+            }
+
+            Product product = _productRepository.GetById(id);
             Cart cart = _cartRepository.GetCurrentCart(user);
 
             if (product.NumberInStock > 0)
@@ -91,8 +96,13 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpPost]
         public ActionResult RemoveItem(int id, int quantity = 1)
         {
-            Product product = _productRepository.GetById(id);
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { ErrorMessage.NullUser });
+            }
+
+            Product product = _productRepository.GetById(id);
             Cart cart = _cartRepository.GetCurrentCart(user);
 
             product.NumberInStock += quantity;
@@ -108,8 +118,13 @@ namespace E_Shop_Engine.Website.Controllers
         [HttpPost]
         public ActionResult RemoveLine(int id, int quantity)
         {
-            Product product = _productRepository.GetById(id);
             AppUser user = GetCurrentUser();
+            if (user == null)
+            {
+                return View("_Error", new string[] { ErrorMessage.NullUser });
+            }
+
+            Product product = _productRepository.GetById(id);
             Cart cart = _cartRepository.GetCurrentCart(user);
 
             product.NumberInStock += quantity;
