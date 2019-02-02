@@ -138,6 +138,7 @@
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CartControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CategoryControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\HomeControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\ProductControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\SubcategoryControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

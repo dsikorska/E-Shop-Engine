@@ -49,7 +49,6 @@ namespace E_Shop_Engine.Website.Controllers
         [ReturnUrl]
         public ViewResult Details(int id)
         {
-
             Product model = _productRepository.GetById(id);
             ProductViewModel viewModel = _mapper.Map<ProductViewModel>(model);
 
@@ -92,7 +91,6 @@ namespace E_Shop_Engine.Website.Controllers
         // GET: /Product/GetImage?id
         public FileContentResult GetImage(int id)
         {
-
             Product product = _productRepository.GetById(id);
             if (product?.ImageData != null && product.ImageData.Length != 0)
             {
