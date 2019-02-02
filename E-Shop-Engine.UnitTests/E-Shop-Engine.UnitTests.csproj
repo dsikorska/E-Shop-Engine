@@ -85,6 +85,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -114,6 +119,9 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="X.PagedList, Version=7.6.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.7.6.0\lib\net461\X.PagedList.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\AccountController\AccountControllerTests.cs" />
@@ -129,6 +137,8 @@
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Base\ControllerTest.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CartControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CategoryControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\HomeControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\ProductControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\SubcategoryControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

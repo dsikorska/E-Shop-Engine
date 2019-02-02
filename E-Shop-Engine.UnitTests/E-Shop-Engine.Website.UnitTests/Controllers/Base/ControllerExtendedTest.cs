@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
@@ -10,7 +7,6 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using Moq;
-using NUnit.Framework;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Base
 {
@@ -32,24 +28,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ba
                 Email = "email",
                 PasswordHash = ""
             };
-        }
-
-        protected IEnumerable<bool> GetErrorsWithMessage(string msg)
-        {
-            return _controller.ViewData.ModelState.Values.Select(x => x.Errors.Any(y => y.ErrorMessage == msg));
-        }
-
-        protected void AddModelStateError(string msg)
-        {
-            _controller.ModelState.AddModelError("", msg);
-        }
-
-        protected static void IsModelStateValidationWorks<T1>(T1 model)
-        {
-            ValidationContext validationContext = new ValidationContext(model, null, null);
-            List<ValidationResult> validationResultList = new List<ValidationResult>();
-
-            Assert.IsFalse(Validator.TryValidateObject(model, validationContext, validationResultList, true));
         }
 
         protected Mock<IPrincipal> MockUserIdentity()

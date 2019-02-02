@@ -97,7 +97,141 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         [Test(Description = "HTTPPOST")]
         public void AddItem_WhenValidModelPassed_RedirectsToAction()
         {
+            Product product = new Product { NumberInStock = 1 };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+            _cartRepository.Setup(cr => cr.AddItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
+            _unitOfWork.Setup(uow => uow.SaveChanges());
 
+            ActionResult result = _controller.AddItem(It.IsAny<int>());
+
+            AssertRedirectsToAction(result, "Details");
+        }
+
+        private void SetupMockedWhenValidModelPassed(Product product)
+        {
+            _productRepository.Setup(pr => pr.GetById(It.IsAny<int>())).Returns(product);
+            _cartRepository.Setup(cr => cr.GetCurrentCart(It.IsAny<AppUser>())).Returns(It.IsAny<Cart>());
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public void AddItem_WhenUserNotFound_ReturnsErrorView()
+        {
+            MockSetupFindByIdMethod();
+
+            ActionResult result = _controller.AddItem(It.IsAny<int>());
+
+            AssertErrorViewReturns<ViewResult>(result);
+        }
+
+        [Test(Description = "HTTPPOST")]
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void AddItem_WhenProductOutOfStock_ReturnsErrorView(int quantity)
+        {
+            Product product = new Product { NumberInStock = quantity };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+
+            ActionResult result = _controller.AddItem(It.IsAny<int>());
+
+            AssertErrorViewReturns<ViewResult>(result);
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public void AddItem_WhenValidModelPassed_AddProductToCart()
+        {
+            Product product = new Product { NumberInStock = 1 };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+            _cartRepository.Setup(cr => cr.AddItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
+            _unitOfWork.Setup(uow => uow.SaveChanges());
+
+            ActionResult result = _controller.AddItem(It.IsAny<int>());
+
+            Assert.IsTrue(product.NumberInStock == 0);
+        }
+
+        [Test]
+        public void RemoveItem_WhenValidModelPassed_RedirectsToAction()
+        {
+            Product product = new Product { NumberInStock = 1 };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+            _cartRepository.Setup(cr => cr.RemoveItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
+            _unitOfWork.Setup(uow => uow.SaveChanges());
+
+            ActionResult result = _controller.RemoveItem(It.IsAny<int>());
+
+            AssertRedirectsToAction(result, "Details");
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public void RemoveItem_WhenUserNotFound_ReturnsErrorView()
+        {
+            MockSetupFindByIdMethod();
+
+            ActionResult result = _controller.RemoveItem(It.IsAny<int>());
+
+            AssertErrorViewReturns<ViewResult>(result);
+        }
+
+        [Test]
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(0)]
+        public void RemoveItem_WhenValidModelPassed_IncreaseProductsQuantity(int quantity)
+        {
+            Product product = new Product { NumberInStock = 0 };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+            _cartRepository.Setup(cr => cr.RemoveItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
+            _unitOfWork.Setup(uow => uow.SaveChanges());
+
+            ActionResult result = _controller.RemoveItem(It.IsAny<int>(), quantity);
+
+            Assert.IsTrue(product.NumberInStock == quantity);
+        }
+
+        [Test]
+        public void RemoveLine_WhenValidModelPassed_RedirectsToAction()
+        {
+            Product product = new Product { NumberInStock = 1 };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+            _cartRepository.Setup(cr => cr.RemoveLine(It.IsAny<Cart>(), product));
+            _unitOfWork.Setup(uow => uow.SaveChanges());
+
+            ActionResult result = _controller.RemoveLine(It.IsAny<int>(), It.IsAny<int>());
+
+            AssertRedirectsToAction(result, "Details");
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public void RemoveLine_WhenUserNotFound_ReturnsErrorView()
+        {
+            MockSetupFindByIdMethod();
+
+            ActionResult result = _controller.RemoveLine(It.IsAny<int>(), It.IsAny<int>());
+
+            AssertErrorViewReturns<ViewResult>(result);
+        }
+
+        [Test]
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(0)]
+        public void RemoveLine_WhenValidModelPassed_IncreaseProductsQuantity(int quantity)
+        {
+            Product product = new Product { NumberInStock = 0 };
+            MockSetupFindByIdMethod(_user);
+            SetupMockedWhenValidModelPassed(product);
+            _cartRepository.Setup(cr => cr.RemoveLine(It.IsAny<Cart>(), product));
+            _unitOfWork.Setup(uow => uow.SaveChanges());
+
+            ActionResult result = _controller.RemoveLine(It.IsAny<int>(), quantity);
+
+            Assert.IsTrue(product.NumberInStock == quantity);
         }
     }
 }

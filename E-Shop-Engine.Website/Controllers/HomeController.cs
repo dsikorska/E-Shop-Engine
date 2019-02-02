@@ -60,10 +60,10 @@ namespace E_Shop_Engine.Website.Controllers
             }
             catch
             {
-                return View("_Error");
+                return View("_Error", new string[] { });
             }
 
-            return Redirect(Url.Action("Index"));
+            return RedirectToAction("Index");
         }
 
         // GET: /Home/NavList
