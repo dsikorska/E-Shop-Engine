@@ -39,31 +39,40 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Order
         [ReturnUrl]
         [ResetDataDictionaries]
-        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
+        public ActionResult Index(Query query)
         {
-            ManageSearchingTermStatus(ref search);
+            ManageSearchingTermStatus(ref query.search);
 
-            IEnumerable<Order> model = GetSearchingResult(search);
+            IEnumerable<Order> model = GetSearchingResult(query.search);
 
             if (model.Count() == 0)
             {
                 model = _orderRepository.GetAll();
             }
 
-            if (reversable)
+            if (query.Reversable)
             {
-                ReverseSorting(ref descending, sortOrder);
+                ReverseSorting(ref query.descending, query.SortOrder);
             }
 
             IEnumerable<OrderAdminViewModel> mappedModel = _mapper.Map<IEnumerable<OrderAdminViewModel>>(model);
-            IEnumerable<OrderAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
+            IEnumerable<OrderAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, query.SortOrder, query.descending);
 
-            int pageNumber = page ?? 1;
+            int pageNumber = query.Page ?? 1;
             IPagedList<OrderAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending, search);
+            SaveSortingState(query.SortOrder, query.descending, query.search);
 
             return View(viewModel);
+        }
+
+        [NonAction]
+        private IEnumerable<Order> GetSearchingResult(string search)
+        {
+            IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(search);
+            IEnumerable<Order> resultTransactionNumber = _orderRepository.FindByTransactionNumber(search);
+            IEnumerable<Order> model = resultOrderNumber.Union(resultTransactionNumber).ToList();
+            return model;
         }
 
         // GET: Admin/Order/Details?id
@@ -105,15 +114,6 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             _unitOfWork.SaveChanges();
 
             return RedirectToAction("Index");
-        }
-
-        [NonAction]
-        private IEnumerable<Order> GetSearchingResult(string search)
-        {
-            IEnumerable<Order> resultOrderNumber = _orderRepository.FindByOrderNumber(search);
-            IEnumerable<Order> resultTransactionNumber = _orderRepository.FindByTransactionNumber(search);
-            IEnumerable<Order> model = resultOrderNumber.Union(resultTransactionNumber).ToList();
-            return model;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ForgotPassword(email);
 
-            AssertSpecifiedViewReturns<string, ViewResult>(_model, result, "ForgotPasswordConfirmation");
+            AssertSpecifiedViewReturns<ViewResult>(result, "ForgotPasswordConfirmation");
         }
 
         protected override void SetupMockedWhenValidModelPassed()

@@ -51,7 +51,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ba
             Assert.AreEqual(model, (result as T2).Model);
         }
 
-        protected void AssertSpecifiedViewReturns<T1, T2>(T1 model, ActionResult result, string viewName) where T2 : ViewResultBase
+        protected void AssertSpecifiedViewReturns<T2>(ActionResult result, string viewName) where T2 : ViewResultBase
         {
             AssertIsInstanceOf<T2>(result);
             Assert.AreEqual(viewName, (result as T2).ViewName);

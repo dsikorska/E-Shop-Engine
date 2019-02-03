@@ -77,7 +77,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ResetPassword(_model);
 
-            AssertSpecifiedViewReturns<UserResetPasswordViewModel, ViewResult>(_model, result, "ResetPasswordConfirmation");
+            AssertSpecifiedViewReturns<ViewResult>(result, "ResetPasswordConfirmation");
         }
 
         protected override void SetupMockedWhenValidModelPassed()

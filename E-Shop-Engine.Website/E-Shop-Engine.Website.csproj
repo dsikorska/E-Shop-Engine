@@ -288,6 +288,7 @@
     <Compile Include="Areas\Admin\Models\CategoryAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OrderAdminViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductAdminViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Query.cs" />
     <Compile Include="Areas\Admin\Models\RoleEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleModificationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SettingsAdminViewModel.cs" />

@@ -23,7 +23,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
 
             ActionResult result = await _controller.ConfirmEmail(input, input);
 
-            AssertSpecifiedViewReturns<string, ViewResult>(_model, result, "ConfirmEmail");
+            AssertSpecifiedViewReturns<ViewResult>(result, "ConfirmEmail");
         }
 
         [Test(Description = "HTTPPOST")]
