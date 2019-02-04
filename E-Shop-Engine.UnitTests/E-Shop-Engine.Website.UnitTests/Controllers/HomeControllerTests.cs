@@ -55,7 +55,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         public void Contact_WhenValidModelPassed_RedirectsToAction()
         {
             ContactViewModel model = new ContactViewModel();
-            _mailingRepository.Setup(mr => mr.CustomMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             ActionResult result = _controller.Contact(model);
 
@@ -86,7 +85,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         public void NavList_WhenCalled_ReturnsPartialView()
         {
             IEnumerable<CategoryViewModel> model = new List<CategoryViewModel>();
-            _categoryRepository.Setup(cr => cr.GetAll()).Returns(It.IsAny<List<Category>>);
             _mapper.Setup(m => m.Map<IEnumerable<Category>, IEnumerable<CategoryViewModel>>(It.IsAny<List<Category>>()))
                 .Returns(model);
 
@@ -99,7 +97,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         public void GetSpecialOffers_WhenCalled_ReturnsPartialView()
         {
             IEnumerable<ProductViewModel> model = new List<ProductViewModel>();
-            _productRepository.Setup(cr => cr.GetAllSpecialOffers()).Returns(It.IsAny<List<Product>>);
             _mapper.Setup(m => m.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(It.IsAny<List<Product>>()))
                 .Returns(model);
 
@@ -113,7 +110,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         {
             IPagedList<ProductViewModel> model = new PagedList<ProductViewModel>(new List<ProductViewModel>(), 1, 1);
             List<ProductViewModel> mapped = new List<ProductViewModel>();
-            _productRepository.Setup(pr => pr.GetAllShowingInDeck()).Returns(It.IsAny<List<Product>>);
             _mapper.Setup(m => m.Map<IEnumerable<ProductViewModel>>(It.IsAny<List<Product>>()))
                  .Returns(mapped);
 

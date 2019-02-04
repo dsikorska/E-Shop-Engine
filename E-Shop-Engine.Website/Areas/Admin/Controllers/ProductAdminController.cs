@@ -44,28 +44,28 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Product
         [ReturnUrl]
         [ResetDataDictionaries]
-        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
+        public ActionResult Index(Query query)
         {
-            ManageSearchingTermStatus(ref search);
+            ManageSearchingTermStatus(ref query.search);
 
-            IEnumerable<Product> model = GetSearchingResult(search);
+            IEnumerable<Product> model = GetSearchingResult(query.search);
 
             if (model.Count() == 0)
             {
                 model = _productRepository.GetAll();
             }
 
-            if (reversable)
+            if (query.Reversable)
             {
-                ReverseSorting(ref descending, sortOrder);
+                ReverseSorting(ref query.descending, query.SortOrder);
             }
             IEnumerable<ProductAdminViewModel> mappedModel = _mapper.Map<IEnumerable<ProductAdminViewModel>>(model);
-            IEnumerable<ProductAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, sortOrder, descending);
+            IEnumerable<ProductAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Name, query.SortOrder, query.descending);
 
-            int pageNumber = page ?? 1;
+            int pageNumber = query.Page ?? 1;
             IPagedList<ProductAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending, search);
+            SaveSortingState(query.SortOrder, query.descending, query.search);
 
             return View(viewModel);
         }

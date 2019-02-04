@@ -6,6 +6,7 @@ using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
+using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.CustomFilters;
@@ -34,29 +35,29 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Account/
         [ReturnUrl]
         [ResetDataDictionaries]
-        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
+        public ActionResult Index(Query query)
         {
-            ManageSearchingTermStatus(ref search);
+            ManageSearchingTermStatus(ref query.search);
 
-            IEnumerable<AppUser> model = GetSearchingResult(search);
+            IEnumerable<AppUser> model = GetSearchingResult(query.search);
 
             if (model.Count() == 0)
             {
                 model = _userManager.Users;
             }
 
-            if (reversable)
+            if (query.Reversable)
             {
-                ReverseSorting(ref descending, sortOrder);
+                ReverseSorting(ref query.descending, query.SortOrder);
             }
 
             IEnumerable<UserAdminViewModel> mappedModel = _mapper.Map<IEnumerable<UserAdminViewModel>>(model);
-            IEnumerable<UserAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, sortOrder, descending);
+            IEnumerable<UserAdminViewModel> sortedModel = mappedModel.SortBy(x => x.Created, query.SortOrder, query.descending);
 
-            int pageNumber = page ?? 1;
+            int pageNumber = query.Page ?? 1;
             IPagedList<UserAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending, search);
+            SaveSortingState(query.SortOrder, query.descending, query.search);
 
             return View(viewModel);
         }
@@ -81,7 +82,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 UserAdminViewModel viewModel = _mapper.Map<UserAdminViewModel>(user);
                 return View(viewModel);
             }
-            return Redirect("Index");
+            return RedirectToAction("Index");
         }
 
         // POST: Admin/Account/Delete?id
@@ -110,7 +111,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             else
             {
-                return View("_Error", new string[] { "User Not Found" });
+                return View("_Error", new string[] { ErrorMessage.NullUser });
             }
         }
 
@@ -141,19 +142,18 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             if (user != null)
             {
                 user.Email = model.Email;
+                user.Name = model.Name;
+                user.Surname = model.Surname;
+                user.PhoneNumber = model.PhoneNumber;
+                user.UserName = model.Email;
                 IdentityResult validEmail = await _userManager.UserValidator.ValidateAsync(user);
 
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
                 }
-
-                if (validEmail.Succeeded)
+                else if (validEmail.Succeeded)
                 {
-                    user.Name = model.Name;
-                    user.Surname = model.Surname;
-                    user.PhoneNumber = model.PhoneNumber;
-                    user.UserName = model.Email;
                     IdentityResult result = await _userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
@@ -168,7 +168,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "User Not Found");
+                ModelState.AddModelError("", ErrorMessage.NullUser);
             }
             return View(model);
         }

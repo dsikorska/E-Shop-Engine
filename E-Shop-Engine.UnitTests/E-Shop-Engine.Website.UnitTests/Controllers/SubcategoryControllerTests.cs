@@ -41,7 +41,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
 
         protected override void SetupMockedWhenValidModelPassed()
         {
-            _subcategoryRepository.Setup(cr => cr.GetById(It.IsAny<int>())).Returns(It.IsAny<Subcategory>());
             _mapper.Setup(m => m.Map<SubcategoryViewModel>(It.IsAny<Subcategory>())).Returns(_model);
         }
 

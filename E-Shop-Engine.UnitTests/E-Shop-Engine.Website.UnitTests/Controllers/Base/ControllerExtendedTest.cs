@@ -81,5 +81,10 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ba
         {
             _userManager.Setup(um => um.FindById(It.IsAny<string>())).Returns(returns);
         }
+
+        protected void MockSetupFindByIdAsyncMethod(AppUser returns = null)
+        {
+            _userManager.Setup(um => um.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(returns);
+        }
     }
 }

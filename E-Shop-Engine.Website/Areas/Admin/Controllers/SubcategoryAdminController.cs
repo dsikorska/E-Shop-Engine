@@ -40,29 +40,29 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
         // GET: Admin/Subcategory
         [ReturnUrl]
         [ResetDataDictionaries]
-        public ActionResult Index(int? page, string sortOrder, string search, bool descending = true, bool reversable = false)
+        public ActionResult Index(Query query)
         {
-            ManageSearchingTermStatus(ref search);
+            ManageSearchingTermStatus(ref query.search);
 
-            IEnumerable<Subcategory> model = _subcategoryRepository.GetSubcategoriesByName(search);
+            IEnumerable<Subcategory> model = _subcategoryRepository.GetSubcategoriesByName(query.search);
 
             if (model.Count() == 0)
             {
                 model = _subcategoryRepository.GetAll();
             }
 
-            if (reversable)
+            if (query.Reversable)
             {
-                ReverseSorting(ref descending, sortOrder);
+                ReverseSorting(ref query.descending, query.SortOrder);
             }
 
             IEnumerable<SubcategoryAdminViewModel> mappedModel = _mapper.Map<IEnumerable<SubcategoryAdminViewModel>>(model);
-            IEnumerable<SubcategoryAdminViewModel> sortedModel = mappedModel.SortBy(x => x.CategoryID, sortOrder, descending);
+            IEnumerable<SubcategoryAdminViewModel> sortedModel = mappedModel.SortBy(x => x.CategoryID, query.SortOrder, query.descending);
 
-            int pageNumber = page ?? 1;
+            int pageNumber = query.Page ?? 1;
             IPagedList<SubcategoryAdminViewModel> viewModel = sortedModel.ToPagedList(pageNumber, 25);
 
-            SaveSortingState(sortOrder, descending, search);
+            SaveSortingState(query.SortOrder, query.descending, query.search);
 
             return View(viewModel);
         }

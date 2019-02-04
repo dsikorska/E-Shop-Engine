@@ -7,7 +7,6 @@ using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.Models;
 using Moq;
 using NUnit.Framework;
-using X.PagedList;
 
 namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
 {
@@ -35,14 +34,13 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
 
             PartialViewResult result = _controller.ProductsToPagedList(model, null);
 
-            AssertSpecifiedViewReturns<IPagedList<ProductViewModel>, PartialViewResult>(It.IsAny<IPagedList<ProductViewModel>>(), result, "_ProductsDeck");
+            AssertSpecifiedViewReturns<PartialViewResult>(result, "_ProductsDeck");
         }
 
         [Test(Description = "HTTPGET")]
         public void Details_WhenCalled_ReturnsViewWithModel()
         {
             ProductViewModel model = new ProductViewModel();
-            _productRepository.Setup(pr => pr.GetById(It.IsAny<int>())).Returns(It.IsAny<Product>());
             _mapper.Setup(m => m.Map<ProductViewModel>(It.IsAny<Product>())).Returns(model);
 
             ViewResult result = _controller.Details(0);
@@ -55,12 +53,11 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         {
             _productRepository.Setup(pr => pr.GetProductsByName(It.IsAny<string>())).Returns(new List<Product>());
             _productRepository.Setup(pr => pr.GetProductsByCatalogNumber(It.IsAny<string>())).Returns(new List<Product>());
-            _productRepository.Setup(pr => pr.GetAll()).Returns(It.IsAny<IEnumerable<Product>>());
             _mapper.Setup(m => m.Map<IEnumerable<ProductViewModel>>(It.IsAny<IEnumerable<Product>>())).Returns(new List<ProductViewModel>());
 
             ActionResult result = _controller.Search(null, "", "");
 
-            AssertSpecifiedViewReturns<IPagedList<ProductViewModel>, ViewResult>(It.IsAny<IPagedList<ProductViewModel>>(), result, "_ProductsDeck");
+            AssertSpecifiedViewReturns<ViewResult>(result, "_ProductsDeck");
         }
 
         [Test(Description = "HTTPGET")]
