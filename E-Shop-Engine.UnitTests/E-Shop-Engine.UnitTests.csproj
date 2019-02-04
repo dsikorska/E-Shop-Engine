@@ -137,6 +137,8 @@
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Admin\AccountAdminControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Admin\CategoryAdminControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Admin\OrderAdminControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Admin\ProductAdminControllerTests.cs" />
+    <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Admin\SubcategoryAdminControllerTests.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Base\ControllerExtendedTest.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\Base\ControllerTest.cs" />
     <Compile Include="E-Shop-Engine.Website.UnitTests\Controllers\CartControllerTests.cs" />

@@ -56,7 +56,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ad
         [Test(Description = "HTTPGET")]
         public void Details_WhenCalled_ReturnsViewWithModel()
         {
-            _orderRepository.Setup(or => or.GetById(It.IsAny<int>())).Returns(It.IsAny<Order>());
             _mapper.Setup(m => m.Map<OrderAdminViewModel>(It.IsAny<Order>())).Returns(_model);
 
             ActionResult result = _controller.Details(0);
@@ -67,7 +66,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ad
         [Test(Description = "HTTPGET")]
         public void Edit_WhenCalled_ReturnsViewWithModel()
         {
-            _orderRepository.Setup(or => or.GetById(It.IsAny<int>())).Returns(It.IsAny<Order>());
             _mapper.Setup(m => m.Map<OrderAdminViewModel>(It.IsAny<Order>())).Returns(_model);
 
             ViewResult result = _controller.Edit(0);
@@ -96,14 +94,42 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ad
                 OrderStatus = OrderStatus.WaitingForPayment
             };
             _orderRepository.Setup(or => or.GetById(It.IsAny<int>())).Returns(order);
-            _orderRepository.Setup(or => or.Update(It.IsAny<Order>()));
-            _mapper.Setup(m => m.Map<OrderAdminViewModel>(It.IsAny<Order>())).Returns(It.IsAny<OrderAdminViewModel>());
-            _unitOfWork.Setup(uow => uow.SaveChanges());
-            _mailingRepository.Setup(mr => mr.OrderChangedStatusMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             ActionResult result = _controller.Edit(_model);
 
             AssertRedirectsToAction(result, "Index");
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public void Edit_WhenValidModelPassed_UpdateMethodCalled()
+        {
+            Order order = new Order
+            {
+                AppUser = _user,
+                OrderNumber = "",
+                OrderStatus = OrderStatus.WaitingForPayment
+            };
+            _orderRepository.Setup(or => or.GetById(It.IsAny<int>())).Returns(order);
+
+            ActionResult result = _controller.Edit(_model);
+
+            _orderRepository.Verify(or => or.Update(It.IsAny<Order>()), Times.Once);
+        }
+
+        [Test(Description = "HTTPPOST")]
+        public void Edit_WhenValidModelPassed_SaveChangesMethodCalled()
+        {
+            Order order = new Order
+            {
+                AppUser = _user,
+                OrderNumber = "",
+                OrderStatus = OrderStatus.WaitingForPayment
+            };
+            _orderRepository.Setup(or => or.GetById(It.IsAny<int>())).Returns(order);
+
+            ActionResult result = _controller.Edit(_model);
+
+            _unitOfWork.Verify(uow => uow.SaveChanges(), Times.Once);
         }
     }
 }

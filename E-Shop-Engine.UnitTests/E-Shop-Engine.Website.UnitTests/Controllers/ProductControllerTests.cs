@@ -41,7 +41,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         public void Details_WhenCalled_ReturnsViewWithModel()
         {
             ProductViewModel model = new ProductViewModel();
-            _productRepository.Setup(pr => pr.GetById(It.IsAny<int>())).Returns(It.IsAny<Product>());
             _mapper.Setup(m => m.Map<ProductViewModel>(It.IsAny<Product>())).Returns(model);
 
             ViewResult result = _controller.Details(0);
@@ -54,7 +53,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         {
             _productRepository.Setup(pr => pr.GetProductsByName(It.IsAny<string>())).Returns(new List<Product>());
             _productRepository.Setup(pr => pr.GetProductsByCatalogNumber(It.IsAny<string>())).Returns(new List<Product>());
-            _productRepository.Setup(pr => pr.GetAll()).Returns(It.IsAny<IEnumerable<Product>>());
             _mapper.Setup(m => m.Map<IEnumerable<ProductViewModel>>(It.IsAny<IEnumerable<Product>>())).Returns(new List<ProductViewModel>());
 
             ActionResult result = _controller.Search(null, "", "");

@@ -39,7 +39,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         {
             int model = 1;
             MockSetupFindByIdMethod(_user);
-            _cartRepository.Setup(cr => cr.GetCurrentCart(It.IsAny<AppUser>())).Returns(It.IsAny<Cart>());
             _cartRepository.Setup(cr => cr.CountItems(It.IsAny<Cart>())).Returns(model);
 
             ActionResult result = _controller.CountItems();
@@ -75,7 +74,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         {
             CartViewModel model = new CartViewModel();
             MockSetupFindByIdMethod(_user);
-            _cartRepository.Setup(cr => cr.GetCurrentCart(It.IsAny<AppUser>())).Returns(It.IsAny<Cart>());
             _mapper.Setup(m => m.Map<Cart, CartViewModel>(It.IsAny<Cart>())).Returns(model);
             _cartRepository.Setup(cr => cr.GetTotalValue(It.IsAny<Cart>())).Returns(1);
 
@@ -100,8 +98,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             Product product = new Product { NumberInStock = 1 };
             MockSetupFindByIdMethod(_user);
             SetupMockedWhenValidModelPassed(product);
-            _cartRepository.Setup(cr => cr.AddItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
-            _unitOfWork.Setup(uow => uow.SaveChanges());
 
             ActionResult result = _controller.AddItem(It.IsAny<int>());
 
@@ -111,7 +107,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
         private void SetupMockedWhenValidModelPassed(Product product)
         {
             _productRepository.Setup(pr => pr.GetById(It.IsAny<int>())).Returns(product);
-            _cartRepository.Setup(cr => cr.GetCurrentCart(It.IsAny<AppUser>())).Returns(It.IsAny<Cart>());
         }
 
         [Test(Description = "HTTPPOST")]
@@ -145,7 +140,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             MockSetupFindByIdMethod(_user);
             SetupMockedWhenValidModelPassed(product);
             _cartRepository.Setup(cr => cr.AddItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
-            _unitOfWork.Setup(uow => uow.SaveChanges());
 
             ActionResult result = _controller.AddItem(It.IsAny<int>());
 
@@ -159,7 +153,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             MockSetupFindByIdMethod(_user);
             SetupMockedWhenValidModelPassed(product);
             _cartRepository.Setup(cr => cr.RemoveItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
-            _unitOfWork.Setup(uow => uow.SaveChanges());
 
             ActionResult result = _controller.RemoveItem(It.IsAny<int>());
 
@@ -186,7 +179,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             MockSetupFindByIdMethod(_user);
             SetupMockedWhenValidModelPassed(product);
             _cartRepository.Setup(cr => cr.RemoveItem(It.IsAny<Cart>(), product, It.IsAny<int>()));
-            _unitOfWork.Setup(uow => uow.SaveChanges());
 
             ActionResult result = _controller.RemoveItem(It.IsAny<int>(), quantity);
 
@@ -200,7 +192,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             MockSetupFindByIdMethod(_user);
             SetupMockedWhenValidModelPassed(product);
             _cartRepository.Setup(cr => cr.RemoveLine(It.IsAny<Cart>(), product));
-            _unitOfWork.Setup(uow => uow.SaveChanges());
 
             ActionResult result = _controller.RemoveLine(It.IsAny<int>(), It.IsAny<int>());
 
@@ -227,7 +218,6 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             MockSetupFindByIdMethod(_user);
             SetupMockedWhenValidModelPassed(product);
             _cartRepository.Setup(cr => cr.RemoveLine(It.IsAny<Cart>(), product));
-            _unitOfWork.Setup(uow => uow.SaveChanges());
 
             ActionResult result = _controller.RemoveLine(It.IsAny<int>(), quantity);
 
