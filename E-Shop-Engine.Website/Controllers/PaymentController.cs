@@ -10,6 +10,7 @@ using E_Shop_Engine.Domain.TempModel;
 using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Utilities;
+using E_Shop_Engine.Website.CustomFilters;
 using Newtonsoft.Json;
 using NLog;
 
@@ -40,6 +41,13 @@ namespace E_Shop_Engine.Website.Controllers
             _mailingRepository = mailingRepository;
             _transactionRepository = transactionRepository;
             _logger = LogManager.GetCurrentClassLogger();
+        }
+
+        [Authorize]
+        [ReturnUrl]
+        public ActionResult Select()
+        {
+            return View();
         }
 
         // GET: /Payment/DotPayPayment

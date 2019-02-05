@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Payment method";
+}
+
+<h2>Select payment method</h2>
+
+@using (Html.BeginForm("Checkout", "Order", FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
+    <div class="input-group justify-content-around">
+        <div class="custom-control custom-checkbox form-control-lg">
+            <input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay" value="dotpay">
+            <label class="custom-control-label" for="dotpay">
+                <img src="~/Content/dotpay_logo.jpg" class="payment-img" />
+            </label>
+        </div>
+
+        <div class="custom-control custom-checkbox form-control-lg">
+            <input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay2" value="dotpay2">
+            <label class="custom-control-label" for="dotpay2">
+                <img src="~/Content/dotpay_logo.jpg" class="payment-img" />
+            </label>
+        </div>
+
+        <div class="custom-control custom-checkbox form-control-lg">
+            <input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay3" value="dotpay3">
+            <label class="custom-control-label" for="dotpay3">
+                <img src="~/Content/dotpay_logo.jpg" class="payment-img" />
+            </label>
+        </div>
+
+        <div class="custom-control custom-checkbox form-control-lg">
+            <input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay4" value="dotpay4">
+            <label class="custom-control-label" for="dotpay4">
+                <img src="~/Content/dotpay_logo.jpg" class="payment-img" />
+            </label>
+        </div>
+
+        <div class="custom-control custom-checkbox form-control-lg">
+            <input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay5" value="dotpay5">
+            <label class="custom-control-label" for="dotpay5">
+                <img src="~/Content/dotpay_logo.jpg" class="payment-img" />
+            </label>
+        </div>
+    </div>
+
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary" })
+        <input type="submit" value="Checkout" class="btn btn-success" />
+    </div>
+}

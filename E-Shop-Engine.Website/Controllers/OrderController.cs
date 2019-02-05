@@ -87,6 +87,13 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
+        [ReturnUrl]
+        [HttpPost]
+        public ActionResult Checkout(string paymentMethod)
+        {
+            return null;
+        }
+
         // POST: /Order/Create
         //[ValidateAntiForgeryToken]
         //[HttpPost]
