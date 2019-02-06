@@ -5,6 +5,18 @@ The project implements Repository and Dependency Injection patterns.
 
 **It shouldn't be use for any real business. I don't take any reposibility if you decide to use it for real transactions. Before you do it, make sure the application fulfill security standards.**
 
+##Features
+* Searching / paging / sorting.
+* Category and Subcategory system for Products.
+* Shopping Cart
+* Ordering system
+* Payment system (only dotPay available at the moment)
+* Individual profile creation
+* Profile confirmation system (email unique code)
+* Administrators panel
+* CRUD operations
+* Logging Errors system
+
 ## Getting Started
 ### Prerequisites
 * .NET Framework 4.7+
