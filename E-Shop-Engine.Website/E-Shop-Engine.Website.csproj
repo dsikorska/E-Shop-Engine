@@ -368,7 +368,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Shared\_Cart.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
-    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Checkout.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
     <Content Include="Views\Account\AddressEdit.cshtml" />
     <Content Include="Views\Account\AddressDetails.cshtml" />

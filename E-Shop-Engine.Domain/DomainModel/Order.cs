@@ -20,5 +20,19 @@ namespace E_Shop_Engine.Domain.DomainModel
         public string TransactionNumber { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public Order()
+        {
+
+        }
+
+        public Order(AppUser user, Cart cart, PaymentMethod paymentMethod)
+        {
+            AppUser = user;
+            Cart = cart;
+            PaymentMethod = paymentMethod;
+            Created = DateTime.UtcNow;
+            OrderStatus = OrderStatus.WaitingForPayment;
+        }
     }
 }

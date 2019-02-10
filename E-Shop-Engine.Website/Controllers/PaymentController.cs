@@ -50,6 +50,21 @@ namespace E_Shop_Engine.Website.Controllers
             return View();
         }
 
+        [Authorize]
+        public void Process(string paymentMethod)
+        {
+            //TODO
+            AppUser user = GetCurrentUser();
+            Cart cart = _cartRepository.GetCurrentCart(user);
+            Order order = new Order(user, cart, PaymentMethod.Dotpay);
+            _orderRepository.Create(order);
+            _cartRepository.SetCartOrdered(cart);
+            _cartRepository.NewCart(user);
+            _unitOfWork.SaveChanges();
+
+            //return
+        }
+
         // GET: /Payment/DotPayPayment
         [Authorize]
         public ActionResult DotPayPayment()
