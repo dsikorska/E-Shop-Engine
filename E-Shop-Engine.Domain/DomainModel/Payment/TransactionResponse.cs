@@ -1,6 +1,6 @@
-﻿namespace E_Shop_Engine.Domain.TempModel
+﻿namespace E_Shop_Engine.Domain.DomainModel.Payment
 {
-    public class DotPayTransactionResponse
+    public class TransactionResponse
     {
         public int id { get; set; }
         public string operation_number { get; set; }

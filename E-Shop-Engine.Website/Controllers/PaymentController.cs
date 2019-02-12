@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Net;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Enumerables;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Domain.TempModel;
-using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
-using E_Shop_Engine.Utilities;
 using E_Shop_Engine.Website.CustomFilters;
-using Newtonsoft.Json;
+using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
 using NLog;
 
 namespace E_Shop_Engine.Website.Controllers
@@ -51,139 +51,66 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
-        public void Process(string paymentMethod)
+        public ActionResult Process(string paymentMethod)
         {
             //TODO
-            AppUser user = GetCurrentUser();
-            Cart cart = _cartRepository.GetCurrentCart(user);
-            Order order = new Order(user, cart, PaymentMethod.Dotpay);
-            _orderRepository.Create(order);
-            _cartRepository.SetCartOrdered(cart);
-            _cartRepository.NewCart(user);
-            _unitOfWork.SaveChanges();
+            string path = Path.Combine(HostingEnvironment.MapPath("/"), "Plugins");
+            IEnumerable<string> plugins = Directory.EnumerateDirectories(path);
+            string pluginPath = plugins.First(x => x.Contains("Payment." + paymentMethod));
 
-            //return
-        }
-
-        // GET: /Payment/DotPayPayment
-        [Authorize]
-        public ActionResult DotPayPayment()
-        {
-            AppUser user = GetCurrentUser();
-            Cart cart = _cartRepository.GetCurrentCart(user);
-            decimal totalValue = _cartRepository.GetTotalValue(cart);
-            DateTime created = DateTime.UtcNow;
-            string description = "Order number " + created.Ticks;
-            string control = created.Ticks.ToString();
-            string urlc = Url.Action("DotPayConfirmation", "Payment", null, Request.Url.Scheme);
-            string name = user.Name;
-            string surname = user.Surname;
-            string email = user.Email;
-
-            string chk = string.Concat(AppSettings.GetDotPayPIN(), settings.DotPayId, totalValue.ToString(), settings.Currency, description, control, urlc, name, surname, email);
-            chk = SHA.GetSHA256Hash(chk);
-
-            //string host = "https://ssl.dotpay.pl/t2/";
-            string host = "https://ssl.dotpay.pl/test_payment/";
-            string redirectUrl = host +
-                "?id=" + settings.DotPayId +
-                "&amount=" + totalValue +
-                "&currency=" + settings.Currency +
-                "&description=" + description +
-                "&chk=" + chk +
-                "&imie=" + name +
-                "&surname=" + surname +
-                "&email=" + email +
-                "&control=" + control +
-                "&URLC=" + urlc;
-
-            Order newOrder = new Order()
+            if (pluginPath != null)
             {
-                AppUser = user,
-                Created = created,
-                IsPaid = false,
-                Cart = cart,
-                OrderNumber = created.Ticks.ToString(),
-                OrderStatus = OrderStatus.WaitingForPayment,
-                PaymentMethod = PaymentMethod.Dotpay,
-                Payment = totalValue
-            };
-
-            _orderRepository.Create(newOrder);
-            _cartRepository.SetCartOrdered(cart);
-            _cartRepository.NewCart(user);
-            _mailingRepository.OrderChangedStatusMail(user.Email, newOrder.OrderNumber, newOrder.OrderStatus.ToString(), "Order confirmation " + newOrder.OrderNumber);
-            _unitOfWork.SaveChanges();
-            return Redirect(redirectUrl);
-        }
-
-        // POST: /Payment/DotPayConfirmation
-        [HttpPost]
-        public HttpStatusCode DotPayConfirmation(DotPayTransactionResponse model)
-        {
-            Response.Charset = "utf-8";
-            string dotPayIp = "195.150.9.37";
-            if (dotPayIp == HttpContext.Request.UserHostAddress)
-            {
-                string sum = string.Concat(AppSettings.GetDotPayPIN(), model.id.ToString(), model.operation_number, model.operation_type,
-                    model.operation_status, model.operation_amount, model.operation_currency, model.operation_original_amount,
-                    model.operation_original_currency, model.operation_datetime, model.control, model.description, model.email, model.p_info,
-                    model.p_email, model.channel);
-
-                string checksum = SHA.GetSHA256Hash(sum);
-
-                if (checksum == model.signature)
+                CSharpCodeProvider provider = new CSharpCodeProvider();
+                CompilerParameters parameters = new CompilerParameters()
                 {
-                    Order order = _orderRepository.GetByOrderNumber(model.control);
-                    if (order != null)
+                    GenerateExecutable = false,
+                    GenerateInMemory = false,
+                    TempFiles = new TempFileCollection(HostingEnvironment.MapPath("/") + @"Plugins"),
+                    OutputAssembly = HostingEnvironment.MapPath("/") + @"Plugins\Compiled"
+                };
+                parameters.ReferencedAssemblies.AddRange(new string[]
+                {
+                    "System.dll",
+                    "System.Net.dll",
+                    "System.Web.dll",
+                    @"D:\Program Files\Projekty\E-Shop-Engine\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll",
+                    HostingEnvironment.MapPath("/") + @"bin\E-Shop-Engine.Domain.dll",
+                    HostingEnvironment.MapPath("/") + @"bin\E-Shop-Engine.Services.dll",
+                    HostingEnvironment.MapPath("/") + @"bin\E-Shop-Engine.Utilities.dll",
+                    HostingEnvironment.MapPath("/") + @"bin\E-Shop-Engine.Website.dll",
+                    @"D:\Program Files\Projekty\E-Shop-Engine\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll",
+                    @"D:\Program Files\Projekty\E-Shop-Engine\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll",
+                    @"D:\Program Files\Projekty\E-Shop-Engine\packages\NLog.4.5.10\lib\net45\NLog.dll",
+                    @"D:\Program Files\Projekty\E-Shop-Engine\E-Shop-Engine.Website\bin\Microsoft.AspNet.Identity.EntityFramework.dll"
+                });
+
+                string p = Path.Combine(pluginPath, @"Controllers\TransactionController.cs");
+                List<string> files = Directory.EnumerateFiles(pluginPath + @"\Models").ToList();
+                files.Add(p);
+                CompilerResults results = provider.CompileAssemblyFromFile(parameters, files.ToArray());
+
+                if (results.Errors.HasErrors)
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (CompilerError error in results.Errors)
                     {
-                        if (order.TransactionNumber != null)
-                        {
-                            return HttpStatusCode.OK;
-                        }
-
-                        bool isTransactionValid = true;
-                        bool isPaymentDone = _transactionRepository.IsPaymentCompleted(model.id, model.operation_number, model.operation_type, model.operation_status);
-
-                        if (!isPaymentDone)
-                        {
-                            _orderRepository.OrderPaymentFailed(order);
-                            _mailingRepository.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
-                            _unitOfWork.SaveChanges();
-                            return HttpStatusCode.OK;
-                        }
-
-                        bool isSameCurrency = _transactionRepository.IsTransactionSameCurrency(model.operation_amount, model.operation_currency,
-                            model.operation_original_amount, model.operation_original_currency);
-
-                        if (!isSameCurrency)
-                        {
-                            string responseString = RequestWeb.GetOperationDetails(model.operation_number);
-
-                            DotPayOperationDetails data = JsonConvert.DeserializeObject<DotPayOperationDetails>(responseString);
-                            isTransactionValid = _transactionRepository.ValidateDataSavedAtExternalServer(order, data);
-
-                        }
-                        else
-                        {
-                            isTransactionValid = _transactionRepository.ValidateSameCurrencyTransaction(model.operation_amount, model.operation_currency, model.control, order);
-                        }
-
-                        if (!isTransactionValid)
-                        {
-                            _orderRepository.OrderPaymentFailed(order);
-                            _mailingRepository.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
-                            _unitOfWork.SaveChanges();
-                            return HttpStatusCode.OK;
-                        }
-
-                        _orderRepository.OrderPaymentSuccess(order, model.operation_number);
-                        _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
-                        _unitOfWork.SaveChanges();
+                        sb.AppendLine(string.Format("Error ({0}): {1}", error.ErrorNumber, error.ErrorText));
                     }
+
+                    throw new InvalidOperationException(sb.ToString());
                 }
             }
-            return HttpStatusCode.OK;
+
+            //AppUser user = GetCurrentUser();
+            //Cart cart = _cartRepository.GetCurrentCart(user);
+            //Order order = new Order(user, cart, PaymentMethod.Dotpay);
+            //_orderRepository.Create(order);
+            //_cartRepository.SetCartOrdered(cart);
+            //_cartRepository.NewCart(user);
+            //_unitOfWork.SaveChanges();
+
+            return null;
         }
     }
 }

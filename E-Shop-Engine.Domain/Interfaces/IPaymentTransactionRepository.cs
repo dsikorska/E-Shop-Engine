@@ -1,5 +1,5 @@
 ﻿using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.TempModel;
+using E_Shop_Engine.Domain.DomainModel.Payment;
 
 namespace E_Shop_Engine.Domain.Interfaces
 {
@@ -21,7 +21,7 @@ namespace E_Shop_Engine.Domain.Interfaces
         /// <param name="order">The order instance.</param>
         /// <param name="data">Data sent by external server.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        bool ValidateDataSavedAtExternalServer(Order order, DotPayOperationDetails data);
+        bool ValidateDataSavedAtExternalServer(Order order, OperationDetails data);
 
         /// <summary>
         /// Check if transaction is without conversion.

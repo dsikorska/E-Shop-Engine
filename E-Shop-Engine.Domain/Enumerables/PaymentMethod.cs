@@ -3,7 +3,7 @@
     public enum PaymentMethod
     {
         None,
-        Dotpay,
+        DotPay,
         PayPal
     }
 }

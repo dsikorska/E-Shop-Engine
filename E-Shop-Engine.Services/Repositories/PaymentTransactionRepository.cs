@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.DomainModel.Payment;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Domain.TempModel;
 
 namespace E_Shop_Engine.Services.Repositories
 {
@@ -36,7 +36,7 @@ namespace E_Shop_Engine.Services.Repositories
         /// <param name="order">The order instance.</param>
         /// <param name="data">Data sent by external server.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        public bool ValidateDataSavedAtExternalServer(Order order, DotPayOperationDetails externalData)
+        public bool ValidateDataSavedAtExternalServer(Order order, OperationDetails externalData)
         {
             return externalData.Control == order.OrderNumber &&
                     externalData.OriginalAmount == order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity) &&

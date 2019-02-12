@@ -103,7 +103,7 @@ namespace E_Shop_Engine.Website.Controllers
                 return View("_Error", new string[] { "Cannot order empty cart." });
             }
 
-            Order order = new Order(user, cart, PaymentMethod.Dotpay);
+            Order order = new Order(user, cart, PaymentMethod.DotPay);
             OrderViewModel model = _mapper.Map<OrderViewModel>(order);
 
             return View(model);
