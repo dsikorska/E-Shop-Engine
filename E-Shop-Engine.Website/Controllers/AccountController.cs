@@ -451,7 +451,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (isOrder)
             {
-                return RedirectToAction("Create", "Order");
+                return RedirectToAction("Select", "Payment");
             }
 
             return RedirectToAction("Index");

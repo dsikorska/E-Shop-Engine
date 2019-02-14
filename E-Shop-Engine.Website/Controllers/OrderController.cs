@@ -87,30 +87,25 @@ namespace E_Shop_Engine.Website.Controllers
             return View(model);
         }
 
-        // POST: /Order/Create
-        //[ValidateAntiForgeryToken]
-        //[HttpPost]
-        //public ActionResult Create(OrderViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-        //        return PartialView(model);
-        //    }
-        //    AppUser user = GetCurrentUser();
-        //    Cart cart = _cartRepository.GetCurrentCart(user);
-        //    model.Cart = _mapper.Map<CartDTO>(cart);
-        //    model.Created = DateTime.UtcNow;
-        //    model.AppUser = user;
+        //POST: /Order/Checkout?paymentMethod
+        [ReturnUrl]
+        [HttpPost]
+        public ActionResult Checkout(string paymentMethod)
+        {
+            AppUser user = GetCurrentUser();
+            Cart cart = _cartRepository.GetCurrentCart(user);
 
-        //    if (model.Cart.CartLines.Count == 0)
-        //    {
-        //        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-        //        return PartialView("_Error", new string[] { "Cannot order empty cart." });
-        //    }
+            if (_cartRepository.CountItems(cart) == 0)
+            {
+                return View("_Error", new string[] { "Cannot order empty cart." });
+            }
 
-        //    return Redirect(Url.Action("Index", "Home"));
-        //}
+            Order order = new Order(user, cart, paymentMethod);
+            OrderViewModel model = _mapper.Map<OrderViewModel>(order);
+
+            return View(model);
+        }
+
 
         // GET: /Order/Details?id
         [ReturnUrl]

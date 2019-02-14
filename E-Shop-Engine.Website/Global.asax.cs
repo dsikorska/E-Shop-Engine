@@ -11,11 +11,12 @@ namespace E_Shop_Engine.Website
     {
         protected void Application_Start()
         {
-            NLogConfig.RegisterConfig();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
+            NLogConfig.RegisterConfig();
         }
     }
 }

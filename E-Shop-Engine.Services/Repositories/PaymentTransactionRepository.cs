@@ -2,10 +2,12 @@
 using System.Text.RegularExpressions;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Domain.TempModel;
 
 namespace E_Shop_Engine.Services.Repositories
 {
+    /// <summary>
+    /// This implementation is specified to DotPay!
+    /// </summary>
     public class PaymentTransactionRepository : IPaymentTransactionRepository
     {
         private static Settings settings;
@@ -36,7 +38,7 @@ namespace E_Shop_Engine.Services.Repositories
         /// <param name="order">The order instance.</param>
         /// <param name="data">Data sent by external server.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        public bool ValidateDataSavedAtExternalServer(Order order, DotPayOperationDetails externalData)
+        public bool ValidateDataSavedAtExternalServer(Order order, PaymentDetails externalData)
         {
             return externalData.Control == order.OrderNumber &&
                     externalData.OriginalAmount == order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity) &&

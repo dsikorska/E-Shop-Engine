@@ -16,9 +16,23 @@ namespace E_Shop_Engine.Domain.DomainModel
         public decimal Payment { get; set; }
 
         public bool IsPaid { get; set; } = false;
-        public PaymentMethod PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
         public string TransactionNumber { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public Order()
+        {
+
+        }
+
+        public Order(AppUser user, Cart cart, string paymentMethod)
+        {
+            AppUser = user;
+            Cart = cart;
+            PaymentMethod = paymentMethod;
+            Created = DateTime.UtcNow;
+            OrderStatus = OrderStatus.WaitingForPayment;
+        }
     }
 }

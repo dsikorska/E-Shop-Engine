@@ -28,5 +28,8 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
 
         [Display(Name = "DotPay Id")]
         public string DotPayId { get; set; }
+
+        [Display(Name = "Enable Test Mode for DotPay?")]
+        public bool IsDotPaySandbox { get; set; }
     }
 }

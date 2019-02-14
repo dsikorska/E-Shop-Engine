@@ -64,11 +64,12 @@
     <Compile Include="DomainModel\IdentityModel\AppUser.cs" />
     <Compile Include="DomainModel\DbEntity.cs" />
     <Compile Include="DomainModel\Order.cs" />
+    <Compile Include="DomainModel\PaymentDetails.cs" />
+    <Compile Include="DomainModel\PaymentResponse.cs" />
     <Compile Include="DomainModel\Product.cs" />
     <Compile Include="DomainModel\Settings.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
-    <Compile Include="Enumerables\PaymentMethod.cs" />
     <Compile Include="Interfaces\IAppDbContext.cs" />
     <Compile Include="Interfaces\ICartRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
@@ -80,9 +81,7 @@
     <Compile Include="Interfaces\ISettingsRepository.cs" />
     <Compile Include="Interfaces\ISubcategoryRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
-    <Compile Include="TempModel\DotPayOperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TempModel\DotPayTransactionResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -154,3 +154,8 @@
     font-weight: bold;
     text-align: center;
 }
+
+.payment-img {
+    max-width: 100px;
+    max-height: 100px;
+}
