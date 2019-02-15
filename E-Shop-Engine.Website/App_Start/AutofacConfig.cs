@@ -1,7 +1,10 @@
-﻿using System.Web;
+﻿using System.Reflection;
+using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
 using AutoMapper;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
@@ -9,6 +12,7 @@ using E_Shop_Engine.Services.Data;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Repositories;
+using E_Shop_Engine.Services.Services.Payment;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
@@ -48,13 +52,15 @@ namespace E_Shop_Engine.Website.App_Start
             builder.RegisterType<CartRepository>().As<ICartRepository>().InstancePerRequest();
             builder.RegisterType<SettingsRepository>().As<ISettingsRepository>();
             builder.RegisterType<MailingRepository>().As<IMailingRepository>().InstancePerRequest();
-            builder.RegisterType<PaymentTransactionRepository>().As<IPaymentTransactionRepository>().InstancePerRequest();
+            builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerRequest();
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             IContainer container = builder.Build();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 
             app.UseAutofacMiddleware(container);
             app.UseAutofacMvc();

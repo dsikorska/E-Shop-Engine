@@ -1,8 +1,8 @@
 ﻿using System;
-using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.Models;
 using Newtonsoft.Json;
 
-namespace E_Shop_Engine.Services.PaymentService.DotPay
+namespace E_Shop_Engine.Services.Payment.DotPay
 {
     public class DotPayPaymentDetails : PaymentDetails
     {

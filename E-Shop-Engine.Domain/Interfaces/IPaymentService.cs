@@ -1,8 +1,9 @@
 ﻿using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.Models;
 
 namespace E_Shop_Engine.Domain.Interfaces
 {
-    public interface IPaymentTransactionRepository
+    public interface IPaymentService
     {
         /// <summary>
         /// Make validation on the same currency transaction. Compare data sent by external server with data saved at Order instance.

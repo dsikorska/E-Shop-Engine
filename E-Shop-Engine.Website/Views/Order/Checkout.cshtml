@@ -75,4 +75,9 @@
 <h3>Total value: @Model.TotalValue @Html.Settings().Currency</h3>
 <hr />
 
-@Html.ActionLink("Order", "Process", "Payment", new { paymentMethod = Model.PaymentMethod }, new { @class = "btn btn-success btn-lg w-100" })
+@using (Html.BeginForm("Process", "Payment", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => Model.PaymentMethod)
+    <input type="submit" value="Order" class="btn btn-success btn-lg w-100" />    
+}

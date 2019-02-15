@@ -1,39 +1,51 @@
-﻿using System.Web.Mvc;
-using AutoMapper;
+﻿using System.Web.Http;
 using E_Shop_Engine.Domain.DomainModel;
+using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Interfaces;
+using E_Shop_Engine.Domain.Models;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
+using Microsoft.AspNet.Identity;
 using NLog;
 
-namespace E_Shop_Engine.Website.Controllers.Payment
+namespace E_Shop_Engine.Website.ApiControllers.Payment
 {
-    public abstract class BasePaymentController : BaseExtendedController
+    public abstract class BasePaymentController : ApiController
     {
         protected readonly IOrderRepository _orderRepository;
         protected readonly ICartRepository _cartRepository;
         protected static Settings settings;
         protected readonly IMailingRepository _mailingRepository;
-        protected readonly IPaymentTransactionRepository _transactionRepository;
+        protected readonly IPaymentService _transactionRepository;
+        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IAppUserManager _userManager;
+        protected Logger _logger;
 
         public BasePaymentController(
             IOrderRepository orderRepository,
             ICartRepository cartRepository,
             ISettingsRepository settingsRepository,
             IMailingRepository mailingRepository,
-            IPaymentTransactionRepository transactionRepository,
+            IPaymentService transactionRepository,
             IAppUserManager userManager,
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
-            : base(unitOfWork, userManager, mapper)
+            IUnitOfWork unitOfWork)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             settings = settingsRepository.Get();
             _mailingRepository = mailingRepository;
             _transactionRepository = transactionRepository;
+            _unitOfWork = unitOfWork;
+            _userManager = userManager;
             _logger = LogManager.GetCurrentClassLogger();
         }
 
-        public abstract ActionResult ProcessPayment();
+        public abstract IHttpActionResult ProcessPayment();
+        public abstract IHttpActionResult ConfirmPayment(PaymentResponse model);
+
+        protected AppUser GetCurrentUser()
+        {
+            string userId = User.Identity.GetUserId();
+            return _userManager.FindById(userId);
+        }
     }
 }

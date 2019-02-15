@@ -265,7 +265,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
-    <Compile Include="PaymentService\DotPay\Models\DotPayPaymentDetails.cs" />
+    <Compile Include="Services\Payment\DotPay\DotPayPaymentService.cs" />
+    <Compile Include="Services\Payment\DotPay\Models\DotPayPaymentDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -276,13 +277,13 @@
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\MailingRepository.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
-    <Compile Include="Repositories\PaymentTransactionRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\SubcategoryRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Services\ErrorMessage.cs" />
+    <Compile Include="Services\Payment\PaymentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

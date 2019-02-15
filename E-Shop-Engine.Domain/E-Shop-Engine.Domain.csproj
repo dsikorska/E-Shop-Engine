@@ -64,8 +64,8 @@
     <Compile Include="DomainModel\IdentityModel\AppUser.cs" />
     <Compile Include="DomainModel\DbEntity.cs" />
     <Compile Include="DomainModel\Order.cs" />
-    <Compile Include="DomainModel\PaymentDetails.cs" />
-    <Compile Include="DomainModel\PaymentResponse.cs" />
+    <Compile Include="Models\PaymentDetails.cs" />
+    <Compile Include="Models\PaymentResponse.cs" />
     <Compile Include="DomainModel\Product.cs" />
     <Compile Include="DomainModel\Settings.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IMailingRepository.cs" />
     <Compile Include="Interfaces\IOrderRepository.cs" />
-    <Compile Include="Interfaces\IPaymentTransactionRepository.cs" />
+    <Compile Include="Interfaces\IPaymentService.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISettingsRepository.cs" />

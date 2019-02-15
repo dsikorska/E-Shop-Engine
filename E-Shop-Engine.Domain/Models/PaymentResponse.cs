@@ -1,4 +1,4 @@
-﻿namespace E_Shop_Engine.Domain.DomainModel
+﻿namespace E_Shop_Engine.Domain.Models
 {
     public class PaymentResponse
     {

@@ -10,8 +10,6 @@ namespace E_Shop_Engine.Website
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapMvcAttributeRoutes();
-
             routes.MapRoute(
                 "",
                 "{id}/{name}",

@@ -35,6 +35,8 @@ namespace E_Shop_Engine.Website.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Process(string paymentMethod)
         {
             AppUser user = GetCurrentUser();
@@ -45,7 +47,9 @@ namespace E_Shop_Engine.Website.Controllers
             _cartRepository.NewCart(user);
             _unitOfWork.SaveChanges();
 
-            return RedirectToAction("ProcessPayment", paymentMethod);
+            string redirectUrl = Url.Action("ProcessPayment", paymentMethod, new { httproute = "DefaultApi" });
+
+            return Redirect(redirectUrl);
         }
 
 
