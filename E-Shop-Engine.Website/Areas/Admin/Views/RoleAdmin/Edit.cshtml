@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.RoleEditViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.RoleEditViewModel
 
 @{ ViewBag.Title = "Edit Role";}
 
@@ -60,10 +61,7 @@
             }
         </table>
     </div>
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+    @Html.EndingFormButtons()
 }
 
 @section Scripts {

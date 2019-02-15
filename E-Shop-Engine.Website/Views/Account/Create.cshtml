@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.UserCreateViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.UserCreateViewModel
 
 @{
     ViewBag.Title = "Create Account";
@@ -11,40 +12,18 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     <hr />
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Surname, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Surname, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.PhoneNumber, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Email, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.Name)
+    @Html.TextBoxForExtended(model => model.Surname)
+    @Html.TextBoxForExtended(model => model.PhoneNumber)
+    @Html.TextBoxForExtended(model => model.Email)
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Password, new { @class = "input-group-text" })
         </div>
         @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
     </div>
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", null, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+
+    @Html.EndingFormButtons()
 }
 
 @section Scripts {

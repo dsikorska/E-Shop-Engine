@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.OrderAdminViewModel
 
 @{
     ViewBag.Title = "Order " + Model.OrderNumber;
@@ -14,47 +15,11 @@
     @Html.HiddenFor(model => model.Id)
 
     <fieldset disabled>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                @Html.LabelFor(model => model.Id, new { @class = "input-group-text" })
-            </div>
-            @Html.EditorFor(model => model.Id, new { @class = "form-control" })
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                @Html.LabelFor(model => model.OrderNumber, new { @class = "input-group-text" })
-            </div>
-            @Html.EditorFor(model => model.OrderNumber, new { @class = "form-control" })
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                @Html.LabelFor(model => model.Created, new { @class = "input-group-text" })
-            </div>
-            @Html.EditorFor(model => model.Created, new { @class = "form-control" })
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                @Html.LabelFor(model => model.PaymentMethod, new { @class = "input-group-text" })
-            </div>
-            @Html.EditorFor(model => model.PaymentMethod, new { @class = "form-control" })
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                @Html.LabelFor(model => model.IsPaid, new { @class = "input-group-text" })
-            </div>
-            @Html.TextBoxFor(model => model.IsPaid, new { @class = "text-box single-line" })
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                @Html.LabelFor(model => model.TransactionNumber, new { @class = "input-group-text" })
-            </div>
-            @Html.EditorFor(model => model.TransactionNumber, new { @class = "form-control" })
-        </div>
+        @Html.TextBoxForExtended(model => model.OrderNumber)
+        @Html.TextBoxForExtended(model => model.Created)
+        @Html.TextBoxForExtended(model => model.PaymentMethod)
+        @Html.TextBoxForExtended(model => model.IsPaid)
+        @Html.TextBoxForExtended(model => model.TransactionNumber)
     </fieldset>
 
     <div class="input-group mb-3">
@@ -71,10 +36,7 @@
         @Html.EnumDropDownListFor(model => model.OrderStatus, "Select order status", new { @class = "form-control" })
     </div>
 
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+    @Html.EndingFormButtons()
 }
 
 @section Scripts {
