@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Domain.Models;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using Microsoft.AspNet.Identity;
@@ -14,8 +14,8 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment
         protected readonly IOrderRepository _orderRepository;
         protected readonly ICartRepository _cartRepository;
         protected static Settings settings;
-        protected readonly IMailingRepository _mailingRepository;
-        protected readonly IPaymentService _transactionRepository;
+        protected readonly IMailingService _mailingService;
+        protected readonly IPaymentService _paymentService;
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IAppUserManager _userManager;
         protected Logger _logger;
@@ -24,16 +24,16 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment
             IOrderRepository orderRepository,
             ICartRepository cartRepository,
             ISettingsRepository settingsRepository,
-            IMailingRepository mailingRepository,
-            IPaymentService transactionRepository,
+            IMailingService mailingService,
+            IPaymentService paymentService,
             IAppUserManager userManager,
             IUnitOfWork unitOfWork)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             settings = settingsRepository.Get();
-            _mailingRepository = mailingRepository;
-            _transactionRepository = transactionRepository;
+            _mailingService = mailingService;
+            _paymentService = paymentService;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = LogManager.GetCurrentClassLogger();

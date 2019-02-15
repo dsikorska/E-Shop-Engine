@@ -1,5 +1,5 @@
-﻿using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
+﻿using E_Shop_Engine.Domain.Abstract;
+using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Models;
 
 namespace E_Shop_Engine.Services.Services.Payment
@@ -13,5 +13,7 @@ namespace E_Shop_Engine.Services.Services.Payment
         public abstract bool ValidateDataSavedAtExternalServer(Order order, PaymentDetails data);
 
         public abstract bool ValidateSameCurrencyTransaction(string operation_amount, string operation_currency, string control, Order order);
+
+        public abstract string GetOperationDetails(string operation_number);
     }
 }

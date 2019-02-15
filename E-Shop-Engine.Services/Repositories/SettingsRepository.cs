@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
 
 namespace E_Shop_Engine.Services.Repositories

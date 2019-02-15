@@ -1,6 +1,6 @@
 ﻿namespace E_Shop_Engine.Services.Services
 {
-    public static class ErrorMessage
+    public static class GetErrorMessage
     {
         public const string PasswordsDontMatch = "The new password and confirmation password does not match.";
         public const string PasswordNotValid = "Please enter valid current password.";

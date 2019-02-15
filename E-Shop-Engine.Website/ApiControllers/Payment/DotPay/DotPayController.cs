@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Domain.Models;
 using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
@@ -21,16 +21,16 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment.DotPay
             IOrderRepository orderRepository,
             ICartRepository cartRepository,
             ISettingsRepository settingsRepository,
-            IMailingRepository mailingRepository,
-            IPaymentService transactionRepository,
+            IMailingService mailingService,
+            IPaymentService paymentService,
             IAppUserManager userManager,
             IUnitOfWork unitOfWork)
             : base(
                   orderRepository,
                   cartRepository,
                   settingsRepository,
-                  mailingRepository,
-                  transactionRepository,
+                  mailingService,
+                  paymentService,
                   userManager,
                   unitOfWork)
         {
@@ -70,7 +70,7 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment.DotPay
                 "&control=" + control +
                 "&URLC=" + urlc;
 
-            _mailingRepository.OrderChangedStatusMail(user.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order confirmation " + order.OrderNumber);
+            _mailingService.OrderChangedStatusMail(user.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order confirmation " + order.OrderNumber);
             return Redirect(redirectUrl);
         }
 
@@ -93,42 +93,42 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment.DotPay
                     if (order != null)
                     {
                         bool isTransactionValid = true;
-                        bool isPaymentDone = _transactionRepository.IsPaymentCompleted(model.id, model.operation_number, model.operation_type, model.operation_status);
+                        bool isPaymentDone = _paymentService.IsPaymentCompleted(model.id, model.operation_number, model.operation_type, model.operation_status);
 
                         if (!isPaymentDone)
                         {
                             _orderRepository.OrderPaymentFailed(order);
-                            _mailingRepository.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
+                            _mailingService.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
                             _unitOfWork.SaveChanges();
                             return Ok();
                         }
 
-                        bool isSameCurrency = _transactionRepository.IsTransactionSameCurrency(model.operation_amount, model.operation_currency,
+                        bool isSameCurrency = _paymentService.IsTransactionSameCurrency(model.operation_amount, model.operation_currency,
                             model.operation_original_amount, model.operation_original_currency);
 
                         if (!isSameCurrency)
                         {
-                            string responseString = RequestWeb.GetOperationDetails(model.operation_number);
+                            string responseString = _paymentService.GetOperationDetails(model.operation_number);
 
                             DotPayPaymentDetails data = JsonConvert.DeserializeObject<DotPayPaymentDetails>(responseString);
-                            isTransactionValid = _transactionRepository.ValidateDataSavedAtExternalServer(order, data);
+                            isTransactionValid = _paymentService.ValidateDataSavedAtExternalServer(order, data);
 
                         }
                         else
                         {
-                            isTransactionValid = _transactionRepository.ValidateSameCurrencyTransaction(model.operation_amount, model.operation_currency, model.control, order);
+                            isTransactionValid = _paymentService.ValidateSameCurrencyTransaction(model.operation_amount, model.operation_currency, model.control, order);
                         }
 
                         if (!isTransactionValid)
                         {
                             _orderRepository.OrderPaymentFailed(order);
-                            _mailingRepository.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
+                            _mailingService.PaymentFailedMail(order.AppUser.Email, order.OrderNumber);
                             _unitOfWork.SaveChanges();
                             return Ok();
                         }
 
                         _orderRepository.OrderPaymentSuccess(order, model.operation_number);
-                        _mailingRepository.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
+                        _mailingService.OrderChangedStatusMail(order.AppUser.Email, order.OrderNumber, order.OrderStatus.ToString(), "Order " + order.OrderNumber + " status updated");
                         _unitOfWork.SaveChanges();
                     }
                 }

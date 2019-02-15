@@ -275,14 +275,14 @@
     </Compile>
     <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
-    <Compile Include="Repositories\MailingRepository.cs" />
+    <Compile Include="Services\MailingService.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\SubcategoryRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
-    <Compile Include="Services\ErrorMessage.cs" />
+    <Compile Include="Services\GetErrorMessage.cs" />
     <Compile Include="Services\Payment\PaymentService.cs" />
   </ItemGroup>
   <ItemGroup>

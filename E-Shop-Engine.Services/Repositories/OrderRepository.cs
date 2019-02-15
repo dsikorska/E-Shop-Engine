@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Enumerables;
-using E_Shop_Engine.Domain.Interfaces;
 
 namespace E_Shop_Engine.Services.Repositories
 {

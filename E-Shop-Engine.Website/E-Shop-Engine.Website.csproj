@@ -325,7 +325,6 @@
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
-    <Compile Include="Extensions\IEnumerableHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

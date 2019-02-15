@@ -6,8 +6,8 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
@@ -30,20 +30,24 @@ namespace E_Shop_Engine.Website.App_Start
         {
             ContainerBuilder builder = new ContainerBuilder();
 
+            // AutoMapper config
             builder.Register(c => AutoMapperConfig.Register()).As<IMapper>().InstancePerLifetimeScope().PropertiesAutowired().PreserveExistingDefaults();
+
+            // DbContext config
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().As<IAppDbContext>().InstancePerRequest();
             builder.RegisterType<AppDbContext>().AsSelf().InstancePerRequest();
+
+            // Identity config
             builder.RegisterType<AppSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => app.GetDataProtectionProvider()).InstancePerRequest();
-            //builder.RegisterType<AppUserStore>().As<IUserStore<AppUser>>().InstancePerRequest();
-            //builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppUserManager>().As<IAppUserManager>().InstancePerRequest();
             builder.RegisterType<AppRoleManager>().AsSelf().InstancePerRequest();
             builder.Register(c => new RoleStore<AppRole>(c.Resolve<AppDbContext>())).As<IRoleStore<AppRole, string>>().InstancePerRequest();
             builder.Register(c => new AppUserStore(c.Resolve<IAppDbContext>())).As<IUserStore<AppUser>>().InstancePerRequest();
 
+            // Types config
             builder.RegisterGeneric(typeof(Repository<>)).As((typeof(IRepository<>))).InstancePerRequest();
             builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerRequest();
             builder.RegisterType<CategoryRepository>().As<ICategoryRepository>().InstancePerRequest();
@@ -51,14 +55,16 @@ namespace E_Shop_Engine.Website.App_Start
             builder.RegisterType<OrderRepository>().As<IOrderRepository>().InstancePerRequest();
             builder.RegisterType<CartRepository>().As<ICartRepository>().InstancePerRequest();
             builder.RegisterType<SettingsRepository>().As<ISettingsRepository>();
-            builder.RegisterType<MailingRepository>().As<IMailingRepository>().InstancePerRequest();
+            builder.RegisterType<MailingService>().As<IMailingService>().InstancePerRequest();
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerRequest();
 
+            // Register controllers
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             IContainer container = builder.Build();
 
+            // Set Dependency Resolver
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 

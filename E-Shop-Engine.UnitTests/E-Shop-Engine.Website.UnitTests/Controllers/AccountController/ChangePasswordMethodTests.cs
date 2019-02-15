@@ -133,7 +133,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             };
 
             ActionResult result = await _controller.ChangePassword(_model);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.PasswordsDontMatch);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.PasswordsDontMatch);
 
             AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
@@ -144,7 +144,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             MockSetupFindByIdMethod();
 
             ActionResult result = await _controller.ChangePassword(_model);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.NullUser);
 
             AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }
@@ -155,7 +155,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             _userManager.Setup(um => um.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>())).ReturnsAsync(false);
 
             ActionResult result = await _controller.ChangePassword(_model);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.PasswordNotValid);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.PasswordNotValid);
 
             AssertViewWithModelErrorReturns<UserChangePasswordViewModel, ViewResult>(_model, result, errors);
         }

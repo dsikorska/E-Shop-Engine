@@ -70,17 +70,17 @@
     <Compile Include="DomainModel\Settings.cs" />
     <Compile Include="DomainModel\Subcategory.cs" />
     <Compile Include="Enumerables\OrderStatus.cs" />
-    <Compile Include="Interfaces\IAppDbContext.cs" />
-    <Compile Include="Interfaces\ICartRepository.cs" />
-    <Compile Include="Interfaces\ICategoryRepository.cs" />
-    <Compile Include="Interfaces\IMailingRepository.cs" />
-    <Compile Include="Interfaces\IOrderRepository.cs" />
-    <Compile Include="Interfaces\IPaymentService.cs" />
-    <Compile Include="Interfaces\IProductRepository.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\ISettingsRepository.cs" />
-    <Compile Include="Interfaces\ISubcategoryRepository.cs" />
-    <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Abstract\IAppDbContext.cs" />
+    <Compile Include="Abstract\ICartRepository.cs" />
+    <Compile Include="Abstract\ICategoryRepository.cs" />
+    <Compile Include="Abstract\IMailingService.cs" />
+    <Compile Include="Abstract\IOrderRepository.cs" />
+    <Compile Include="Abstract\IPaymentService.cs" />
+    <Compile Include="Abstract\IProductRepository.cs" />
+    <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Abstract\ISettingsRepository.cs" />
+    <Compile Include="Abstract\ISubcategoryRepository.cs" />
+    <Compile Include="Abstract\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

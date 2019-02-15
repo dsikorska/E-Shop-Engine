@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 
 namespace E_Shop_Engine.Website.Extensions
 {

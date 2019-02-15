@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace E_Shop_Engine.Domain.Interfaces
+namespace E_Shop_Engine.Domain.Abstract
 {
     public interface IRepository<T> where T : class
     {

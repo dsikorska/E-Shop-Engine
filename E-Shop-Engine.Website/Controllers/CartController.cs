@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.Models;
@@ -35,7 +35,7 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = GetCurrentUser();
             if (user == null)
             {
-                return View("_Error", new string[] { ErrorMessage.NullUser });
+                return View("_Error", new string[] { GetErrorMessage.NullUser });
             }
 
             Cart cart = _cartRepository.GetCurrentCart(user);
@@ -51,7 +51,7 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = GetCurrentUser();
             if (user == null)
             {
-                return View("_Error", new string[] { ErrorMessage.NullUser });
+                return View("_Error", new string[] { GetErrorMessage.NullUser });
             }
 
             Cart cart = _cartRepository.GetCurrentCart(user);
@@ -70,7 +70,7 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = GetCurrentUser();
             if (user == null)
             {
-                return View("_Error", new string[] { ErrorMessage.NullUser });
+                return View("_Error", new string[] { GetErrorMessage.NullUser });
             }
 
             Product product = _productRepository.GetById(id);
@@ -99,7 +99,7 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = GetCurrentUser();
             if (user == null)
             {
-                return View("_Error", new string[] { ErrorMessage.NullUser });
+                return View("_Error", new string[] { GetErrorMessage.NullUser });
             }
 
             Product product = _productRepository.GetById(id);
@@ -121,7 +121,7 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = GetCurrentUser();
             if (user == null)
             {
-                return View("_Error", new string[] { ErrorMessage.NullUser });
+                return View("_Error", new string[] { GetErrorMessage.NullUser });
             }
 
             Product product = _productRepository.GetById(id);

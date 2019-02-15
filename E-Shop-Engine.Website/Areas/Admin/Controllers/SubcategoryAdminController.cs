@@ -3,8 +3,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
@@ -140,7 +140,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
                 _subcategoryRepository.Delete(id);
                 _unitOfWork.SaveChanges();
             }
-            catch (DbUpdateException e)
+            catch (DbUpdateException)
             {
                 return View("_Error", new string[] { "Move products to other category." });
             }

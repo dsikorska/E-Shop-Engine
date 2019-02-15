@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Base;
 using E_Shop_Engine.Website.Controllers;
 using E_Shop_Engine.Website.Models;
@@ -17,7 +17,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
     {
         private Mock<IRepository<Category>> _categoryRepository;
         private Mock<IProductRepository> _productRepository;
-        private Mock<IMailingRepository> _mailingRepository;
+        private Mock<IMailingService> _mailingRepository;
 
         [SetUp]
         public override void Setup()
@@ -25,7 +25,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers
             base.Setup();
             _categoryRepository = new Mock<IRepository<Category>>();
             _productRepository = new Mock<IProductRepository>();
-            _mailingRepository = new Mock<IMailingRepository>();
+            _mailingRepository = new Mock<IMailingService>();
 
             _controller = new HomeController(
                 _categoryRepository.Object,

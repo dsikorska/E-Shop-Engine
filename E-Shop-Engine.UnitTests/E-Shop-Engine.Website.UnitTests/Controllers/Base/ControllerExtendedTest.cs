@@ -3,8 +3,8 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using Moq;
 

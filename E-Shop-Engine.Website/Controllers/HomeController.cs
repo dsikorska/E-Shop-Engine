@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Website.CustomFilters;
 using E_Shop_Engine.Website.Extensions;
 using E_Shop_Engine.Website.Models;
@@ -16,12 +16,12 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IRepository<Category> _categoryRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IMailingRepository _mailingRepository;
+        private readonly IMailingService _mailingRepository;
 
         public HomeController(
             IRepository<Category> categoryRepository,
             IProductRepository productRepository,
-            IMailingRepository mailingRepository,
+            IMailingService mailingRepository,
             IMapper mapper)
             : base(mapper)
         {

@@ -1,7 +1,7 @@
 ﻿using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Models;
 
-namespace E_Shop_Engine.Domain.Interfaces
+namespace E_Shop_Engine.Domain.Abstract
 {
     public interface IPaymentService
     {
@@ -42,5 +42,12 @@ namespace E_Shop_Engine.Domain.Interfaces
         /// <param name="operation_status">Transaction status.</param>
         /// <returns>True if transaction success otherwise false.</returns>
         bool IsPaymentCompleted(int id, string operation_number, string operation_type, string operation_status);
+
+        /// <summary>
+        /// Get operation details from dot pay server.
+        /// </summary>
+        /// <param name="operation_number">Transaction number set by dot pay.</param>
+        /// <returns>Transaction details.</returns>
+        string GetOperationDetails(string operation_number);
     }
 }

@@ -85,7 +85,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             SetupFindByEmailAsync();
 
             ActionResult result = await _controller.ForgotPassword(email);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.NullUser);
 
             AssertViewWithModelErrorReturns<string, ViewResult>(_model, result, errors);
         }
@@ -100,7 +100,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             SetupFindByEmailAsync(_user);
 
             ActionResult result = await _controller.ForgotPassword(email);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NoEmail);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.NoEmail);
 
             AssertViewWithModelErrorReturns<string, ViewResult>(_model, result, errors);
         }
