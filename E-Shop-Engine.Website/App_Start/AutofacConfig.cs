@@ -12,7 +12,7 @@ using E_Shop_Engine.Services.Data;
 using E_Shop_Engine.Services.Data.Identity;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Repositories;
-using E_Shop_Engine.Services.Services.Payment;
+using E_Shop_Engine.Services.Services.Payment.DotPay;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
@@ -56,7 +56,7 @@ namespace E_Shop_Engine.Website.App_Start
             builder.RegisterType<CartRepository>().As<ICartRepository>().InstancePerRequest();
             builder.RegisterType<SettingsRepository>().As<ISettingsRepository>();
             builder.RegisterType<MailingService>().As<IMailingService>().InstancePerRequest();
-            builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerRequest();
+            builder.RegisterType<DotPayPaymentService>().As<IDotPayPaymentService>().InstancePerRequest();
 
             // Register controllers
             builder.RegisterControllers(typeof(MvcApplication).Assembly);

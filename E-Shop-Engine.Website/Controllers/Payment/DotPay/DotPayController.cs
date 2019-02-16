@@ -9,11 +9,11 @@ using E_Shop_Engine.Domain.Models;
 using E_Shop_Engine.Services;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Payment.DotPay;
+using E_Shop_Engine.Services.Services.Payment.DotPay;
 using E_Shop_Engine.Utilities;
 using Newtonsoft.Json;
-using NLog;
 
-namespace E_Shop_Engine.Website.ApiControllers.Payment.DotPay
+namespace E_Shop_Engine.Website.Controllers.Payment.DotPay
 {
     public class DotPayController : BasePaymentController
     {
@@ -22,7 +22,7 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment.DotPay
             ICartRepository cartRepository,
             ISettingsRepository settingsRepository,
             IMailingService mailingService,
-            IPaymentService paymentService,
+            IDotPayPaymentService paymentService,
             IAppUserManager userManager,
             IUnitOfWork unitOfWork)
             : base(
@@ -34,7 +34,7 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment.DotPay
                   userManager,
                   unitOfWork)
         {
-            _logger = LogManager.GetCurrentClassLogger();
+            //
         }
 
         [Authorize]

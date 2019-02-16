@@ -9,7 +9,7 @@ using E_Shop_Engine.Domain.Models;
 
 namespace E_Shop_Engine.Services.Services.Payment.DotPay
 {
-    public class DotPayPaymentService : PaymentService
+    public class DotPayPaymentService : IDotPayPaymentService
     {
         private static Settings settings;
 
@@ -26,7 +26,7 @@ namespace E_Shop_Engine.Services.Services.Payment.DotPay
         /// <param name="control">Send by external server control sum.</param>
         /// <param name="order">The order instance.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        public override bool ValidateSameCurrencyTransaction(string transactionValue, string transactionCurrency, string control, Order order)
+        public bool ValidateSameCurrencyTransaction(string transactionValue, string transactionCurrency, string control, Order order)
         {
             return order.OrderNumber == control &&
                     order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity).ToString() == transactionValue &&
@@ -39,7 +39,7 @@ namespace E_Shop_Engine.Services.Services.Payment.DotPay
         /// <param name="order">The order instance.</param>
         /// <param name="data">Data sent by external server.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        public override bool ValidateDataSavedAtExternalServer(Order order, PaymentDetails externalData)
+        public bool ValidateDataSavedAtExternalServer(Order order, PaymentDetails externalData)
         {
             return externalData.Control == order.OrderNumber &&
                     externalData.OriginalAmount == order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity) &&
@@ -56,7 +56,7 @@ namespace E_Shop_Engine.Services.Services.Payment.DotPay
         /// <param name="operation_original_amount">Transaction amount sent to external server.</param>
         /// <param name="operation_original_currency">Transaction currency sent to external server.</param>
         /// <returns>True if the same currency otherwise false.</returns>
-        public override bool IsTransactionSameCurrency(string transactionValue, string transactionCurrency, string transactionOriginalValue, string transactionOriginalCurrency)
+        public bool IsTransactionSameCurrency(string transactionValue, string transactionCurrency, string transactionOriginalValue, string transactionOriginalCurrency)
         {
             return transactionValue == transactionOriginalValue && transactionCurrency == transactionOriginalCurrency;
         }
@@ -69,7 +69,7 @@ namespace E_Shop_Engine.Services.Services.Payment.DotPay
         /// <param name="operation_type">Transaction type.</param>
         /// <param name="operation_status">Transaction status.</param>
         /// <returns>True if transaction success otherwise false.</returns>
-        public override bool IsPaymentCompleted(int id, string operation_number, string operation_type, string operation_status)
+        public bool IsPaymentCompleted(int id, string operation_number, string operation_type, string operation_status)
         {
             return id.ToString() == settings.DotPayId &&
                     operation_type == "payment" &&
@@ -82,7 +82,7 @@ namespace E_Shop_Engine.Services.Services.Payment.DotPay
         /// </summary>
         /// <param name="operation_number">Transaction number set by dot pay.</param>
         /// <returns>Transaction details.</returns>
-        public override string GetOperationDetails(string operation_number)
+        public string GetOperationDetails(string operation_number)
         {
             string host = settings.IsDotPaySandbox ? "https://ssl.dotpay.pl/test_seller/api/v1/operations/" : "https://ssl.dotpay.pl/s2/login/api/v1/operations";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host + operation_number + "/");

@@ -26,7 +26,7 @@ The project implements Repository and Dependency Injection patterns.
 **You can change it at "Your Account" tab. Do it after you set up your SMTP settings at "Admin Panel" - the step below.**
 * Go to "Admin Panel" and at tab Settings update data for your needs.
 
-Application errors are logging in E-Shop-Engine.Website/logs.
+Application errors are logging in App_Data/logs.
 
 ## Built With
 * .NET Framework 4.7
@@ -42,5 +42,50 @@ Application errors are logging in E-Shop-Engine.Website/logs.
 * AJAX
 * There is example DotPay payment implemented.
 
+## How to implement more payment methods:
+* Go to E-Shop-Engine.Services -> Services -> Payment and create new folder.
+* There are 2 model classes that payment can inherit from: PaymentDetails (intended to send data to external server) and PaymentResponse (intended to receive data from external server).
+* Create interface for service that inherit from IPaymentService. Then create the implementation.
+
+   public class DotPayPaymentService : IDotPayPaymentService
+    {
+        private static Settings settings;
+
+        public DotPayPaymentService(ISettingsRepository settingsRepository)
+        {
+            settings = settingsRepository.Get();
+        } 
+		
+		// The implementation...
+	}
+	
+* Now go to E-Shop-Engine.Website -> Controllers -> Payment and create new Controller.
+* The controller should inherit from BasePaymentController - it's WebApi Controller.
+
+    public class DotPayController : BasePaymentController
+    {
+        public DotPayController(
+            IOrderRepository orderRepository,
+            ICartRepository cartRepository,
+            ISettingsRepository settingsRepository,
+            IMailingService mailingService,
+            IDotPayPaymentService paymentService,
+            IAppUserManager userManager,
+            IUnitOfWork unitOfWork)
+            : base(
+                  orderRepository,
+                  cartRepository,
+                  settingsRepository,
+                  mailingService,
+                  paymentService,
+                  userManager,
+                  unitOfWork)
+        {
+            //
+        }
+	
+* And the last thing is to register new payment method in AutoFac (E-Shop-Engine.Website -> App_Start -> AutoFacConfig)
+```builder.RegisterType<DotPayPaymentService>().As<IDotPayPaymentService>().InstancePerRequest();```
+	
 ## License
 This project is licensed under MIT License.

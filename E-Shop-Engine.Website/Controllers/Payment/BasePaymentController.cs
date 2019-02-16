@@ -5,9 +5,8 @@ using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 using E_Shop_Engine.Domain.Models;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using Microsoft.AspNet.Identity;
-using NLog;
 
-namespace E_Shop_Engine.Website.ApiControllers.Payment
+namespace E_Shop_Engine.Website.Controllers.Payment.DotPay
 {
     public abstract class BasePaymentController : ApiController
     {
@@ -18,7 +17,6 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment
         protected readonly IPaymentService _paymentService;
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IAppUserManager _userManager;
-        protected Logger _logger;
 
         public BasePaymentController(
             IOrderRepository orderRepository,
@@ -36,7 +34,6 @@ namespace E_Shop_Engine.Website.ApiControllers.Payment
             _paymentService = paymentService;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
-            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public abstract IHttpActionResult ProcessPayment();

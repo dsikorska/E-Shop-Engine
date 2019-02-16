@@ -316,15 +316,18 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\BaseExtendedController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
-    <Compile Include="ApiControllers\Payment\BasePaymentController.cs" />
-    <Compile Include="ApiControllers\Payment\DotPay\DotPayController.cs" />
+    <Compile Include="Controllers\Payment\BasePaymentController.cs" />
+    <Compile Include="Controllers\Payment\DotPay\DotPayController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SubcategoryController.cs" />
     <Compile Include="CustomFilters\ResetDataDictionariesAttribute.cs" />
     <Compile Include="CustomFilters\ReturnUrlAttribute.cs" />
+    <Compile Include="CustomFilters\WebApiExceptionFilterAttribute.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
+    <Compile Include="Extensions\WebApi\WebApiGlobalErrorLogger.cs" />
+    <Compile Include="Extensions\WebApi\WebApiGlobalExceptionHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
