@@ -47,42 +47,42 @@ Application errors are logging in App_Data/logs.
 * There are 2 model classes that payment can inherit from: PaymentDetails (intended to send data to external server) and PaymentResponse (intended to receive data from external server).
 * Create interface for service that inherit from IPaymentService. Then create the implementation.
 
-   public class DotPayPaymentService : IDotPayPaymentService
-    {
-        private static Settings settings;
-
-        public DotPayPaymentService(ISettingsRepository settingsRepository)
+        public class DotPayPaymentService : IDotPayPaymentService
         {
-            settings = settingsRepository.Get();
-        } 
+            private static Settings settings;
+    
+            public DotPayPaymentService(ISettingsRepository settingsRepository)
+            {
+                settings = settingsRepository.Get();
+            } 
 		
-		// The implementation...
-	}
+		    // The implementation...
+	    }
 	
 * Now go to E-Shop-Engine.Website -> Controllers -> Payment and create new Controller.
-* The controller should inherit from BasePaymentController - it's WebApi Controller.
+* The controller should inherit from BasePaymentController.
 
-    public class DotPayController : BasePaymentController
-    {
-        public DotPayController(
-            IOrderRepository orderRepository,
-            ICartRepository cartRepository,
-            ISettingsRepository settingsRepository,
-            IMailingService mailingService,
-            IDotPayPaymentService paymentService,
-            IAppUserManager userManager,
-            IUnitOfWork unitOfWork)
-            : base(
-                  orderRepository,
-                  cartRepository,
-                  settingsRepository,
-                  mailingService,
-                  paymentService,
-                  userManager,
-                  unitOfWork)
+        public class DotPayController : BasePaymentController
         {
-            //
-        }
+            public DotPayController(
+                IOrderRepository orderRepository,
+                ICartRepository cartRepository,
+                ISettingsRepository settingsRepository,
+                IMailingService mailingService,
+                IDotPayPaymentService paymentService,
+                IAppUserManager userManager,
+                IUnitOfWork unitOfWork)
+                : base(
+                      orderRepository,
+                      cartRepository,
+                      settingsRepository,
+                      mailingService,
+                      paymentService,
+                      userManager,
+                      unitOfWork)
+            {
+                //
+            }
 	
 * And the last thing is to register new payment method in AutoFac (E-Shop-Engine.Website -> App_Start -> AutoFacConfig)
 ```builder.RegisterType<DotPayPaymentService>().As<IDotPayPaymentService>().InstancePerRequest();```
