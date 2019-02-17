@@ -227,7 +227,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ad
             MockSetupFindByIdAsyncMethod();
 
             ActionResult result = await _controller.Edit(_model);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.NullUser);
 
             AssertViewWithModelErrorReturns<UserAdminViewModel, ViewResult>(_model, result, errors);
         }

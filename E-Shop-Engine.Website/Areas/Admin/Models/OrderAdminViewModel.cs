@@ -27,7 +27,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Models
         public bool IsPaid { get; set; } = false;
 
         [Display(Name = "Payment Method")]
-        public PaymentMethod PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
 
         [Display(Name = "Transaction Number")]
         public string TransactionNumber { get; set; }

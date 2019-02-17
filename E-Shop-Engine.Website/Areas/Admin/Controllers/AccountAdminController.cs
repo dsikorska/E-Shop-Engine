@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -111,7 +111,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             else
             {
-                return View("_Error", new string[] { ErrorMessage.NullUser });
+                return View("_Error", new string[] { GetErrorMessage.NullUser });
             }
         }
 
@@ -168,7 +168,7 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
             }
             else
             {
-                ModelState.AddModelError("", ErrorMessage.NullUser);
+                ModelState.AddModelError("", GetErrorMessage.NullUser);
             }
             return View(model);
         }

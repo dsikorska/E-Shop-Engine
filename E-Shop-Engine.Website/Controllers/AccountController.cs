@@ -3,9 +3,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Services.Services;
 using E_Shop_Engine.Website.CustomFilters;
@@ -21,14 +21,14 @@ namespace E_Shop_Engine.Website.Controllers
     {
         private readonly IAuthenticationManager _authManager;
         private readonly IRepository<Address> _addressRepository;
-        private readonly IMailingRepository _mailingRepository;
+        private readonly IMailingService _mailingRepository;
         private readonly ICartRepository _cartRepository;
 
         public AccountController(
             IAppUserManager userManager,
             IAuthenticationManager authManager,
             IRepository<Address> addressRepository,
-            IMailingRepository mailingRepository,
+            IMailingService mailingRepository,
             ICartRepository cartRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper)
@@ -80,7 +80,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (model.NewPassword != model.NewPasswordCopy)
             {
-                ModelState.AddModelError("", ErrorMessage.PasswordsDontMatch);
+                ModelState.AddModelError("", GetErrorMessage.PasswordsDontMatch);
                 return View(model);
             }
 
@@ -91,7 +91,7 @@ namespace E_Shop_Engine.Website.Controllers
                 bool correctPass = await _userManager.CheckPasswordAsync(user, model.OldPassword);
                 if (!correctPass)
                 {
-                    ModelState.AddModelError("", ErrorMessage.PasswordNotValid);
+                    ModelState.AddModelError("", GetErrorMessage.PasswordNotValid);
                     return View(model);
                 }
 
@@ -120,7 +120,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
             else
             {
-                ModelState.AddModelError("", ErrorMessage.NullUser);
+                ModelState.AddModelError("", GetErrorMessage.NullUser);
             }
             return View(model);
         }
@@ -184,7 +184,7 @@ namespace E_Shop_Engine.Website.Controllers
             }
             else
             {
-                ModelState.AddModelError("", ErrorMessage.NullUser);
+                ModelState.AddModelError("", GetErrorMessage.NullUser);
             }
             return View(model);
         }
@@ -196,7 +196,7 @@ namespace E_Shop_Engine.Website.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("_Error", new string[] { ErrorMessage.NoAccess });
+                return View("_Error", new string[] { GetErrorMessage.NoAccess });
             }
 
             return View();
@@ -213,7 +213,7 @@ namespace E_Shop_Engine.Website.Controllers
                 AppUser user = await _userManager.FindAsync(model.Email, model.Password);
                 if (user == null)
                 {
-                    ModelState.AddModelError("", ErrorMessage.InvalidNameOrPassword);
+                    ModelState.AddModelError("", GetErrorMessage.InvalidNameOrPassword);
                 }
                 else
                 {
@@ -328,7 +328,7 @@ namespace E_Shop_Engine.Website.Controllers
             AppUser user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                ModelState.AddModelError("", ErrorMessage.NullUser);
+                ModelState.AddModelError("", GetErrorMessage.NullUser);
                 return View();
             }
 
@@ -339,7 +339,7 @@ namespace E_Shop_Engine.Website.Controllers
                 _mailingRepository.ResetPasswordMail(user.Email, callbackUrl);
                 return View("ForgotPasswordConfirmation");
             }
-            ModelState.AddModelError("", ErrorMessage.NoEmail);
+            ModelState.AddModelError("", GetErrorMessage.NoEmail);
             return View();
         }
 
@@ -451,7 +451,7 @@ namespace E_Shop_Engine.Website.Controllers
 
             if (isOrder)
             {
-                return RedirectToAction("Create", "Order");
+                return RedirectToAction("Select", "Payment");
             }
 
             return RedirectToAction("Index");

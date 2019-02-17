@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.Enumerables;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Base;
 using E_Shop_Engine.Website.Areas.Admin.Controllers;
 using E_Shop_Engine.Website.Areas.Admin.Models;
@@ -17,7 +17,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ad
     {
         private OrderAdminViewModel _model;
         private Mock<IOrderRepository> _orderRepository;
-        private Mock<IMailingRepository> _mailingRepository;
+        private Mock<IMailingService> _mailingRepository;
 
         [SetUp]
         public override void Setup()
@@ -25,7 +25,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ad
             base.Setup();
             _model = new OrderAdminViewModel();
             _orderRepository = new Mock<IOrderRepository>();
-            _mailingRepository = new Mock<IMailingRepository>();
+            _mailingRepository = new Mock<IMailingService>();
             _controller = new OrderAdminController(
                 _orderRepository.Object,
                 _mailingRepository.Object,

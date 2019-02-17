@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.AddressViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.AddressViewModel
 
 @{
     ViewBag.Title = "Edit Address";
@@ -12,53 +13,16 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     <hr />
     @Html.HiddenFor(model => model.Id)
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Street, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Street, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Line1, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Line1, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Line2, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Line2, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.City, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.ZipCode, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.State, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.State, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Country, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Country, new { @class = "form-control" })
-    </div>
 
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", null, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+    @Html.TextBoxForExtended(model => model.Street)
+    @Html.TextBoxForExtended(model => model.Line1)
+    @Html.TextBoxForExtended(model => model.Line2)
+    @Html.TextBoxForExtended(model => model.City)
+    @Html.TextBoxForExtended(model => model.ZipCode)
+    @Html.TextBoxForExtended(model => model.State)
+    @Html.TextBoxForExtended(model => model.Country)
+
+    @Html.EndingFormButtons()
 }
 
 @section Scripts {

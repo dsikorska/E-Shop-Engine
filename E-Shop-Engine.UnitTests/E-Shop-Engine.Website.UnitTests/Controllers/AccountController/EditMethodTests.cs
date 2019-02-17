@@ -155,7 +155,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             MockSetupFindByIdMethod();
 
             ActionResult result = await _controller.Edit(_model);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.NullUser);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.NullUser);
 
             AssertViewWithModelErrorReturns<UserEditViewModel, ViewResult>(_model, result, errors);
         }

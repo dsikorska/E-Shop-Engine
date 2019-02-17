@@ -1,0 +1,83 @@
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<h1>Checkout</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-light text-center">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Quantity
+                </th>
+                <th scope="col">
+                    Price
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cart.CartLines)
+            {
+                <tr class="clickable-row pointer" data-href="/@item.Product.Id/@item.Product.Name">
+                    <td>
+                        @Html.DisplayFor(model => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Product.Price) @Html.Settings().Currency
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+<div>
+    <div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
+        <h3>Shipping details</h3>
+        @Html.ActionLink("Edit", "AddressEdit", "Account", null, new { @class = "btn btn-secondary" })
+    </div>
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.AppUser.Address.Street)</dt>
+        <dd>@Html.DisplayFor(model => model.AppUser.Address.Street)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.AppUser.Address.Line1) / @Html.DisplayNameFor(model => model.AppUser.Address.Line2)</dt>
+        <dd>@Html.DisplayFor(model => model.AppUser.Address.Line1) / @Html.DisplayFor(model => model.AppUser.Address.Line2)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.AppUser.Address.ZipCode) and @Html.DisplayNameFor(model => model.AppUser.Address.City)</dt>
+        <dd>@Html.DisplayFor(model => model.AppUser.Address.ZipCode) @Html.DisplayFor(model => model.AppUser.Address.City)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.AppUser.Address.State)</dt>
+        <dd>@Html.DisplayFor(model => model.AppUser.Address.State)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.AppUser.Address.Country)</dt>
+        <dd>@Html.DisplayFor(model => model.AppUser.Address.Country)</dd>
+    </dl>
+</div>
+<hr />
+<div class="text-center">
+    <div class="input-group mb-3 my-3 mx-2 d-flex justify-content-around">
+        <h3>Payment method</h3>
+        @Html.ActionLink("Change", "Select", "Payment", null, new { @class = "btn btn-secondary" })
+    </div>
+    <img src="~/Content/dotpay_logo.jpg" class="payment-img" />
+</div>
+<hr />
+<h3>Total value: @Model.TotalValue @Html.Settings().Currency</h3>
+<hr />
+
+@using (Html.BeginForm("Process", "Payment", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => Model.PaymentMethod)
+    <input type="submit" value="Order" class="btn btn-success btn-lg w-100" />    
+}

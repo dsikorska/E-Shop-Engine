@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Base;
 using E_Shop_Engine.Website.Models;
@@ -15,7 +15,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
     public abstract class AccountControllerTests<T> : ControllerExtendedTest<SourceController.AccountController>
     {
         protected Mock<ICartRepository> _cartRepository;
-        protected Mock<IMailingRepository> _mailingRepository;
+        protected Mock<IMailingService> _mailingRepository;
         protected Mock<IRepository<Address>> _addressRepository;
         protected Mock<IAuthenticationManager> _authManager;
         protected T _model;
@@ -40,7 +40,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
         {
             _unitOfWork = new Mock<IUnitOfWork>();
             _cartRepository = new Mock<ICartRepository>();
-            _mailingRepository = new Mock<IMailingRepository>();
+            _mailingRepository = new Mock<IMailingService>();
             _addressRepository = new Mock<IRepository<Address>>();
             _authManager = new Mock<IAuthenticationManager>();
             _userManager = new Mock<IAppUserManager>();

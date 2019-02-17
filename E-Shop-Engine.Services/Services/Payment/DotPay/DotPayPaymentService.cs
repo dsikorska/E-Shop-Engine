@@ -1,16 +1,19 @@
-﻿using System.Linq;
+﻿using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
-using E_Shop_Engine.Domain.TempModel;
+using E_Shop_Engine.Domain.Models;
 
-namespace E_Shop_Engine.Services.Repositories
+namespace E_Shop_Engine.Services.Services.Payment.DotPay
 {
-    public class PaymentTransactionRepository : IPaymentTransactionRepository
+    public class DotPayPaymentService : IDotPayPaymentService
     {
         private static Settings settings;
 
-        public PaymentTransactionRepository(ISettingsRepository settingsRepository)
+        public DotPayPaymentService(ISettingsRepository settingsRepository)
         {
             settings = settingsRepository.Get();
         }
@@ -36,7 +39,7 @@ namespace E_Shop_Engine.Services.Repositories
         /// <param name="order">The order instance.</param>
         /// <param name="data">Data sent by external server.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        public bool ValidateDataSavedAtExternalServer(Order order, DotPayOperationDetails externalData)
+        public bool ValidateDataSavedAtExternalServer(Order order, PaymentDetails externalData)
         {
             return externalData.Control == order.OrderNumber &&
                     externalData.OriginalAmount == order.Cart.CartLines.Sum(x => x.Product.Price * x.Quantity) &&
@@ -72,6 +75,26 @@ namespace E_Shop_Engine.Services.Repositories
                     operation_type == "payment" &&
                     operation_status == "completed" &&
                     Regex.IsMatch(operation_number, @"^M\d{4,5}\-\d{4,5}$");
+        }
+
+        /// <summary>
+        /// Get operation details from dot pay server.
+        /// </summary>
+        /// <param name="operation_number">Transaction number set by dot pay.</param>
+        /// <returns>Transaction details.</returns>
+        public string GetOperationDetails(string operation_number)
+        {
+            string host = settings.IsDotPaySandbox ? "https://ssl.dotpay.pl/test_seller/api/v1/operations/" : "https://ssl.dotpay.pl/s2/login/api/v1/operations";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host + operation_number + "/");
+            string login = ConfigurationManager.AppSettings["dotPayLogin"];
+            string pw = ConfigurationManager.AppSettings["dotPayPassword"];
+            request.Credentials = new NetworkCredential(login, pw);
+            request.Host = "ssl.dotpay.pl";
+            request.Accept = "application/json";
+            request.ContentType = "application/json";
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            return responseString;
         }
     }
 }

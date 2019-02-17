@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using E_Shop_Engine.Services;
@@ -11,11 +12,13 @@ namespace E_Shop_Engine.Website
     {
         protected void Application_Start()
         {
-            NLogConfig.RegisterConfig();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
+            NLogConfig.RegisterConfig();
         }
     }
 }

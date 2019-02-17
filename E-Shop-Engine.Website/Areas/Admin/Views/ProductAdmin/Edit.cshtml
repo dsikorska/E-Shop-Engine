@@ -27,12 +27,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     <hr />
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.Name)
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -49,19 +44,8 @@
         <span>@Html.Settings().Currency</span>
     </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.NumberInStock, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.NumberInStock, new { @class = "form-control" })
-    </div>
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.CatalogNumber, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.CatalogNumber, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.NumberInStock)
+    @Html.TextBoxForExtended(model => model.CatalogNumber)
 
     <div class="input-group mb-3">
         <div class="custom-file">
@@ -94,23 +78,13 @@
         </select>
     </div>
 
-    <div class="custom-control custom-checkbox form-control-lg">
-        @Html.CheckBoxFor(model => model.ShowAsSpecialOffer, new { @class = "custom-control-input" })
-        @Html.LabelFor(model => model.ShowAsSpecialOffer, htmlAttributes: new { @class = "custom-control-label" })
-    </div>
-
-    <div class="custom-control custom-checkbox form-control-lg">
-        @Html.CheckBoxFor(model => model.ShowAtMainPage, new { @class = "custom-control-input" })
-        @Html.LabelFor(model => model.ShowAtMainPage, htmlAttributes: new { @class = "custom-control-label" })
-    </div>
+    @Html.CheckBoxForExtended(model => model.ShowAsSpecialOffer)
+    @Html.CheckBoxForExtended(model => model.ShowAtMainPage)
 
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.Created)
 
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+    @Html.EndingFormButtons()
 }
 
 @section Scripts {

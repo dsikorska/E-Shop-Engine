@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using AutoMapper;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data.Identity.Abstraction;
 using E_Shop_Engine.Website.Areas.Admin.Models;
 using E_Shop_Engine.Website.Controllers;
@@ -17,11 +17,11 @@ namespace E_Shop_Engine.Website.Areas.Admin.Controllers
     public class SettingsAdminController : BaseExtendedController
     {
         private readonly ISettingsRepository _settingsRepository;
-        private readonly IMailingRepository _mailingRepository;
+        private readonly IMailingService _mailingRepository;
 
         public SettingsAdminController(
             ISettingsRepository settingsRepository,
-            IMailingRepository mailingRepository,
+            IMailingService mailingRepository,
             IUnitOfWork unitOfWork,
             IAppUserManager userManager,
             IMapper mapper)

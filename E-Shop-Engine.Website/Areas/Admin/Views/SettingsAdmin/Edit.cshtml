@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.SettingsAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.SettingsAdminViewModel
 
 @{
     ViewBag.Title = "Settings";
@@ -12,58 +13,22 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     @Html.HiddenFor(model => model.Id)
     <hr />
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.ShopName, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.ShopName, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Currency, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Currency, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.ContactEmailAddress, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.ContactEmailAddress, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.NotificationReplyEmail, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.NotificationReplyEmail, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.SMTP, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.SMTP, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.ShopName)
+    @Html.TextBoxForExtended(model => model.Currency)
+    @Html.TextBoxForExtended(model => model.ContactEmailAddress)
+    @Html.TextBoxForExtended(model => model.NotificationReplyEmail)
+    @Html.TextBoxForExtended(model => model.SMTP)
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.SMTPEnableSSL, new { @class = "input-group-text" })
         </div>
         @Html.EditorFor(model => model.SMTPEnableSSL, new { @class = "form-control" })
     </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.SMTPPort, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.SMTPPort, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.DotPayId, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.DotPayId, new { @class = "form-control" })
-    </div>
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+    @Html.TextBoxForExtended(model => model.SMTPPort)
+    @Html.TextBoxForExtended(model => model.DotPayId)
+
+    @Html.CheckBoxForExtended(model => model.IsDotPaySandbox)
+    @Html.EndingFormButtons()
     <small>You will receive email on save, if your SMTP is set properly. Please check your "Contact Email Address".</small>
 }
 

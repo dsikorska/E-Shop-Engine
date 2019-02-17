@@ -255,8 +255,19 @@
     <Compile Include="Migrations\201811232225144_Add IsORdered prop at Carts.Designer.cs">
       <DependentUpon>201811232225144_Add IsORdered prop at Carts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902141949265_Change PaymentMethod to string at Orders table.cs" />
+    <Compile Include="Migrations\201902141949265_Change PaymentMethod to string at Orders table.Designer.cs">
+      <DependentUpon>201902141949265_Change PaymentMethod to string at Orders table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902142033351_Add Sandbox boolean to Settings.cs" />
+    <Compile Include="Migrations\201902142033351_Add Sandbox boolean to Settings.Designer.cs">
+      <DependentUpon>201902142033351_Add Sandbox boolean to Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NLogConfig.cs" />
+    <Compile Include="Services\Payment\DotPay\DotPayPaymentService.cs" />
+    <Compile Include="Services\Payment\DotPay\IDotPayPaymentService.cs" />
+    <Compile Include="Services\Payment\DotPay\Models\DotPayPaymentDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -265,15 +276,15 @@
     </Compile>
     <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
-    <Compile Include="Repositories\MailingRepository.cs" />
+    <Compile Include="Services\MailingService.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
-    <Compile Include="Repositories\PaymentTransactionRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\SubcategoryRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
-    <Compile Include="Services\ErrorMessage.cs" />
+    <Compile Include="Services\GetErrorMessage.cs" />
+    <Compile Include="Services\Payment\PaymentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -384,6 +395,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811232225144_Add IsORdered prop at Carts.resx">
       <DependentUpon>201811232225144_Add IsORdered prop at Carts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902141949265_Change PaymentMethod to string at Orders table.resx">
+      <DependentUpon>201902141949265_Change PaymentMethod to string at Orders table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902142033351_Add Sandbox boolean to Settings.resx">
+      <DependentUpon>201902142033351_Add Sandbox boolean to Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

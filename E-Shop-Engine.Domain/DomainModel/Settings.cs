@@ -13,6 +13,6 @@
         public bool SMTPEnableSSL { get; set; }
 
         public string DotPayId { get; set; }
-
+        public bool IsDotPaySandbox { get; set; } = true;
     }
 }

@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using E_Shop_Engine.Domain.Abstract;
 using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.Interfaces;
 using E_Shop_Engine.Services.Data;
 
 namespace E_Shop_Engine.Services.Repositories
 {
-    public class MailingRepository : IMailingRepository
+    public class MailingService : IMailingService
     {
         private readonly Settings _settings;
 
-        public MailingRepository(AppDbContext context)
+        public MailingService(AppDbContext context)
         {
             _settings = context.Settings.FirstOrDefault();
         }
@@ -169,9 +168,9 @@ namespace E_Shop_Engine.Services.Repositories
             {
                 smtpClient.Send(mail);
             }
-            catch (Exception e)
+            catch
             {
-
+                // Do nothing
             }
         }
 

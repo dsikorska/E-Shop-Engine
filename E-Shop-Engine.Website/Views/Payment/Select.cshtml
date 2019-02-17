@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Payment method";
+}
+
+<h2>Select payment method</h2>
+
+@using (Html.BeginForm("Checkout", "Order", FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
+    <hr />
+    <div class="input-group justify-content-around">
+        <div class="custom-control custom-checkbox form-control-lg">
+            <input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay" value="DotPay">
+            <label class="custom-control-label" for="dotpay">
+                <img src="~/Content/payment/dotpay_logo.jpg" class="payment-img" />
+            </label>
+        </div>        
+    </div>
+
+    <div class="input-group mb-3 my-3 d-flex justify-content-around">
+        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary" })
+        <input type="submit" value="Checkout" class="btn btn-success" />
+    </div>
+}

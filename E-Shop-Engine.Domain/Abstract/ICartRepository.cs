@@ -1,7 +1,7 @@
 ﻿using E_Shop_Engine.Domain.DomainModel;
 using E_Shop_Engine.Domain.DomainModel.IdentityModel;
 
-namespace E_Shop_Engine.Domain.Interfaces
+namespace E_Shop_Engine.Domain.Abstract
 {
     public interface ICartRepository : IRepository<Cart>
     {

@@ -1,9 +1,9 @@
 ﻿using E_Shop_Engine.Domain.DomainModel;
-using E_Shop_Engine.Domain.TempModel;
+using E_Shop_Engine.Domain.Models;
 
-namespace E_Shop_Engine.Domain.Interfaces
+namespace E_Shop_Engine.Domain.Abstract
 {
-    public interface IPaymentTransactionRepository
+    public interface IPaymentService
     {
         /// <summary>
         /// Make validation on the same currency transaction. Compare data sent by external server with data saved at Order instance.
@@ -21,7 +21,7 @@ namespace E_Shop_Engine.Domain.Interfaces
         /// <param name="order">The order instance.</param>
         /// <param name="data">Data sent by external server.</param>
         /// <returns>True if valid. False if no valid.</returns>
-        bool ValidateDataSavedAtExternalServer(Order order, DotPayOperationDetails data);
+        bool ValidateDataSavedAtExternalServer(Order order, PaymentDetails data);
 
         /// <summary>
         /// Check if transaction is without conversion.
@@ -42,5 +42,12 @@ namespace E_Shop_Engine.Domain.Interfaces
         /// <param name="operation_status">Transaction status.</param>
         /// <returns>True if transaction success otherwise false.</returns>
         bool IsPaymentCompleted(int id, string operation_number, string operation_type, string operation_status);
+
+        /// <summary>
+        /// Get operation details from dot pay server.
+        /// </summary>
+        /// <param name="operation_number">Transaction number set by dot pay.</param>
+        /// <returns>Transaction details.</returns>
+        string GetOperationDetails(string operation_number);
     }
 }

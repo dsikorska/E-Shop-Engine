@@ -118,7 +118,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             MockSetupFindByIdMethod();
 
             ActionResult result = await _controller.Login(_model);
-            IEnumerable<bool> errors = GetErrorsWithMessage(ErrorMessage.InvalidNameOrPassword);
+            IEnumerable<bool> errors = GetErrorsWithMessage(GetErrorMessage.InvalidNameOrPassword);
 
             AssertViewWithModelErrorReturns<UserLoginViewModel, ViewResult>(_model, result, errors);
         }

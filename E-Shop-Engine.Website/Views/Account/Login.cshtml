@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Models.UserLoginViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Models.UserLoginViewModel
 
 @{
     ViewBag.Title = "Log In";
@@ -12,12 +13,7 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
     <hr />
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Email, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.Email)
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             @Html.LabelFor(model => model.Password, new { @class = "input-group-text" })

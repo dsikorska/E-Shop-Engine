@@ -107,7 +107,7 @@ namespace E_Shop_Engine.UnitTests.E_Shop_Engine.Website.UnitTests.Controllers.Ac
             ActionResult result = _controller.AddressEdit(_model, isOrder: true);
 
             AssertIsInstanceOf<RedirectToRouteResult>(result);
-            AssertRedirectsToController(result, "Order");
+            AssertRedirectsToController(result, "Payment");
         }
 
         [Test(Description = "HTTPPOST")]

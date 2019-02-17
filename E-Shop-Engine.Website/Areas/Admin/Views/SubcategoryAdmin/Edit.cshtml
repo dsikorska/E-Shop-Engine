@@ -1,4 +1,5 @@
-﻿@model E_Shop_Engine.Website.Areas.Admin.Models.SubcategoryAdminViewModel
+﻿@using E_Shop_Engine.Website.Extensions;
+@model E_Shop_Engine.Website.Areas.Admin.Models.SubcategoryAdminViewModel
 
 @{
     if (Model.Name != null)
@@ -29,19 +30,9 @@
     <hr />
     @Html.HiddenFor(model => model.Id)
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Name, new { @class = "input-group-text" })
-        </div>
-        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.Name)
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            @Html.LabelFor(model => model.Description, new { @class = "input-group-text" })
-        </div>
-        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
-    </div>
+    @Html.TextBoxForExtended(model => model.Description)
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -50,10 +41,7 @@
         @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.Categories, "Id", "Name"), new { @class = "custom-select" })
     </div>
 
-    <div class="input-group mb-3 my-3 d-flex justify-content-around">
-        @Html.ActionLink("Go Back", "GoBack", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-lg" })
-        <input type="submit" value="Save" class="btn btn-success btn-lg" />
-    </div>
+    @Html.EndingFormButtons()
 }
 
 @section Scripts {
