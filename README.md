@@ -84,8 +84,15 @@ Application errors are logging in App_Data/logs.
                 //
             }
 	
-* And the last thing is to register new payment method in AutoFac (E-Shop-Engine.Website -> App_Start -> AutoFacConfig)
+* Register new payment method in AutoFac (E-Shop-Engine.Website -> App_Start -> AutoFacConfig)
 ```builder.RegisterType<DotPayPaymentService>().As<IDotPayPaymentService>().InstancePerRequest();```
-	
+* Go to Views -> Payment -> Select and add new payment. Remember to set input element value the same as Controller name
+```<div class="custom-control custom-checkbox form-control-lg">```
+    ```<input type="radio" name="paymentMethod" class="custom-control-input" id="dotpay" value="DotPay">```
+    ```<label class="custom-control-label" for="dotpay">```
+        ```<img src="~/Content/payment/dotpay_logo.jpg" class="payment-img" />```
+    ```</label>```
+``` </div> ```
+		
 ## License
 This project is licensed under MIT License.
