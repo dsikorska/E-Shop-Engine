@@ -5,7 +5,7 @@ The project implements Repository and Dependency Injection patterns.
 
 **It shouldn't be use for any real business. I don't take any reposibility if you decide to use it for real transactions. Before you do it, make sure the application fulfill security standards.**
 
-##Features
+## Features
 * Searching / paging / sorting.
 * Category and Subcategory system for Products.
 * Shopping Cart
